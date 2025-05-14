@@ -1,0 +1,6 @@
+[Q4OS02]
+Identity=unix-group:sudo
+Action=org.freedesktop.udisks2.filesystem-mount-other-seat
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes

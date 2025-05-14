@@ -1,0 +1,5 @@
+#!/bin/sh
+
+. /usr/share/apps/q4os_system/bin/qrepo_functions.sh
+
+print_current_repositories_with_normalized_lines

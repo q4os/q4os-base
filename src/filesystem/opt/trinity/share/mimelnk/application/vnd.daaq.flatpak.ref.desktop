@@ -1,0 +1,10 @@
+[Desktop Entry]
+#defines mime type, the same as /usr/share/mime/packages/*.desktop
+#add vnd.flatpak.ref mimetype missing in trinity
+Comment=Flatpak application reference
+Icon=package-x-generic
+MimeType=application/vnd.flatpak.ref
+Patterns=*.flatpakref
+Type=MimeType
+Hidden=false
+OnlyShowIn=TDE;

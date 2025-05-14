@@ -1,0 +1,9 @@
+[Desktop Entry]
+Icon=computer
+Name=System
+Open=false
+Type=Link
+URL=system:/
+X-TDE-KonqSidebarModule=konqsidebar_tree
+X-TDE-TreeModule=Directory
+X-TDE-TreeModule-ShowHidden=false

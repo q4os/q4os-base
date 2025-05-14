@@ -1,0 +1,3 @@
+deb [signed-by=/usr/share/keyrings/q4a-winehq.gpg arch=amd64,i386] https://dl.winehq.org/wine-builds/debian/ bookworm main
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-winehq.pub

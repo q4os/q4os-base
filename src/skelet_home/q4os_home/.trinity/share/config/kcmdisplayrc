@@ -1,0 +1,8 @@
+[DisplayEnergy]
+displayEnergySaving=true
+displayPowerOff=0
+displayStandby=0
+displaySuspend=0
+
+[X11]
+exportKDEColors=true

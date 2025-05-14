@@ -1,0 +1,8 @@
+##debian fasttrack repository
+
+deb [signed-by=/usr/share/keyrings/q4a-debian_fasttrack.gpg] https://fasttrack.debian.net/debian-fasttrack/ bookworm-fasttrack main contrib non-free
+deb [signed-by=/usr/share/keyrings/q4a-debian_fasttrack.gpg] https://fasttrack.debian.net/debian-fasttrack/ bookworm-backports-staging main contrib
+
+#install apt keyring using command: "apt install fasttrack-archive-keyring"
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-debian_fasttrack.pub

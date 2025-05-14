@@ -1,0 +1,5 @@
+[General]
+Buttons=SPECIAL_BUTTON__SHOW_DESKTOP,tde-konqbrowser.desktop
+ConserveSpace=true
+DragEnabled=false
+IconDim=32

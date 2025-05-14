@@ -1,0 +1,24 @@
+[Desktop Entry]
+#this file defines an association of mimetype and application
+#format specified at http://standards.freedesktop.org/desktop-entry-spec/1.0/
+Type=Application
+#version of the spec for this file, not the application version
+Version=1.0
+Name=QSI Installer
+GenericName=QSI Software Installer
+Comment=Install and uninstall various software package formats
+Icon=package-x-generic
+# Path=
+TryExec=appsetup2.exu
+Exec=appsetup2.exu %u
+Terminal=false
+# TerminalOptions=
+# InitialPreference=2
+MimeType=application/x-q4os-installerqsi;application/x-q4os-execscript;application/vnd.debian.binary-package;application/x-deb;application/x-debian-package;application/vnd.flatpak.ref;
+StartupNotify=true
+# X-DCOP-ServiceType=
+# X-TDE-SubstituteUID=false
+# X-TDE-Username=
+#category entry according to http://standards.freedesktop.org/menu-spec/1.0/
+# Categories=Graphics;2DGraphics;RasterGraphics;Qt;
+NoDisplay=true

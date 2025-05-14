@@ -1,0 +1,48 @@
+[Main Window Settings Toolbar bookmarkToolBar]
+IconText=IconTextRight
+Index=0
+
+[Main Window Settings Toolbar q4fmToolBar1]
+IconText=IconTextRight
+Index=1
+
+[Main Window Settings Toolbar q4fmToolBar2]
+IconText=IconOnly
+Index=2
+NewLine=false
+
+[Main Window Settings Toolbar q4wbToolBar1]
+Hidden=true
+IconText=IconTextRight
+Index=3
+
+[Main Window Settings Toolbar q4wbToolBar2]
+Hidden=true
+IconText=IconTextRight
+Index=4
+
+[Main Window Settings Toolbar mainToolBar]
+Hidden=true
+IconText=IconOnly
+Index=5
+
+[Main Window Settings Toolbar locationToolBar]
+IconText=IconTextRight
+Index=6
+
+[Profile]
+FullScreen=false
+Height=418
+Name[$e]=ctrl_panel
+RootItem=Tabs0
+Tabs0_Children=ViewT0
+Tabs0_activeChildIndex=0
+ViewT0_LinkedView=false
+ViewT0_LockedLocation=false
+ViewT0_PassiveMode=false
+ViewT0_ServiceName=konq_iconview
+ViewT0_ServiceType=inode/directory
+ViewT0_ToggleView=false
+ViewT0_URL[$e]=settings:/
+Width=639
+XMLUIFile=konqueror.rc

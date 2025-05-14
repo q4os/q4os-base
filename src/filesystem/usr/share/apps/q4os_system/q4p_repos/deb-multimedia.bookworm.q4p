@@ -1,0 +1,25 @@
+# Keyring install: sudo apt-get install deb-multimedia-keyring
+
+# For bookworm (stable) amd64, armel, armhf, i386, ia64, kfreebsd-amd64, kfreebsd-i386, mips, mipsel, powerpc and sparc packages
+# add in your /etc/apt/sources.list
+# non-free is for i386 and amd64 arches only.
+deb [signed-by=/usr/share/keyrings/q4a-deb_multimedia.gpg] http://www.deb-multimedia.org bookworm main non-free
+#or deb ftp://ftp.deb-multimedia.org bookworm main non-free
+#or deb http://www.deb-multimedia.org stable main non-free
+#or deb ftp://ftp.deb-multimedia.org stable main non-free
+
+# For bookworm (stable) backport amd64, armel, armhf, i386, ia64, kfreebsd-amd64, kfreebsd-i386, mips, mipsel, powerpc and sparc packages
+# add in your /etc/apt/sources.list
+# non-free is for i386 and amd64 arches only.
+#deb http://www.deb-multimedia.org bookworm main non-free
+#deb http://www.deb-multimedia.org bookworm-backports main non-free
+#or
+#deb ftp://ftp.deb-multimedia.org bookworm main non-free
+#deb ftp://ftp.deb-multimedia.org bookworm-backports main non-free
+#or
+#deb http://www.deb-multimedia.org stable main non-free
+#deb http://www.deb-multimedia.org stable-backports main non-free
+#or
+#deb ftp://ftp.deb-multimedia.org stable main non-free deb ftp://ftp.deb-multimedia.org stable-backports main non-free
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-deb_multimedia.pub

@@ -1,0 +1,304 @@
+#!/bin/sh
+
+unset LC_ALL
+
+# if [ "$( id -u )" = "0" ] ; then
+#   ASROOT="1"
+# fi
+
+if [ "$1" = "--memtotal" ] ; then
+  FSETFLAG="1"
+  MEMTOTAL=$( LANG="C" free -m | grep Mem: | awk '{ print $2 }' )
+  echo $MEMTOTAL
+  exit 0
+fi
+
+if [ "$1" = "--probe-dpi" ] ; then
+  FSETFLAG="1"
+  if true ; then
+    #todo?: use "xrandr --listactivemonitors" command to get dpi
+    LINE1="$( LANG="C" xrandr | grep -i "mm" | grep "[[:digit:]]x[[:digit:]]" | grep -v "^ " | grep -v " disconnected" | grep -i "connected" | sort | head -n1 )"
+    XDIM1="$( echo "$LINE1" | awk -F'mm' '{ print $1 }' | awk -F' ' '{ print $NF }' )"
+    XRES1="$( echo "$LINE1" | awk -F'x' '{ print $1 }' | awk -F' ' '{ print $NF }' )"
+    if [ -n "$LINE1" ] && [ -n "$XDIM1" ] && [ -n "$XRES1" ] && [ "$XDIM1" != "0" ] && [ "$XRES1" != "0" ] ; then
+      SCRDPI2="$( echo "$XRES1 * 25.4 / $XDIM1" | bc -l )"
+      SCRDPI2="$( echo "($SCRDPI2 + 0.5) / 1" | bc )" #rounding
+    fi
+  fi
+  # if [ -z "$SCRDPI2" ] || [ "$SCRDPI2" = "0" ] ; then
+  #   unset LINE1 XDIM1 XRES1
+  #   LINE1="$( LANG="C" xdpyinfo | grep -i "dimensions: " | grep -i "millimeters" | grep "[[:digit:]]x[[:digit:]]" | sort | head -n1 )"
+  #   XDIM1="$( echo "$LINE1" | awk -F'(' '{ print $2 }' | awk -F'x' '{ print $1 }' )"
+  #   XRES1="$( echo "$LINE1" | awk -F' ' '{ print $2 }' | awk -F'x' '{ print $1 }' )"
+  #   if [ -n "$LINE1" ] && [ -n "$XDIM1" ] && [ -n "$XRES1" ] && [ "$XDIM1" != "0" ] && [ "$XRES1" != "0" ] ; then
+  #     SCRDPI2="$( echo "$XRES1 * 25.4 / $XDIM1" | bc -l )"
+  #     SCRDPI2="$( echo "($SCRDPI2 + 0.5) / 1" | bc )" #rounding
+  #   fi
+  # fi
+  # echo "${XDIM1}mm :: ${XRES1}px >> $SCRDPI2 dpi"
+  if [ -z "$SCRDPI2" ] ; then
+    SCRDPI2="0"
+  fi
+  case $SCRDPI2 in ''|*[!0-9]*)
+    SCRDPI2="0"
+  esac
+  if [ "$SCRDPI2" -lt "40" ] || [ "$SCRDPI2" -gt "400" ] ; then
+    SCRDPI2="0"
+  fi
+  echo "$SCRDPI2"
+  exit 0
+fi
+
+if [ "$1" = "--screen-dpi" ] ; then
+  FSETFLAG="1"
+  if [ -n "$Q4DPI" ] ; then
+    SCRDPI1="$Q4DPI"
+  fi
+  if [ -z "$SCRDPI1" ] ; then
+    SCRDPI1="$( LANG="C" xrdb -q | grep 'Xft.dpi:' | head -n1 | awk -F' ' '{ print $2 }' | tr -d ' ' )"
+  fi
+  if [ -z "$SCRDPI1" ] ; then
+    SCRDPI1="$( LANG="C" xdpyinfo | grep 'resolution: ' | grep ' dots per inch' | head -n1 | awk -F'resolution:' '{ print $2 }' | tr -d ' ' | awk -F'x' '{ print $1 }' )"
+  fi
+  if [ "$SCRDPI1" -eq "$SCRDPI1" 2> /dev/null ] ; then
+    echo "$SCRDPI1"
+    exit 0
+  else
+    echo "0"
+    exit 1
+  fi
+fi
+
+if [ "$1" = "--laptop-pc" ] ; then
+  FSETFLAG="1"
+  ( laptop-detect 2>&1 ) > /dev/null
+  if [ "$?" = "0" ] ; then
+    echo "Laptop_Yes"
+    exit 0
+  else
+    echo "Laptop_No"
+    exit 1
+  fi
+fi
+
+if [ "$1" = "--dri" ] ; then
+#need to be improved
+  FSETFLAG="1"
+  if [ -n "$( cat /var/log/Xorg.0.log | grep -i "direct rendering: DRI2 Enabled" )" ] ; then
+    echo "DRI_Yes"
+    exit 0
+  else
+    echo "DRI_Unknown"
+    exit 1
+  fi
+fi
+
+if [ "$1" = "--sse2" ] ; then
+  FSETFLAG="1"
+  ( ( cat /proc/cpuinfo | grep "^flags" | grep "sse2" ) 2>&1 ) > /dev/null
+  if [ "$?" = "0" ]; then
+    echo "SSE2_Yes"
+    exit 0
+  else
+    echo "SSE2_No"
+    exit 1
+  fi
+fi
+
+if [ "$1" = "--secure-boot" ] ; then
+  #see https://wiki.archlinux.org/index.php/Secure_Boot
+  FSETFLAG="1"
+  if [ -n "$( LANG="C" mokutil --sb-state 2>&1 | grep "SecureBoot enabled" )" ] ; then
+    echo "SecureBoot_Yes"
+    exit 0
+  else
+    echo "SecureBoot_No"
+    exit 1
+  fi
+fi
+
+if [ "$1" = "--vttech" ] ; then
+  FSETFLAG="1"
+  echo "Not implemented"
+  exit 10
+fi
+
+if [ "$1" = "--virtualized" ] ; then
+  FSETFLAG="1"
+  echo "Not implemented"
+  exit 10
+fi
+
+#detect sound card
+if [ "$1" = "--soundcard" ] ; then
+  FSETFLAG="1"
+#  SOUNDA=$( cat /proc/asound/cards | grep "no soundcards" )
+  SOUNDA=$( cat /proc/asound/cards | grep "^ 0" )
+  if [ -z "$SOUNDA" ] ; then
+    echo "Soundcard_No"
+    exit 1
+  else
+    echo "Soundcard_Yes"
+    exit 0
+  fi
+fi
+
+#detect wifi card
+if [ "$1" = "--wireless" ] ; then
+  FSETFLAG="1"
+  WIFIA=$( LANG="C" nmcli -t --fields DEVICE,TYPE dev status | grep -i ":wifi$" )
+  if [ -z "$WIFIA" ] ; then
+    echo "WiFi_No"
+    exit 1
+  else
+    echo "WiFi_Yes"
+    exit 0
+  fi
+fi
+
+#detect nvidia card and drivers available
+if [ "$1" = "--nvidia-drv" ] ; then
+  FSETFLAG="1"
+  NVDRIVER=$( nvidia-detect | grep "nvidia-" | grep "\-driver" | grep -i "^ " | head -n1 | sed 's/^ *//g' | sed 's/ *$//g' )
+  if [ -z "$NVDRIVER" ] ; then
+    echo "Nvidia_No"
+    exit 1
+  else
+    echo "$NVDRIVER"
+    exit 0
+  fi
+fi
+
+#detect if connected via network manager, but other unmanaged devices may exist being connected
+if [ "$1" = "--nm-online" ] ; then
+  FSETFLAG="1"
+  nm-online -x
+  if [ "$?" = "0" ] ; then
+    echo "NMOnline: Yes"
+    exit 0
+  else
+    echo "NMOnline: No"
+    exit 1
+  fi
+fi
+
+#detect machine type
+if [ "$1" = "--machtype" ] ; then
+  FSETFLAG="1"
+  echo "Unknown"
+  exit 1
+fi
+
+#detect architecture
+if [ "$1" = "--cpuarch" ] ; then
+  FSETFLAG="1"
+  echo "Not implemented"
+  exit 10
+#  MARCH="$(cat /proc/cpuinfo | grep xxxxxx)"
+#  if [ "$MARCH" = "amd64" ] ; then
+#    echo "CPUArch: amd64"
+#    exit 100
+#  fi
+#  if [ "$MARCH" = "i386" ] ; then
+#    echo "CPUArch: i386"
+#    exit 200
+#  fi
+#  exit 1
+fi
+
+#detect if connected via any network device
+if [ "$1" = "--netlink" ] ; then
+  FSETFLAG="1"
+  echo "Not implemented"
+  exit 10
+fi
+
+#detect if run inside qemu/kvm
+if [ "$1" = "--qemuguest" ] ; then
+  FSETFLAG="1"
+  QEMUA=$( cat /proc/cpuinfo | grep "QEMU" )
+  if [ -n "$QEMUA" ] ; then
+    echo "QemuGuest_Yes"
+    exit 0
+  else
+    echo "QemuGuest_No"
+    exit 1
+  fi
+fi
+
+#we need to acquire DMESG_LOG file as soon as booted up to go around a possible dmesg buffer overflow
+DMESG_HELPER_FL0="/tmp/.dmsglgf_sys_0.tmp" #acquired on the first boot
+DMESG_HELPER_FL1="/tmp/.dmsglgf_user_0.tmp" #acquired by root
+DMESG_HELPER_FL2="/tmp/.dmsglgf_user_$(id -u).tmp" #acquired by a user
+if [ -r "$DMESG_HELPER_FL0" ] ; then
+  DMESG_LOG="$DMESG_HELPER_FL0"
+elif [ -r "$DMESG_HELPER_FL1" ] ; then
+  DMESG_LOG="$DMESG_HELPER_FL1"
+elif [ -r "$DMESG_HELPER_FL2" ] ; then
+  DMESG_LOG="$DMESG_HELPER_FL2"
+else
+  DMESG_LOG="$DMESG_HELPER_FL2"
+  rm -f $DMESG_LOG 2>/dev/null
+  ( LANG="C" dmesg 2>&1 ) > $DMESG_LOG
+fi
+
+#detect if run inside virtualbox
+if [ "$1" = "--vboxguest" ] ; then
+  FSETFLAG="1"
+  ( ( cat "$DMESG_LOG" | grep -i "virtualbox" | grep -i "bios" | grep -i "innotek" ) 2>&1 ) > /dev/null
+  if [ "$?" = "0" ] ; then
+    echo "VBoxGuest_Yes"
+    exit 0
+  else
+    echo "VBoxGuest_No"
+    exit 1
+  fi
+fi
+
+#detect synaptics touchpad
+if [ "$1" = "--synaptics" ] ; then
+  FSETFLAG="1"
+  if [ -n "$( cat "$DMESG_LOG" | grep -i "synaptics" )" ] ; then
+    echo "Synaptics_Yes"
+    exit 0
+  else
+    echo "Synaptics_No"
+    exit 1
+  fi
+fi
+
+#detect thinkpad-r51 laptop
+if [ "$1" = "--thinkpad-r51" ] ; then
+  FSETFLAG="1"
+  ( ( cat "$DMESG_LOG" | grep -i 'ibm' | grep '2883\|2887\|2888\|2889\|2894\|2895' ) 2>&1 ) > /dev/null
+  RES_1="$?"
+  ( ( cat "$DMESG_LOG" | grep -i 'intel' | grep '855' ) 2>&1 ) > /dev/null
+  RES_2="$?"
+  # ( ( cat "$DMESG_LOG" | grep -i 'i915' ) 2>&1 ) > /dev/null
+  # RES_3="$?"
+  if [ "$RES_1" = "0" ] && [ "$RES_2" = "0" ] ; then
+    echo "ThinkPad-R51_Yes"
+    exit 0
+  else
+    echo "ThinkPad-R51_No"
+    exit 1
+  fi
+fi
+
+#detect asus eee laptop
+if [ "$1" = "--eeepc" ] ; then
+  FSETFLAG="1"
+  ( ( cat "$DMESG_LOG" | grep -i 'eeepc_laptop') 2>&1 ) > /dev/null
+  if [ "$?" = "0" ]; then
+    echo "EeePC_Yes"
+    exit 0
+  else
+    echo "EeePC_No"
+    exit 1
+  fi
+fi
+
+if [ -z "$FSETFLAG" ] ; then
+  echo "Bad parameter, no action has been made ..."
+  exit 100
+fi

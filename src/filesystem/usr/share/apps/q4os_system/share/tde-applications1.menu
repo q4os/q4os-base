@@ -1,0 +1,134 @@
+ <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+  "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+
+<Menu>
+	<Name>q4os</Name>
+	<AppDir>../../.local/share/applications</AppDir>
+	<DirectoryDir>../../.local/share/desktop-directories</DirectoryDir>
+	<DefaultLayout show_empty="true">
+		<Merge type="menus"/>
+		<Merge type="files"/>
+	</DefaultLayout>
+	<Layout>
+<!--		<Merge type="menus" />							-->
+		<Menuname show_empty="true">q4os-Programs</Menuname>
+		<Menuname show_empty="true">q4os-Documents</Menuname>
+		<Menuname show_empty="true">q4os-Settings</Menuname>
+		<Menuname show_empty="true">q4os-Find</Menuname>
+		<Filename>q4os-Help.desktop</Filename>
+	</Layout>
+
+	<Menu>
+		<Name>q4os-Programs</Name>
+		<Directory>q4os-Programs.directory</Directory>
+		<DefaultLayout show_empty="true">
+			<Merge type="menus" />
+			<Filename>q4os_startmenu_webbrowser.desktop</Filename>
+<!--			<Filename>q4os_startmenu_konsole.desktop</Filename>		-->
+<!--			<Separator/>							-->
+			<Merge type="files" />
+		</DefaultLayout>
+<!--		system wide menus							-->
+		<MergeDir>/usr/share/apps/q4os_system/q4os_menus_applications_merged</MergeDir>
+<!--		link to wine apps dir							-->
+		<LegacyDir>../../.local/share/applications/wine/Programs</LegacyDir>
+<!--		todo: try to merge wine menus somehow as non legacy			-->
+<!--		<MergeDir>../../.configtde/menus/applications-merged</MergeDir>		-->
+<!--		legacy dir -->
+		<LegacyDir>../../.q4data/Programs</LegacyDir>
+<!--		uncomment when using native menu structure and kmenuedit		-->
+<!--		<MergeDir>../../.configtde/menus/applications-merged</MergeDir>		-->
+		<Menu>
+			<Name>Accessories1</Name>
+			<Directory>q4os-Accessories.directory</Directory>
+			<MergeFile>/opt/trinity/etc/xdg/menus/tde-applications.menu</MergeFile>
+		</Menu>
+		<Menu>
+			<Name>q4os-Games</Name>
+			<Directory>q4os-Games.directory</Directory>
+			<DefaultLayout show_empty="true">
+				<Merge type="menus"/>
+				<Merge type="files"/>
+			</DefaultLayout>
+			<Include>
+				<Category>CardGame</Category>
+				<Category>LogicGame</Category>
+				<Category>ArcadeGame</Category>
+				<Category>BoardGame</Category>
+				<Category>KidsGame</Category>
+				<Category>StrategyGame</Category>
+			</Include>
+		</Menu>
+	</Menu>
+
+	<Menu>
+		<Name>q4os-Documents</Name>
+		<Directory>q4os-Documents.directory</Directory>
+		<Layout>
+			<Filename>q4os-MyDocuments.desktop</Filename>
+			<Filename>q4os-MyPictures.desktop</Filename>
+			<Separator/>
+		</Layout>
+		<Include>
+			<Filename>q4os-MyDocuments.desktop</Filename>
+			<Filename>q4os-MyPictures.desktop</Filename>
+		</Include>
+	</Menu>
+
+	<Menu>
+		<Name>q4os-Settings</Name>
+		<Directory>q4os-Settings.directory</Directory>
+		<Layout>
+			<Filename>q4os-controlpanel.desktop</Filename>
+			<Separator/>
+			<Filename>q4os-networkconnections.desktop</Filename>
+			<Filename>q4os-printersandfax.desktop</Filename>
+			<Filename>q4os-mainmenuedit.desktop</Filename>
+		</Layout>
+		<Include>
+			<Filename>q4os-controlpanel.desktop</Filename>
+			<Filename>q4os-networkconnections.desktop</Filename>
+			<Filename>q4os-printersandfax.desktop</Filename>
+			<Filename>q4os-mainmenuedit.desktop</Filename>
+		</Include>
+	</Menu>
+
+	<Menu>
+		<Name>q4os-Find</Name>
+		<Directory>q4os-Find.directory</Directory>
+		<Layout>
+			<Filename>q4os-find-filesfolders.desktop</Filename>
+			<Filename>q4os-find-internet.desktop</Filename>
+			<Separator/>
+			<Filename>q4os-find-inmenus.desktop</Filename>
+		</Layout>
+		<Include>
+			<Filename>q4os-find-filesfolders.desktop</Filename>
+			<Filename>q4os-find-internet.desktop</Filename>
+			<Filename>q4os-find-inmenus.desktop</Filename>
+		</Include>
+	</Menu>
+
+	<Include>
+		<Filename>q4os-Help.desktop</Filename>
+	</Include>
+
+<!-- when using native menu structure and kmenuedit					-->
+<!-- 	<Move>										-->
+<!-- 		<Old>q4os-Programs/wine-wine/wine-Programs</Old>			-->
+<!-- 		<New>q4os-Programs</New>						-->
+<!-- 	</Move>										-->
+
+<!--  do we need it ? -->
+<!--	<AppDir>/usr/share/applications</AppDir> -->
+<!--	<DirectoryDir>/usr/share/desktop-directories</DirectoryDir> -->
+
+<!--  necessary to add for correct handling settings:/ protocol in konqueror - default vs specific locations, what is better ? -->
+	<DefaultAppDirs/>
+	<DefaultDirectoryDirs/>
+	<DefaultMergeDirs/>
+	<MergeFile>/opt/trinity/etc/xdg/menus/applications-merged/tde-essential.menu</MergeFile>
+
+<!-- for kmenuedit									-->
+<!--	<MergeFile>../../.configtde/menus/applications-kmenuedit.menu</MergeFile>		-->
+</Menu>

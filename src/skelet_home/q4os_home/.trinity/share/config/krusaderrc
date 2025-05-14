@@ -1,0 +1,372 @@
+First Time=false
+Version=1.90.0
+
+[Actions Toolbar]
+Hidden=true
+IconText=IconOnly
+Index=0
+NewLine=true
+Offset=1
+
+[Advanced]
+Confirm overwrites=true
+
+[Archives]
+Supported Packers=tar,gzip,unzip,cpio,dpkg
+lastUsedPacker=tar
+
+[ArkViewer]
+Height 1024=398
+Width 1280=558
+
+[Colors]
+Alternate Background=Background
+Alternate Marked Background=
+Background=0,0,95
+Current Background=24,178,178
+Current Foreground=0,0,0
+Dim Factor=75
+Dim Inactive Colors=false
+Dim Target Color=128,128,128
+Directory Foreground=
+Executable Foreground=
+Foreground=0,255,255
+Inactive Alternate Background=
+Inactive Alternate Marked Background=
+Inactive Background=
+Inactive Current Background=
+Inactive Current Foreground=
+Inactive Directory Foreground=Inactive Foreground
+Inactive Executable Foreground=
+Inactive Foreground=
+Inactive Invalid Symlink Foreground=
+Inactive Marked Background=
+Inactive Marked Current Foreground=
+Inactive Marked Foreground=
+Inactive Symlink Foreground=Inactive Foreground
+Invalid Symlink Foreground=255,84,84
+KDE Default=false
+Marked Background=0,128,128
+Marked Current Foreground=Marked Foreground
+Marked Foreground=0,255,0
+Show Current Item Always=false
+Symlink Foreground=
+Synchronizer Delete Background=
+Synchronizer Delete Foreground=
+Synchronizer Differs Background=
+Synchronizer Differs Foreground=
+Synchronizer Equals Background=
+Synchronizer Equals Foreground=
+Synchronizer LeftCopy Background=
+Synchronizer LeftCopy Foreground=
+Synchronizer RightCopy Background=
+Synchronizer RightCopy Foreground=
+
+[Custom Selection Mode]
+Left Preserves=true
+Left Selects=false
+QT Selection=false
+Right Preserves=true
+Right Selects=false
+Space Calc Space=false
+Space Moves Down=false
+
+[Dependencies]
+arj=/usr/bin/arj
+bzip2=/bin/bzip2
+cfv=/usr/bin/cfv
+checksum utility=/usr/bin/md5sum
+cpio=/bin/cpio
+df=/bin/df
+diff utility=/usr/bin/kdiff3
+dpkg=/usr/bin/dpkg
+eject=/usr/bin/eject
+gzip=/bin/gzip
+kdesu=/opt/trinity/bin/kdesu
+kdiff3=/usr/bin/kdiff3
+kget=/usr/bin/kget
+kio_media_mounthelper=/usr/bin/kio_media_mounthelper
+kmail=/usr/bin/kmail
+krename=/opt/trinity/bin/krename
+krusader=/opt/trinity/bin/krusader
+locate=/usr/bin/locate
+md5sum=/usr/bin/md5sum
+mount=/bin/mount
+rpm=/usr/bin/rpm
+sha1sum=/usr/bin/sha1sum
+sha224sum=/usr/bin/sha224sum
+sha256sum=/usr/bin/sha256sum
+sha384sum=/usr/bin/sha384sum
+sha512sum=/usr/bin/sha512sum
+tar=/bin/tar
+umount=/bin/umount
+unace=/usr/bin/unace
+unrar=/usr/bin/unrar
+unzip=/usr/bin/unzip
+updatedb=/usr/bin/updatedb
+zip=/usr/bin/zip
+
+[DiskUsage]
+D Date Width=110
+D Group Width=55
+D Name Width=220
+D Own Size Width=110
+D Owner Width=55
+D Percent Width=55
+D Permissions Width=66
+D Total Size Width=110
+D Type Width=110
+L Line Width=738
+L Name Width=368
+L Percent Width=66
+L Show File Size=true
+View=0
+Window Height=466
+Window Maximized=false
+Window Width=1213
+
+[DistributionListViewColumns]
+ColumnOrder=0,1,2
+ColumnWidths=46,40,575
+SortAscending=true
+SortColumn=0
+
+[General]
+Move To Trash=false
+
+[HTML Settings]
+AutomaticDetectionLanguage=0
+
+[KFileDialog Settings]
+Automatic Preview=true
+Autoplay sounds=true
+
+[KPrinter Settings]
+ApplicationOptions=
+DialogReduced=false
+DocDirectory[$e]=$HOME
+FilterEnabled=false
+PrintCommand[$e]=
+Printer=SCX4720
+
+[Kate Document Defaults]
+Allow End of Line Detection=true
+Backup Config Flags=0
+Backup Prefix=
+Backup Suffix=~
+Basic Config Flags=547913760
+Encoding=
+End of Line=0
+Indentation Mode=0
+Indentation Width=2
+KTextEditor Plugin ktexteditor_docwordcompletion=false
+KTextEditor Plugin ktexteditor_insertfile=false
+KTextEditor Plugin ktexteditor_isearch=false
+KTextEditor Plugin ktexteditor_kdatatool=false
+KTextEditor Plugin ktexteditor_kttsd=false
+Maximal Loaded Blocks=16
+PageUp/PageDown Moves Cursor=false
+Search Dir Config Depth=3
+Tab Width=8
+Undo Steps=0
+Word Wrap=false
+Word Wrap Column=80
+
+[Kate Renderer Defaults]
+Schema=krusader - Normal
+Show Indentation Lines=false
+Word Wrap Marker=false
+
+[Kate View Defaults]
+Auto Center Lines=0
+Bookmark Menu Sorting=0
+Command Line=false
+Default Mark Type=1
+Dynamic Word Wrap=false
+Dynamic Word Wrap Align Indent=80
+Dynamic Word Wrap Indicators=1
+Folding Bar=true
+Icon Bar=false
+Line Numbers=false
+Persistent Selection=false
+Scroll Bar Marks=false
+Search Config Flags=2
+Text To Search Mode=2
+
+[KrDetailedViewLeft]
+ColumnOrder=0,1,2
+ColumnWidths=212,102,143
+Ext Column=false
+KrPerm Column=false
+SortAscending=true
+SortColumn=0
+
+[KrDetailedViewRight]
+ColumnOrder=0,1,2
+ColumnWidths=203,100,152
+Ext Column=false
+KrPerm Column=false
+SortAscending=true
+SortColumn=0
+
+[KrViewerWindow]
+Height 600=520
+Height 768=600
+Height 800=600
+Height 864=600
+Height 1024=600
+Width 800=720
+Width 1024=800
+Width 1152=800
+Width 1280=800
+
+[KrViewerWindow Toolbar addresseeToolBar]
+IconText=IconOnly
+Index=1
+
+[KrViewerWindow Toolbar controlsToolBar]
+IconText=IconOnly
+Index=0
+
+[KrViewerWindow Toolbar extraToolBar]
+IconText=IconOnly
+Index=0
+
+[KrViewerWindow Toolbar filter_toolbar]
+IconText=IconOnly
+Index=3
+
+[KrViewerWindow Toolbar korganizer_toolbar]
+IconText=IconOnly
+Index=1
+
+[KrViewerWindow Toolbar ksvgToolBar]
+IconText=IconOnly
+Index=0
+
+[KrViewerWindow Toolbar layoutToolBar]
+IconText=IconOnly
+Index=0
+
+[KrViewerWindow Toolbar locationToolBar]
+IconText=IconOnly
+Index=2
+
+[KrViewerWindow Toolbar positionToolBar]
+IconText=IconOnly
+Index=2
+
+[KrViewerWindow Toolbar schedule_toolbar]
+IconText=IconOnly
+Index=2
+
+[KrViewerWindow Toolbar snapshotToolBar]
+IconText=IconOnly
+Index=0
+
+[KrViewerWindow Toolbar toolsToolBar]
+IconText=IconOnly
+Index=2
+
+[KrViewerWindow Toolbar volumeToolBar]
+IconText=IconOnly
+Index=1
+
+[Look&Feel]
+Filelist Font=Liberation Sans,10,-1,5,75,0,0,0,0,0
+Filelist Icon Size=19
+Fullscreen Terminal Emulator=false
+Home Button Visible=true
+Human Readable Size=false
+Mouse Selection=3
+Single Click Selects=0
+Single Instance Mode=false
+
+[Private]
+Compare Mode=4
+Height 1024=1025
+Hidden=true
+Index=1
+Left PanelPopup Splitter Sizes=100,100
+Maximized=false
+Panel Size=585
+Predefined Selections=
+Right PanelPopup Splitter Sizes=100,100
+Splitter Sizes=461,459
+Start Position=27,27
+Start Size=926,628
+Terminal Emulator Splitter Sizes=573,345
+Terminal Size=1
+Width 1280=1281
+cmdline history=
+
+[Protocols]
+Handled Protocols=iso,krarc,tar
+Mimes For iso=application/x-iso
+Mimes For krarc=application/x-ace,application/x-arj,application/x-bzip2,application/x-cpio,application/x-deb,application/x-debian-package,application/x-gzip,application/x-jar,application/x-lha,application/x-rar,application/x-rar-compressed,application/x-rpm,application/x-zip,application/x-zip-compressed,application/x-7z
+Mimes For tar=application/x-tar,application/x-tarz,application/x-tbz,application/x-tgz
+
+[Search]
+Date Width=90
+Feed To Listbox Counter=23
+Name Width=163
+Path Width=625
+Perm Width=46
+Size Width=48
+
+[Startup]
+Left Active Tab=0
+Left Panel Popup=0
+Left Side Is Active=false
+Left Tab Bar[$e]=$HOME
+Left Tab Bar Props=0
+Left Tab Bar Types=Detailed
+Remember Position=false
+Right Active Tab=1
+Right Panel Popup=0
+Right Tab Bar[$e]=$HOME
+Right Tab Bar Props=0,0
+Right Tab Bar Types=Detailed,Detailed
+Show Cmd Line=false
+Show FN Keys=false
+Show Terminal Emulator=false
+Show status bar=true
+Show tool bar=false
+Start To Tray=false
+UI Save Settings=false
+Vertical Mode=false
+
+[Synchronize]
+Asymmetric=false
+Compare By Content=true
+Confirm overwrites=false
+Deletable Button=true
+Differents Button=true
+Duplicates Button=true
+Equals Button=false
+Feed To Listbox Counter=3
+File Filter=*,*.c *.cpp *.h *.dfm *.pas,*.c *.cpp *.h *.dfm,*.c *.cpp *.h *.mk *.cfg,*.c *.cpp *.h,*.c *.cpp *.h *.mk,*.mk,*.c,*.cpp *.h,*cpp *.h,*.h,*.c *.h,*.cpp *.c *.h,*.cpp *.c,*.cpp *.h *.c,*.cpp,*cpp,*conf,"config",config,acinclude.m4,*m4
+Follow Symlinks=false
+Ignore Case=false
+Ignore Date=true
+Left Date Width=229
+Left Name Width=248
+Left Size Width=95
+LeftToRight Button=true
+Parallel Threads=1
+Recurse Subdirectories=true
+Right Date Width=182
+Right Name Width=340
+Right Size Width=106
+RightToLeft Button=true
+Scroll Results=false
+Singles Button=true
+Task Type Width=28
+Window Height=-1
+Window Maximized=true
+Window Width=-1
+
+[UserActions]
+Fixed Font=Terminus,11,-1,5,50,0,0,0,0,0
+Normal Font=Liberation Sans,10,-1,5,50,0,0,0,0,0
+Use Fixed Font=false

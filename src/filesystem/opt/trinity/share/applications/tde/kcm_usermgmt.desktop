@@ -1,0 +1,19 @@
+[Desktop Entry]
+Categories=Qt;TDE;X-TDE-settings-system;
+#Comment=
+#Exec=tdesudo kuser
+Exec=/opt/trinity/bin/kuser
+#GenericName=
+Icon=kuser
+#MimeType=
+Name=Users and groups
+#Path=
+StartupNotify=true
+#Terminal=true
+#TerminalOptions=
+Type=Application
+#X-DCOP-ServiceType=
+X-TDE-ParentApp=kcontrol
+X-TDE-SubstituteUID=true
+#X-TDE-Username=
+OnlyShowIn=TDE;

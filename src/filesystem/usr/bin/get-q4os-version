@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ ! -f "/etc/q4os_version" ] ; then
+  echo "Warning: Q4OS not detected !"
+  exit 20
+fi
+
+VERS1="$( dash /usr/share/apps/q4os_system/bin/print_package_version.sh "q4os-desktop" )"
+# todo: check result format to be xx.xx.xx-rx
+echo "$VERS1"
+
+VERS2="$( cat /etc/q4os_version )"
+if [ ! "$VERS1" = "$VERS2" ] ; then
+  #echo "$VERS2"
+  echo "Warning: Version mismatch !"
+  exit 10
+fi

@@ -1,0 +1,112 @@
+# *** This file is composed from localechooser-2.53 - "languagelist" file
+# *** and tde i18n codes - "Packages" file
+# *** format: language;inst_locale;;;;keyboard_code;note;tde_i18n_code
+
+# *** tde code differs from first two letters of locale code ***
+English American;en_US.UTF-8;;;;us;DIFF;
+English British;en_GB.UTF-8;;;;gb;DIFF;engb
+Chinese (Simplified);zh_CN.UTF-8;;;;cn;DIFF;zhcn
+Chinese (Traditional);zh_TW.UTF-8;;;;tw;DIFF;zhtw
+Portuguese Brazil;pt_BR.UTF-8;;;;br;DIFF;ptbr
+
+# *** pass first two letters of locale code ***
+Arabic;ar_EG.UTF-8;;;;ara;PASS;ar
+Basque;eu_ES.UTF-8;;;;es;PASS;eu
+Belarusian;be_BY.UTF-8;;;;by;PASS;be
+Bosnian;bs_BA.UTF-8;;;;ba;PASS;bs
+Bulgarian;bg_BG.UTF-8;;;;bg;PASS;bg
+Catalan;ca_ES.UTF-8;;;;ad;PASS;ca
+Croatian;hr_HR.UTF-8;;;;hr;PASS;hr
+Czech;cs_CZ.UTF-8;;;;cz;PASS;cs
+Danish;da_DK.UTF-8;;;;dk;PASS;da
+Dutch;nl_NL.UTF-8;;;;nl;PASS;nl
+Esperanto;eo.UTF-8;;;;epo;PASS;eo
+Estonian;et_EE.UTF-8;;;;ee;PASS;et
+Finnish;fi_FI.UTF-8;;;;fi;PASS;fi
+French;fr_FR.UTF-8;;;;fr;PASS;fr
+Galician;gl_ES.UTF-8;;;;;PASS;gl
+German;de_DE.UTF-8;;;;de;PASS;de
+Greek;el_GR.UTF-8;;;;gr;PASS;el
+Hebrew;he_IL.UTF-8;;;;il;PASS;he
+Hindi;hi_IN;;;;;PASS;hi
+Hungarian;hu_HU.UTF-8;;;;hu;PASS;hu
+Icelandic;is_IS.UTF-8;;;;is;PASS;is
+Irish;ga_IE.UTF-8;;;;ie;PASS;ga
+Italian;it_IT.UTF-8;;;;it;PASS;it
+Japanese;ja_JP.UTF-8;;;;jp;PASS;ja
+Kazakh;kk_KZ.UTF-8;;;;kz;PASS;kk
+Khmer;km_KH;;;;kh;PASS;km
+Korean;ko_KR.UTF-8;;;;kr;PASS;ko
+Latvian;lv_LV.UTF-8;;;;lv;PASS;lv
+Lithuanian;lt_LT.UTF-8;;;;lt;PASS;lt
+Macedonian;mk_MK.UTF-8;;;;mk;PASS;mk
+Northern Sami;se_NO;;;;;PASS;se
+Norwegian Bokmaal;nb_NO.UTF-8;;;;no;PASS;nb
+Norwegian Nynorsk;nn_NO.UTF-8;;;;no;PASS;nn
+Polish;pl_PL.UTF-8;;;;pl;PASS;pl
+Portuguese;pt_PT.UTF-8;;;;pt;PASS;pt
+Punjabi (Gurmukhi);pa_IN;;;;;PASS;pa
+Romanian;ro_RO.UTF-8;;;;ro;PASS;ro
+Russian;ru_RU.UTF-8;;;;ru;PASS;ru
+Serbian (Cyrillic);sr_RS;;;;rs;PASS;sr
+Slovak;sk_SK.UTF-8;;;;sk;PASS;sk
+Slovenian;sl_SI.UTF-8;;;;si;PASS;sl
+Spanish;es_ES.UTF-8;;;;es;PASS;es
+Swedish;sv_SE.UTF-8;;;;se;PASS;sv
+Tamil;ta_IN;;;;;PASS;ta
+Telugu;te_IN;;;;;PASS;te
+Thai;th_TH.UTF-8;;;;th;PASS;th
+Turkish;tr_TR.UTF-8;;;;tr;PASS;tr
+Ukrainian;uk_UA.UTF-8;;;;ua;PASS;uk
+Vietnamese;vi_VN;;;;vn;PASS;vi
+Welsh;cy_GB.UTF-8;;;;;PASS;cy
+
+# *** disabled debian locale ***
+Breton;br_FR.UTF-8;;;;;DISL;br
+Serbian (Latin);sr_RS@latin;;;;;DISL;srlatin
+
+# *** no debian locale ***
+Afrikaans;;;;;;NOLC;af
+Azerbaijani;;;;;az;NOLC;az
+Bengali;;;;;bd;NOLC;bn
+Uzbek (Cyrillic);;;;;uz;NOLC;uzcyrillic
+Farsi;;;;;;NOLC;fa
+Frisian;;;;;;NOLC;fy
+Kashubian;;;;;;NOLC;csb
+Kinyarwanda;;;;;;NOLC;rw
+Low Saxon;;;;;;NOLC;nds
+Malay;;;;;;NOLC;ms
+Mongolian;;;;;mn;NOLC;mn
+Swati;;;;;;NOLC;ss
+Tajik;;;;;tj;NOLC;tg
+Uzbek;;;;;uz;NOLC;uz
+Walloon;;;;;;NOLC;wa
+
+# *** no tde file ***
+# C;C;;;;;NOTD;
+# Albanian;sq_AL.UTF-8;;;;al;NOTD;
+# Amharic;am_ET;;;;et;NOTD;
+# Asturian;ast_ES.UTF-8;;;;;NOTD;
+# Bangla;bn_BD;;;;;NOTD;
+# Burmese;my_MM;;;;mm;NOTD;
+# Dzongkha;dz_BT;;;;bt;NOTD;
+# Georgian;ka_GE.UTF-8;;;;ge;NOTD;
+# Gujarati;gu_IN;;;;;NOTD;
+# Indonesian;id_ID.UTF-8;;;;;NOTD;
+# Kannada;kn_IN;;;;;NOTD;
+# Kurdish;ku_TR.UTF-8;;;;;NOTD;
+# Lao;lo_LA;;;;la;NOTD;
+# Malayalam;ml_IN;;;;;NOTD;
+# Marathi;mr_IN;;;;;NOTD;
+# Nepali;ne_NP;;;;np;NOTD;
+# Persian;fa_IR;;;;ir;NOTD;
+# Sinhala;si_LK;;;;lk;NOTD;
+# Tagalog;tl_PH.UTF-8;;;;;NOTD;
+# Tibetan;bo_IN;;;;;NOTD;
+# Uyghur;ug_CN;;;;;NOTD;
+
+# *** q4os special section ***
+# ? todo ?: add combined locales. ie: ru_UA
+# Russian Ukrainian;ru_UA.UTF-8;;;;ua;XXXX;ru
+# English Canadian;en_CA.UTF-8;;;;us;XXXX;
+# etc ...

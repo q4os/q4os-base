@@ -1,0 +1,103 @@
+#!/bin/sh
+
+. gettext.sh
+export TEXTDOMAIN="q4os-base"
+
+. /usr/share/apps/q4os_system/bin/qrepo_functions.sh
+
+RPTOAD="$1" #repository to add
+SRCLOC="/usr/share/apps/q4os_system/q4p_repos"
+
+export QAPTDISTR="$( dash /usr/share/apps/q4os_system/bin/print_qaptdistr.sh )"
+
+#create list of availabe repositories
+TMPFL2="/tmp/.reposavailqrpd.$( id -u ).log.tmp"
+( ls --format=single-column /usr/share/apps/q4os_system/q4p_repos/ | grep ".$QAPTDISTR.q4p$" | awk -F '.' '{ print $1 }' ) > $TMPFL2
+#( for RP_FILE in /usr/share/apps/q4os_system/q4p_repos/*.$QAPTDISTR.q4p ; do echo $RP_FILE |  awk -F'/' '{ print $7 }' |  awk -F'.' '{ print $1 }' ; done ) > $TMPFL2
+
+if [ -z "$1" ] ; then
+  echo " Repositories available:"
+  cat "$TMPFL2"
+  rm -f $TMPFL2
+  exit 200
+fi
+
+if [ "$( id -u )" != "0" ] ; then
+ echo "only root can do it, exiting ..."
+ exit 100
+fi
+
+if [ "$1" = "--gui" ] ; then
+  echo "building cache, wait a moment please ..."
+  ( tdebuildsycoca 2>&1 ) > /dev/null #to workaround some glitches
+  /opt/trinity/bin/kdialog --dontagain "q4osrc:ShowQRepoAddNote" --title "$(eval_gettext "External repositories")" --caption "" --icon "message" --msgbox "<p>$(eval_gettext "You are going to add an external repository. This is intended specifically for power users familiar to Debian package management system.")</p><p>$(eval_gettext "Keep in mind, adding external third party repositories is low level system action, and it could deeply influence package database integrity and dependencies. Fortunately, APT package management system contains strong tools for administrators to fix broken dependencies, so you should be always able to revert into a clean state.")</p><p><b>$(eval_gettext "Please use this tool only if you exactly understand what you are doing.")</b></p></p>$(eval_gettext "Click \"Ok\" button to run the tool.")</p>"
+  RPTOAD="$( /opt/trinity/bin/kdialog --icon "message" --title "$(eval_gettext "External repositories to add")" --caption "" --combobox "$(eval_gettext "Select a repository:")" $( cat $TMPFL2 ) )"
+  if [ "$?" != "0" ] ; then
+    rm -f $TMPFL2
+    echo "canceled, exiting .."
+    exit 500
+  fi
+fi
+rm -f $TMPFL2
+
+SRCFILE="$SRCLOC/$RPTOAD.$QAPTDISTR.q4p"
+if [ ! -f "$SRCFILE" ] ; then
+  SRCFILE="$RPTOAD"
+  if [ ! -f "$SRCFILE" ] ; then
+    echo "File $SRCFILE doesn't exist, exiting ..."
+    exit 300
+  fi
+fi
+
+DDTT="$(date +%Y%m%d%H%M%S)"
+OUT_FILE="$( mktemp --dry-run --tmpdir="/etc/apt/sources.list.d" --suffix=".list" q4p-$(basename $RPTOAD)-$DDTT-XXX )"
+
+check_apt_busy.sh > /dev/null
+if [ $? != "0" ] ; then
+  echo "Package system is busy, cannot add repository now. Repeat later."
+  exit 400
+fi
+
+print_current_repositories_with_normalized_lines > /tmp/normalized_repo.tmp
+
+# todo: ensure if $SRCFILE ended with newline character !
+while read FLINE; do
+  ARG1="$( normalize_repo_line "$FLINE" )"
+  if [ "$?" = "0" ] ; then
+    check_if_line_is_in_repo "$ARG1"
+    if [ "$?" = "0" ] ; then
+      echo "Exist, not added: $ARG1"
+    else
+      # add repo
+      echo "$ARG1" >> "$OUT_FILE"
+      echo "Added repository: $ARG1"
+    fi
+  fi
+done < "$SRCFILE"
+
+if [ ! -f "$OUT_FILE" ] ; then
+  echo "No repository has been added, as all exist yet."
+  exit 1
+fi
+
+if false ; then
+  #remove this section later, as keyring has moved from apt-key to gpg
+  KEYFILE_IN="$( cat $SRCFILE | grep '^#pubkey: ' | head -1 | awk -F ' ' '{ print $2 }' )"
+  if [ -f "$KEYFILE_IN" ] ; then
+    echo -n "Updating APT keyring - $KEYFILE_IN - "
+    # APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE="1" apt-key add $KEYFILE_IN
+    KEYFILE_NAME1="$( echo $KEYFILE_IN | awk -F '/' '{ print $NF }' | awk -F '.pub' '{ print $1 }' )"
+    rm -f /etc/apt/trusted.gpg.d/${KEYFILE_NAME1}-kra.gpg
+    gpg --yes --dearmor -o /etc/apt/trusted.gpg.d/${KEYFILE_NAME1}-kra.gpg $KEYFILE_IN
+    echo "Keyring file: $KEYFILE_IN"
+  fi
+fi
+
+echo "#!q4p: repo_name: $RPTOAD\n#!q4p: date_adde: $DDTT\n$(cat $OUT_FILE)" > $OUT_FILE
+echo "Repository file: $OUT_FILE"
+
+if [ "$2" = "--temp" ] ; then
+  #move .list into /tmp and create link to
+  mv "$OUT_FILE" "/tmp/"
+  ln -s "/tmp/$( basename "$OUT_FILE" )" "$OUT_FILE"
+fi

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#script returns "0", if $1 mountpoint is crypted
+
+# if [ "$( id -u )" != "0" ] ; then
+#   echo "only root can run this script, exiting .."
+#  echo "[E:] Only root can run, exiting ..."
+#   exit 20
+# fi
+
+if findmnt -n -l -o 'SOURCE' -M "$1" | grep '/dev/mapper/' | grep -q 'vg-root' ; then
+  echo "dm-crypt"
+  FCRYPT1="1"
+fi
+if findmnt -n -l -o 'SOURCE' -M "$1" | grep -q '/dev/mapper/luks-' ; then
+  echo "luks"
+  FCRYPT1="1"
+fi
+
+if [ "$FCRYPT1" = "1" ] ; then
+  echo "[Yes] assuming rootfs is crypted"
+  exit 0
+else
+  echo "[No] assuming rootfs is not crypted"
+  exit 10
+fi

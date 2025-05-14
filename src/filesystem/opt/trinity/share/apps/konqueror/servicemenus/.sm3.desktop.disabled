@@ -1,0 +1,12 @@
+[Desktop Entry]
+X-TDE-ServiceTypes=application/x-q4os-execscript
+#ServiceTypes=application/x-shellscript
+Actions=x-q4os-execscript-1
+#X-TDE-AuthorizeAction=shell_access
+X-TDE-Priority=TopLevel
+# X-TDE-MediaNotifierHide=true
+
+[Desktop Action x-q4os-execscript-1]
+Name=Run
+Icon=konsole
+Exec[$e]=dash $0

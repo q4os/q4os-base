@@ -1,0 +1,4 @@
+#dr web antivirus, drweb.com
+deb [signed-by=/usr/share/keyrings/q4a-drweb.gpg] http://repo.drweb.com/drweb/debian 11.0 non-free
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-drweb.pub

@@ -1,0 +1,10 @@
+if [ "$QDSK_SESSION" = "trinity" ] ; then
+  #workaround: necessary to invoke trinity save-as dialog properly
+  export KDE_FULL_SESSION=true
+  unset KDE_SESSION_VERSION
+
+  # for chromium to find kfmclient binary
+  if [ -z "$( echo $PATH | grep "/opt/trinity/bin" )" ] ; then
+    PATH=/opt/trinity/bin:$PATH
+  fi
+fi

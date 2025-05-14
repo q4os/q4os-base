@@ -1,0 +1,69 @@
+#!/bin/sh
+
+mkdir -p /tmp/reportq4/files
+
+echo "get_q4os_version.sh : $( get_q4os_version.sh )" >> /tmp/reportq4/files/rep01.txt
+echo "uname -a : $( uname -a )" >> /tmp/reportq4/files/rep01.txt
+echo "dpkg --print-architecture : $( dpkg --print-architecture )" >> /tmp/reportq4/files/rep01.txt
+echo "q4hw-info --memtotal : $( q4hw-info --memtotal )" >> /tmp/reportq4/files/rep01.txt
+echo "LANG : $LANG" >> /tmp/reportq4/files/rep01.txt
+echo "env:" >> /tmp/reportq4/files/rep02.txt
+env >> /tmp/reportq4/files/rep02.txt
+echo "lspci:" >> /tmp/reportq4/files/rep03.txt
+lspci >> /tmp/reportq4/files/rep03.txt
+echo "dmesg:" >> /tmp/reportq4/files/rep04.txt
+dmesg >> /tmp/reportq4/files/rep04.txt
+echo "lsmod:" >> /tmp/reportq4/files/rep05.txt
+lsmod >> /tmp/reportq4/files/rep05.txt
+echo "lsusb:" >> /tmp/reportq4/files/rep06.txt
+lsusb >> /tmp/reportq4/files/rep06.txt
+echo "dpkg --get-selections:" >> /tmp/reportq4/files/rep07.txt
+dpkg --get-selections >> /tmp/reportq4/files/rep07.txt
+echo "qrepolist:" >> /tmp/reportq4/files/rep08.txt
+qrepolist >> /tmp/reportq4/files/rep08.txt
+echo "cat /etc/q4os/q4base.conf:" >> /tmp/reportq4/files/rep09.txt
+cat /etc/q4os/q4base.conf >> /tmp/reportq4/files/rep09.txt
+echo "journalctl:" >> /tmp/reportq4/files/rep10.txt
+journalctl >> /tmp/reportq4/files/rep10.txt
+if [ -x "/usr/bin/raspinfo" ] ; then
+  echo "raspinfo:" > /tmp/reportq4/files/rep11.txt
+  ( LANG=C /usr/bin/raspinfo 2>&1 ) >> /tmp/reportq4/files/rep11.txt
+fi
+
+( cp /tmp/.dskprofiler* /tmp/reportq4/files/ 2>&1 ) > /dev/null
+
+if [ -d "$HOME/.local/share/q4os/log/" ] ; then
+  tar -u -P -f /tmp/reportq4/qreport.tar $HOME/.local/share/q4os/log/
+fi
+if [ -d "$HOME/.appsetup2/log/" ] ; then
+  tar -u -P -f /tmp/reportq4/qreport.tar $HOME/.appsetup2/log/
+fi
+if [ -f "$HOME/li.log" ] ; then
+  tar -u -P -f /tmp/reportq4/qreport.tar $HOME/li.log
+fi
+tar -u -P -f /tmp/reportq4/qreport.tar /tmp/reportq4/files
+tar -u -P -f /tmp/reportq4/qreport.tar /etc/default/locale
+if [ -d "/var/lib/q4os/log/" ] ; then
+  tar -u -P -f /tmp/reportq4/qreport.tar /var/lib/q4os/log
+fi
+if [ -f "/var/log/fstbootsrv.log" ] ; then
+  tar -u -P -f /tmp/reportq4/qreport.tar /var/log/fstbootsrv.log
+fi
+if [ -d "/var/log/live_inst/" ] ; then
+  tar -u -P -f /tmp/reportq4/qreport.tar /var/log/live_inst
+fi
+if [ -f "/var/log/installer/syslog" ] ; then
+  tar -u -P -f /tmp/reportq4/qreport.tar /var/log/installer/syslog
+fi
+if [ -f "/var/log/live/config.log" ] ; then
+  tar -u -P -f /tmp/reportq4/qreport.tar /var/log/live/config.log
+fi
+if [ -f "/var/log/Xorg.0.log" ] ; then
+  tar -u -P -f /tmp/reportq4/qreport.tar /var/log/Xorg.0.log
+fi
+
+gzip /tmp/reportq4/qreport.tar
+mv /tmp/reportq4/qreport.tar.gz "$( xdg-user-dir DOCUMENTS )"/
+rm -rf /tmp/reportq4
+
+echo "Report is saved in file: \""$( xdg-user-dir DOCUMENTS )"/qreport.tar.gz\""

@@ -1,0 +1,2 @@
+#Firefox for Debian
+deb [ arch=amd64,i386 ] http://q4os.org/qextrepo bookworm-firefox-cn main

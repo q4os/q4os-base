@@ -1,0 +1,59 @@
+#!/bin/sh
+set -e
+
+set +e
+SSTAMPF1="/var/lib/dpkg/.q4os-base_install_aptstmp.stamp" #stamp file to mark type of installation for postinst script
+rm -f $SSTAMPF1
+set -e
+
+case "$1" in
+    install)
+      set +e
+      touch "$SSTAMPF1"
+
+      # echo "Diverting TDE files ..."
+      # dpkg-divert --divert /opt/trinity/share/services/.rar.protocol.tde --rename /opt/trinity/share/services/rar.protocol
+      # dpkg-divert --divert /opt/trinity/share/services/.zip.protocol.tde --rename /opt/trinity/share/services/zip.protocol
+      # dpkg-divert --divert /opt/trinity/bin/kpersonalizer.tde2 --rename /opt/trinity/bin/kpersonalizer
+      # dpkg-divert --divert /opt/trinity/bin/kcontrol.tde2 --rename /opt/trinity/bin/kcontrol
+      # dpkg-divert --divert /opt/trinity/bin/kmenuedit.tde2 --rename /opt/trinity/bin/kmenuedit
+      # dpkg-divert --divert /opt/trinity/share/apps/ksplash/Themes/TDE-Classic/splash_bottom.png.tde2 --rename /opt/trinity/share/apps/ksplash/Themes/TDE-Classic/splash_bottom.png
+      # dpkg-divert --divert /opt/trinity/share/apps/ksplash/Themes/TDE-Classic/splash_top.png.tde2 --rename /opt/trinity/share/apps/ksplash/Themes/TDE-Classic/splash_top.png
+      # dpkg-divert --divert /opt/trinity/share/applications/tde/.kamera.desktop.diverted --rename /opt/trinity/share/applications/tde/kamera.desktop #removing unreliable app from menu
+      # dpkg-divert --divert /opt/trinity/share/applications/tde/.k3b.desktop.diverted --rename /opt/trinity/share/applications/tde/k3b.desktop #removing unreliable app from menu
+      # dpkg-divert --divert /usr/share/applications/.panel-desktop-handler.desktop.diverted --rename /usr/share/applications/panel-desktop-handler.desktop #fixing tde control panel bug, if 'xfce4-panel' installed
+      # dpkg-divert --divert /opt/trinity/bin/kfile.tde2 --rename /opt/trinity/bin/kfile #q4os-base adds 'kfile' for xdg-mime compatibility, diversion is made for sure, if some package would want to install this file too
+
+#       echo "Diverting icons ..."
+#       #diverting for sure, if some of the next of tde versions would include these icons. remove these q4os icons from q4os-base in such case
+#       #think about: place these icons into some tde specific dir, for ex. /opt/trinity/local/share/..., need to set XDG_DATA_DIRS variable in such case, and remove icons diversions from here
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/16x16/apps/.multimedia-volume-control.png.q4diverted --rename /opt/trinity/share/icons/hicolor/16x16/apps/multimedia-volume-control.png
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/22x22/apps/.multimedia-volume-control.png.q4diverted --rename /opt/trinity/share/icons/hicolor/22x22/apps/multimedia-volume-control.png
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/24x24/apps/.multimedia-volume-control.png.q4diverted --rename /opt/trinity/share/icons/hicolor/24x24/apps/multimedia-volume-control.png
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/32x32/apps/.multimedia-volume-control.png.q4diverted --rename /opt/trinity/share/icons/hicolor/32x32/apps/multimedia-volume-control.png
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/48x48/apps/.multimedia-volume-control.png.q4diverted --rename /opt/trinity/share/icons/hicolor/48x48/apps/multimedia-volume-control.png
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/256x256/apps/.multimedia-volume-control.png.q4diverted --rename /opt/trinity/share/icons/hicolor/256x256/apps/multimedia-volume-control.png
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/16x16/apps/.preferences-system-network.png.q4diverted --rename /opt/trinity/share/icons/hicolor/16x16/apps/preferences-system-network.png
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/22x22/apps/.preferences-system-network.png.q4diverted --rename /opt/trinity/share/icons/hicolor/22x22/apps/preferences-system-network.png
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/24x24/apps/.preferences-system-network.png.q4diverted --rename /opt/trinity/share/icons/hicolor/24x24/apps/preferences-system-network.png
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/32x32/apps/.preferences-system-network.png.q4diverted --rename /opt/trinity/share/icons/hicolor/32x32/apps/preferences-system-network.png
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/48x48/apps/.preferences-system-network.png.q4diverted --rename /opt/trinity/share/icons/hicolor/48x48/apps/preferences-system-network.png
+#       dpkg-divert --divert /opt/trinity/share/icons/hicolor/256x256/apps/.preferences-system-network.png.q4diverted --rename /opt/trinity/share/icons/hicolor/256x256/apps/preferences-system-network.png
+      set -e
+    ;;
+
+    upgrade)
+    ;;
+
+    abort-upgrade)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 0
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

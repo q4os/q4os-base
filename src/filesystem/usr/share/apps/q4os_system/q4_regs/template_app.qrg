@@ -1,0 +1,17 @@
+[Global]
+application_name="q4os_example"
+application_version="1.0.0"
+application_web="www.q4os.org"
+comments="This is template of registered example application"
+description="Optional description"
+provider="Q4OS inc."
+support_email="q4os@q4os.org"
+support_phone=""
+support_other_contacts=""
+install_datetime="2012_04_01-14:37"
+last_update_datetime="2012_04_01-14:37"
+update_info="./update_qpl.exu"
+uninstall_info="./uninstall_qpl.exu"
+
+[AppScore]
+runs=

@@ -1,0 +1,9 @@
+[Desktop Entry]
+#defines mime type, the same as /usr/share/mime/packages/*.desktop
+Comment=Q4OS executable file
+Icon=application-x-executable
+MimeType=application/x-q4os-executable
+Patterns=*.exu
+Type=MimeType
+Hidden=false
+OnlyShowIn=TDE;

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+kdialog --caption "" --title "Alternative desktops installer" --icon "info" --msgbox "<p>This utitlity is obsolete. Please use <b>Desktop profiler</b> tool from Software centre to install additional desktop environments in Q4OS.</p>"
+exit
+
+# DESKTOPS_TO_OFFER="$( dash /usr/share/apps/q4os_system/bin/altde_util.sh "--list-desktops" )"
+# if [ -z "$DESKTOPS_TO_OFFER" ] ; then
+#   kdialog --caption "" --title "Alternative desktops installer" --icon "package" --msgbox "<p>This distribution is not supported to run desktops installer. Please install alternative desktops directly from repositories.</p>"
+#   exit 0
+# fi
+# 
+# RDVAL="$( kdialog --icon "package" --title "Alternative Desktops" --caption "" --combobox "<p>Q4OS supports alternative desktop environments to be installed alongside the default Q4OS desktop.</p><p>Select a desktop environment to install:<br><br></p>" $DESKTOPS_TO_OFFER )"
+# if [ "$?" != "0" ] ; then
+#   echo "Canceled, exiting ..."
+#   exit 1
+# fi
+# konsole --noclose --nomenubar --notabbar --schema "BlackOnWhite" --icon "message" --caption "" --title "$RDVAL desktop installation" --icon "package" -e dash /usr/share/apps/q4os_system/bin/altde_inst.sh "$RDVAL" &

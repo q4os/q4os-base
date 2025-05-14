@@ -1,0 +1,12 @@
+[3.3]
+libraryPath=/opt/trinity/lib/trinity/plugins/
+
+[3.5]
+libraryPath=/opt/trinity/lib/trinity/plugins/
+
+[General]
+enableXft=true
+useXft=true
+
+[KDE]
+kdeAddedLibraryPaths=/opt/trinity/lib/trinity/plugins/^e

@@ -1,0 +1,32 @@
+style "user-font"
+{
+  font_name="DejaVu Sans"
+}
+widget_class "*" style "user-font"
+
+gtk-theme-name="Q4OS02"
+# gtk-icon-theme-name="crystalsvg"
+# gtk-fallback-icon-theme="hicolor"
+gtk-font-name="DejaVu Sans 8"
+# gtk-cursor-theme-name="DMZ-White"
+# gtk-cursor-theme-size=0
+# gtk-toolbar-style=GTK_TOOLBAR_ICONS
+# gtk-toolbar-icon-size=GTK_ICON_SIZE_SMALL_TOOLBAR
+gtk-button-images=1
+gtk-menu-images=1
+# gtk-enable-event-sounds=1
+# gtk-enable-input-feedback-sounds=1
+# gtk-xft-antialias=1
+# gtk-xft-hinting=1
+# gtk-xft-hintstyle="hintslight"
+# gtk-xft-rgba="rgb"
+# gtk-xft-dpi="96"
+
+# include "/home/test02/.gtkrc-2.0.mine"
+
+# research: switch on gtk-qt-engine, it could be done per application yet
+# gtk-theme-name="Qt"
+# include "/usr/share/themes/Qt/gtk-2.0/gtkrc"
+
+# todo: added by env variable GTK2_RC_FILES yet, decide which inclusion is better
+# include "/home/<username>/.trinity/share/config/gtkrc-2.0"

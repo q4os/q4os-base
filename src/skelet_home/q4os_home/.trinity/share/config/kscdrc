@@ -1,0 +1,4 @@
+;remove this config later, as tde will autodetect audiocd device, see system:/media protocol
+[GENERAL]
+AudioSystem=arts
+CDDevice=/dev/cdrom

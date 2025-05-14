@@ -1,0 +1,81 @@
+#!/bin/sh
+
+echo ; echo
+echo "This script will help you to install VirtualBox guest additions from CD image."
+echo
+sudo -k
+sudo -p "Enter your password to continue: " echo
+if [ "$?" != "0" ] ; then
+  echo "[E] You are not allowed to run this script, contact system administrator."
+  exit 30
+fi
+
+if [ "$( q4hw-info --vboxguest )" != "VBoxGuest_Yes" ] ; then
+  echo "[E] I am not a VirtualBox guest, exiting .."
+  exit 31
+fi
+
+mkdir -p /tmp/.vboxguestcd
+sudo eject /dev/cdrom 2> /dev/null
+if [ ! -f "/tmp/.vboxguestcd/VBoxLinuxAdditions.run" ] ; then
+  echo
+  echo "Please proceed at Virtualbox host:"
+  echo "  Main menu > Devices > Insert Guest Additions CD Image"
+  echo
+  echo "Waiting for Virtualbox guest additions CD image ..."
+  while [ ! -f "/tmp/.vboxguestcd/VBoxLinuxAdditions.run" ] ; do
+    sudo mount /dev/cdrom /tmp/.vboxguestcd 2> /dev/null
+    sleep 0.2
+  done
+fi
+sudo cp /tmp/.vboxguestcd/VBoxLinuxAdditions.run /var/lib/q4os/
+echo "[I] Installation media ready."
+sudo eject /dev/cdrom 2> /dev/null
+
+echo "[I] Checking internet connection .."
+dash /usr/share/apps/q4os_system/bin/tst_dwnl.sh > /dev/null
+if [ $? != "0" ] ; then
+  echo "[E] No internet link, make a connection and try again."
+  exit 32
+fi
+
+echo "[I] Checking APT subsystem .."
+if ! check_apt_busy.sh > /dev/null ; then
+  echo "[E] Package system is busy now, repeat installation few minutes later."
+  exit 33
+fi
+
+echo
+read -p "Press ENTER to install required packages .." XYZ
+echo "[I] Updating packages database .."
+sudo apt-get -y update
+KERNEL_TP="$( dash /usr/share/apps/q4os_system/bin/uname_lxhdrs.sh )"
+if [ "$?" != "0" ] ; then
+  echo "[E] Linux headers couldn't be determined."
+  exit 34
+fi
+echo "[I] Installing required packages .."
+sudo apt-get -y install bzip2 console-setup make gcc perl linux-headers-$KERNEL_TP linux-image-$KERNEL_TP #virtualbox dependencies + ? linux-kbuild-4.19
+if [ "$?" != "0" ] ; then
+  echo "[E] Installation failed for some reason."
+  exit 35
+fi
+if [ "$(dpkg --get-selections | grep -v " deinstall" | grep "virtualbox-guest-")" ] ; then
+  echo "[I] Removing current Virtualbox additions packages .."
+  sudo apt-get -y --purge autoremove virtualbox-guest-*
+  if [ "$?" != "0" ] ; then
+    echo "[E] Installation failed for some reason."
+    exit 36
+  fi
+fi
+
+echo
+read -p "Press ENTER to build and install VirtualBox guest modules .." XYZ
+echo "[I] Building modules for active kernel .."
+sudo /var/lib/q4os/VBoxLinuxAdditions.run
+echo "[I] Building modules for additional kernels .."
+sudo /sbin/rcvboxadd quicksetup all
+sudo usermod -a -G vboxsf $(whoami)
+
+echo
+echo "[I] Installation completed. Please reboot your computer."

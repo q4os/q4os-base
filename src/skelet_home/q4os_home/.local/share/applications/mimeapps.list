@@ -1,0 +1,9 @@
+[Default Applications]
+#-determines the default application to open a xdg mimetype
+#-this file is not applicable in trinity as it reads profilerc
+application/vnd.debian.binary-package=appsetup2.exu.desktop;
+application/x-deb=appsetup2.exu.desktop;
+application/x-debian-package=appsetup2.exu.desktop;
+application/vnd.flatpak.ref=appsetup2.exu.desktop;
+application/x-q4os-installerqsi=appsetup2.exu.desktop;q4os-mt-installerqsi.desktop;
+application/x-q4os-execscript=appsetup2.exu.desktop;q4os-mt-q4osexecscript.desktop;

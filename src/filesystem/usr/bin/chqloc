@@ -1,0 +1,62 @@
+#!/bin/sh
+
+#----------------------------------------------------------------------------------------------
+# Functions
+#----------------------------------------------------------------------------------------------
+set_locale_fn ()
+{
+  local QALOCALE="$1"
+  echo "setting user locale: \"$QALOCALE\" ..."
+
+  cat > $HOME/.trinity/env/q4langset.sh <<EOF
+#!/bin/sh
+
+# per user locales
+export LANG="$QALOCALE"
+# export LANGUAGE="$QALOCALE"
+# unset LC_ALL
+EOF
+
+  sed -i "s/.utf8/.UTF-8/" $HOME/.trinity/env/q4langset.sh
+  echo " ..done, login again please."
+  return 0
+}
+
+#----------------------------------------------------------------------------------------------
+# Script start
+#----------------------------------------------------------------------------------------------
+if [ "$1" = "--list" ] ; then
+  locale -a | grep utf8
+  exit
+fi
+
+if [ "$1" = "--setlocale" ] ; then
+  if [ -z $2 ] ; then
+    echo "need locale parameter, exiting ..."
+    exit
+  fi
+  if [ ! "$2" = "$( locale -a | grep $2 )" ] ; then
+    echo "no action made, locale \"$2\" is not installed, please ask system administrator, exiting ..."
+    exit
+  fi
+  set_locale_fn $2
+  exit
+fi
+
+if [ "$1" = "--gui" ] ; then
+  RDVAL=$( /opt/trinity/bin/kdialog --icon "message" --title "Locale" --caption "select" --combobox "Select a locale:" $( locale -a | grep utf8 | sort ) )
+  if [ "$?" != "0" ] ; then
+    echo "canceled, exiting .."
+    return 1
+  fi
+  set_locale_fn $RDVAL
+  exit
+fi
+
+echo
+echo "available parameters:"
+echo "--help"
+echo "--list"
+echo "--setlocale <locale.utf-8>"
+echo "--gui"
+echo

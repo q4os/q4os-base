@@ -1,0 +1,10 @@
+[Desktop Entry]
+X-TDE-ServiceTypes=media/builtin-mycomputer
+Actions=konsolerun;
+X-TDE-Priority=TopLevel
+X-TDE-MediaNotifierHide=true
+
+[Desktop Action konsolerun]
+Name=Open Terminal
+Icon=konsole
+Exec=konsole

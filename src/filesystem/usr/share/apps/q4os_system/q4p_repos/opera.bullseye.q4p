@@ -1,0 +1,13 @@
+## Add this line for Opera browser
+## use "stable" instead of distribution name
+deb [signed-by=/usr/share/keyrings/q4a-opera.gpg] http://deb.opera.com/opera-stable/ stable non-free
+
+## Now, we are going to trust Opera :
+#wget -O - http://deb.opera.com/archive.key
+
+## re-update (to acknowledge the key)
+#aptitude update
+## then install
+#aptitude install opera
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-opera.pub

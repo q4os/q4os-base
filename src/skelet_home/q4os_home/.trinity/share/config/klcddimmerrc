@@ -1,0 +1,5 @@
+[general]
+GetArgument=-get
+MaxValue=100
+Program=xbacklight
+SetArgument=-set

@@ -1,0 +1,53 @@
+#!/bin/sh
+
+#script to add new language into q4os:
+#- offer languages to setup
+#- setup global locale
+#- download and install tde language pack
+
+. gettext.sh
+export TEXTDOMAIN="q4os-base"
+
+DQIC="dash /usr/share/apps/q4os_system/bin/dowqi18.sh"
+WKDIR="$( $DQIC --print-tmpdir | grep "^Temporary working dir: " | awk -F': ' '{ print $2 }' )"
+cd $WKDIR
+
+sudo -k ; sudo -p "Enter your password: " echo > /dev/null #validate sudo password
+if [ $? != "0" ] ; then
+  echo "Bad sudo password, exiting ..."
+  exit 1
+fi
+rm -f *.deb
+
+WKVAR01="$( $DQIC --select-lang )"
+if [ "$?" != "0" ] ; then
+  echo "Canceled, exiting ..."
+  exit 1
+fi
+LANC="$( echo $WKVAR01 | awk -F';' '{ print $1 }' )"
+LOCC="$( echo $WKVAR01 | awk -F';' '{ print $2 }' )"
+TDEC="$( echo $WKVAR01 | awk -F';' '{ print $3 }' )"
+echo "Locale selected: \"$LOCC\""
+sudo dash /usr/share/apps/q4os_system/bin/generate_locale.sh "$LOCC"
+
+if [ -z "$TDEC" ] ; then
+  echo "Finished." #tde langpack not available
+  exit 0
+fi
+
+$DQIC --aptupdate
+if [ "$?" != "0" ] ; then
+  echo "Unable to update APT. Exiting ..."
+  /opt/trinity/bin/kdialog --icon "message" --caption "$(eval_gettext "Language pack")" --sorry "<p>$(eval_gettext "Unable to update, check Internet connection please.")</p>" &
+  exit 1
+fi
+
+$DQIC --install2 "$TDEC" "$LOCC"
+if [ "$?" != "0" ] ; then
+  echo "Installation has not completed, package system is busy. Try it few minutes later please. Exiting ..."
+  /opt/trinity/bin/kdialog --icon "message" --caption "$(eval_gettext "Language pack")" --sorry "<p>$(eval_gettext "Installation has not completed, package system is busy. Try it few minutes later please.")</p>" &
+  exit 1
+fi
+
+echo "Language \"$LANC\" has been added to system."
+/opt/trinity/bin/kdialog --icon "message" --title "$(eval_gettext "Language")" --caption "setup" --msgbox "<p>$(eval_gettext "Language <b>\${LANC}</b> has been added to system.")</p>" &

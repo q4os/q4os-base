@@ -1,0 +1,23 @@
+[Unit]
+Description=Q4OS on boot service
+# Documentation=man:q4os-on-boot
+Before=multi-user.target
+Before=getty@tty1.service
+# Before=getty.target
+Before=systemd-logind.service
+Before=sddm.service
+Before=tdm.service
+After=local-fs.target
+After=q4os_first_boot.service
+ConditionPathExists=/var/lib/q4os/service_onboot_enable.stp
+# ConditionKernelCommandLine=boot=live
+# ConditionFirstBoot=yes
+# DefaultDependencies=no
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/dash /usr/share/apps/q4os_system/bin/on_boot.sh
+
+[Install]
+WantedBy=multi-user.target

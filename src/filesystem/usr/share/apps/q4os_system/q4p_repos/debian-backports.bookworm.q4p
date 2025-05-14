@@ -1,0 +1,4 @@
+# Debian backports
+
+deb http://ftp.debian.org/debian/ bookworm-backports main contrib non-free
+#deb-src http://ftp.debian.org/debian/ bookworm-backports main contrib non-free

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+#rm -f $HOME/.trinity/share/config/kmixctrlrc $HOME/.trinity/share/config/kmixrc
+
+kmixctrl -s
+GROUP_MASTER="$( cat $HOME/.trinity/share/config/kmixctrlrc | grep -B10 ^name=Master$ | grep '^\[' | grep -iv 'mixerpcsp' | tail -n1 | awk -F[ '{ print $2 }' | awk -F] '{ print $1 }' )"
+GROUP_PCM="$( cat $HOME/.trinity/share/config/kmixctrlrc | grep -B10 ^name=PCM$ | grep '^\[' | grep -iv 'mixerpcsp' | tail -n1 | awk -F[ '{ print $2 }' | awk -F] '{ print $1 }' )"
+echo "master group: $GROUP_MASTER"
+echo "pcm group: $GROUP_PCM"
+if [ -z "$GROUP_PCM" ] ; then
+  exit
+fi
+if [ -z "$GROUP_MASTER" ] ; then
+  exit
+fi
+if [ "$( kreadconfig --file "kmixctrlrc" --group "$GROUP_PCM" --key "volumeR" )" = "0" ] ; then
+  echo "updating pcm levels .."
+  kwriteconfig --file "kmixctrlrc" --group "$GROUP_PCM" --key "volumeR"  "25"
+  kwriteconfig --file "kmixctrlrc" --group "$GROUP_PCM" --key "volumeL"  "25"
+fi
+if [ "$( kreadconfig --file "kmixctrlrc" --group "$GROUP_MASTER" --key "volumeR" )" = "0" ] ; then
+  echo "updating master levels .."
+  kwriteconfig --file "kmixctrlrc" --group "$GROUP_MASTER" --key "volumeR"  "11"
+  kwriteconfig --file "kmixctrlrc" --group "$GROUP_MASTER" --key "volumeL"  "11"
+fi
+echo "unmuting master and pcm channels .."
+kwriteconfig --file "kmixctrlrc" --group "$GROUP_PCM" --key "is_muted"  "0"
+kwriteconfig --file "kmixctrlrc" --group "$GROUP_MASTER" --key "is_muted"  "0"
+kmixctrl -r

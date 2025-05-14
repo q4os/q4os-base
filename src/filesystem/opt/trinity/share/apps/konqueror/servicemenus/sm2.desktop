@@ -1,0 +1,11 @@
+[Desktop Entry]
+X-TDE-ServiceTypes=media/builtin-mycomputer
+Actions=configMyComp
+#X-TDE-AuthorizeAction=shell_access
+X-TDE-Priority=TopLevel
+# X-TDE-MediaNotifierHide=true
+
+[Desktop Action configMyComp]
+Name=Control Panel
+Icon=kcontrol
+Exec=kcontrol

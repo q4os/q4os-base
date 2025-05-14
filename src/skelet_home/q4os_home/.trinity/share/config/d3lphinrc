@@ -1,0 +1,12 @@
+[rightSidebar]
+Visible=false
+
+[Icons Mode]
+Grid Spacing=20
+Grid Width=120
+Icon Size=48
+
+[Previews Mode]
+Grid Spacing=20
+Grid Width=240
+Icon Size=48

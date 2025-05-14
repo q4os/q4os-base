@@ -1,0 +1,9 @@
+export QDSK_SESSION="plasma"
+export XDG_CONFIG_HOME="$(dash /usr/share/apps/q4os_system/bin/print_xdgcfghome_plasma.sh)"
+export XDG_CACHE_HOME="$HOME/.cachekde"
+export GTK2_RC_FILES="/etc/gtk-2.0/gtkrc:$HOME/.gtkrc-2.0:$XDG_CONFIG_HOME/gtkrc-2.0"
+export GTK_RC_FILES="/etc/gtk/gtkrc:$HOME/.gtkrc:$XDG_CONFIG_HOME/gtkrc"
+export TDEHOME="$(dash /usr/share/apps/q4os_system/bin/printvar_tdehome_plasma.sh)"
+export TDEDIR="/opt/trinity"
+export PATH="$PATH:/opt/trinity/bin"
+export TDE_DEBUG="1" #disable tde crash handler

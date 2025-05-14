@@ -1,0 +1,3 @@
+Remove files as q4os-5 becomes retired, as they are replaced with appsetup2.exu.desktop:
+q4os_mt_inst_esh.desktop
+q4os_mt_inst_qsi.desktop

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# tty -s
+# if [ "$?" = "0" ]; then
+#   echo "Ran from terminal, exec not allowed, exiting"
+#   exit
+# fi
+
+# echo "Parent process id: $PPID"
+# PARENT_COMMAND=$(ps -o comm= $PPID)
+# echo "Parent process name: $PARENT_COMMAND"
+
+# if [ "$PARENT_COMMAND" != "appsetup2.exu" ] ; then
+#   echo "Exec not allowed, exiting"
+#   exit
+# fi
+
+/usr/bin/apt-mark "$@"
+exit "$?"

@@ -1,0 +1,8 @@
+#!/bin/sh
+#helper to properly open firefox downloads folder in tde
+
+if [ "$QDSK_SESSION" != "trinity" ] && [ -f "/usr/bin/dolphin" ] ; then
+  /usr/bin/dolphin --daemon
+else
+  exit 1
+fi

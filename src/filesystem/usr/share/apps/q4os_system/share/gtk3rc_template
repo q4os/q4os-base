@@ -1,0 +1,62 @@
+/***********************************************************************
+ * This section can be modified to create color variants of the theme. *
+ ***********************************************************************/
+
+/****************
+ * color scheme *
+ ****************/
+
+@define-color theme_base_color #_subst_theme_base_color_;
+
+@define-color theme_bg_color #_subst_theme_bg_color_;
+@define-color theme_fg_color #_subst_theme_fg_color_;
+
+@define-color theme_selected_bg_color #_subst_selected_bg_color_;
+@define-color theme_selected_fg_color #_subst_selected_fg_color_;
+
+@define-color theme_tooltip_bg_color #ffffdc;
+@define-color theme_tooltip_fg_color #000000;
+
+@define-color theme_text_color @theme_fg_color;
+
+@define-color link_color #_subst_link_color_;
+@define-color visited_link_color #_subst_visited_link_color_;
+
+/*****************
+ * error/warning *
+ *****************/
+
+@define-color error_color #cc0000;
+
+@define-color warning_bg_color #faad3d;
+
+/***************
+ * title bar *
+ ***************/
+
+@define-color active_title_bar #_subst_active_title_bar_color_;
+@define-color active_title_text #_subst_active_title_text_color_;
+/*@define-color active_title_blend #000000;*/
+@define-color inactive_title_bar #_subst_inactive_title_bar_color_;
+@define-color inactive_title_text #_subst_inactive_title_text_color_;
+/*@define-color inactive_title_blend #000000;*/
+
+/***************
+ * core colors *
+ ***************/
+
+/* Core colors are only used in the current file, as bases for other
+   color declarations. */
+
+@define-color core_color_a @theme_selected_bg_color; /* Core color for blue widgets in Clearlooks-Phenix. */
+@define-color core_color_b shade(@theme_bg_color, 1.02); /* Core color for gray widgets in Clearlooks-Phenix. */
+
+/********************************************
+ * End of configuration for color variants. *
+ ********************************************/
+
+/***********
+ * imports *
+ ***********/
+
+@import url("/usr/share/themes/_subst_theme_name_/gtk-3.0/gtk_b.css");

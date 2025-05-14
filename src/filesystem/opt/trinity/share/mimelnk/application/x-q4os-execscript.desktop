@@ -1,0 +1,9 @@
+[Desktop Entry]
+#defines mime type, the same as /usr/share/mime/packages/*.desktop
+Comment=Q4OS installer
+Icon=application-x-tar
+MimeType=application/x-q4os-execscript
+Patterns=*.esh
+Type=MimeType
+Hidden=false
+OnlyShowIn=TDE;

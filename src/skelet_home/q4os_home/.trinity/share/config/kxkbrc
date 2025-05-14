@@ -1,0 +1,8 @@
+[Layout]
+EnableXkbOptions=false
+LayoutList=us
+ResetOldOptions=false
+ShowFlag=true
+;ShowSingle=true
+SwitchMode=Global
+Use=true

@@ -1,0 +1,24 @@
+#!/usr/bin/make -f
+
+# See debhelper(7) (uncomment to enable).
+# Output every command that modifies files on the build system.
+#export DH_VERBOSE = 1
+
+
+%:
+	dh $@
+
+
+override_dh_install:
+	dh_install
+	dash src/build_filesystem.sh
+	cp _00_gettext/* ../
+	rsync -a _00_filesystem_built/* debian/q4os-base/ ; rm -r _00_filesystem_built/ _00_gettext/
+
+# override_dh_link:
+
+override_dh_installdeb:
+	dh_installdeb
+	cp debian/conffiles debian/q4os-base/DEBIAN/conffiles
+
+override_dh_usrlocal:

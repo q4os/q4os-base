@@ -1,0 +1,4 @@
+#Virtualbox
+deb [signed-by=/usr/share/keyrings/q4a-vbox_oracle.gpg arch=amd64] http://download.virtualbox.org/virtualbox/debian bullseye contrib non-free
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-vbox_oracle.pub

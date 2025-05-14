@@ -1,0 +1,54 @@
+#!/bin/sh
+
+A_QAPTDISTR="$( dash /usr/share/apps/q4os_system/bin/print_qaptdistr.sh )"
+if [ "$A_QAPTDISTR" != "trixie" ] && [ "$A_QAPTDISTR" != "bookworm" ] && [ "$A_QAPTDISTR" != "bullseye" ] ; then
+  echo "[E] This script is not enabled for the current distribution: $A_QAPTDISTR"
+  exit 10
+fi
+
+qrepolist | grep -q -i "$A_QAPTDISTR-backports"
+if [ "$?" != "0" ] ; then
+  echo "[E] Debian backports repository not detected. You need to add backports first."
+  exit 20
+fi
+
+echo "This script will install latest Linux kernel from backports repository."
+sudo -k
+sudo -p "Enter your password to continue: " echo
+if [ "$?" != "0" ] ; then
+  echo "[E] You are not allowed to run this script, contact system administrator."
+  exit 30
+fi
+
+echo "Checking internet connection .."
+dash /usr/share/apps/q4os_system/bin/tst_dwnl.sh > /dev/null
+if [ $? != "0" ] ; then
+  echo "[E] No internet link, make a connection and try again."
+  exit 40
+fi
+echo ".. link ok."
+
+check_apt_busy.sh > /dev/null
+if [ $? != "0" ] ; then
+  echo "[E] Package system is busy now, repeat installation few minutes later."
+  exit 50
+fi
+
+echo "Updating sw database"
+sudo apt-get -y update
+
+KERNEL_TP="$( dash /usr/share/apps/q4os_system/bin/uname_lxhdrs.sh )"
+if [ "$?" != "0" ] ; then
+  echo "[E] Linux headers couldn't be determined."
+  exit 60
+fi
+echo "Installing $KERNEL_TP kernel"
+sudo apt-get -y install linux-libc-dev
+BACKPRTS="$A_QAPTDISTR-backports"
+sudo apt-get -y -t $BACKPRTS install linux-headers-$KERNEL_TP linux-image-$KERNEL_TP firmware-linux
+if [ "$?" != "0" ] ; then
+  echo "[E] Error, installation failed for some reason."
+  exit 100
+fi
+echo "[I] Installation completed, please reboot your system."
+exit 0

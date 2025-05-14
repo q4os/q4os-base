@@ -1,0 +1,9 @@
+# wget http://repos.fds-team.de/Release.key
+
+deb [signed-by=/usr/share/keyrings/q4a-pipelight.gpg] http://repos.fds-team.de/stable/debian/ buster main
+
+# You can now install pipelight-multi as any regular package. We recommend to update the plugin database after the installation:
+# apt install pipelight-multi
+# pipelight-plugin --update
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-pipelight.pub

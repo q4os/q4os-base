@@ -1,0 +1,3 @@
+[Wallet]
+Close When Idle=true
+Idle Timeout=5

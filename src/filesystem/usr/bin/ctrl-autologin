@@ -1,0 +1,55 @@
+#!/bin/sh
+# handle autologin features for tdm and sddm
+
+if [ "$( id -u )" != "0" ] ; then
+ echo "Only root can run, exiting ..."
+ exit 100
+fi
+
+if [ "$1" = "--disable" ] ; then
+  if [ -f "/etc/trinity/tdm/tdmrc" ] ; then
+    /opt/trinity/bin/kwriteconfig --file "/etc/trinity/tdm/tdmrc" --group "X-:0-Core" --key "AutoLoginEnable" "false"
+    chmod a+r /etc/trinity/tdm/tdmrc
+  fi
+  if [ -f "/usr/bin/sddm" ] ; then
+    /opt/trinity/bin/kwriteconfig --file "/etc/sddm.conf" --group "Autologin" --key "User" ""
+    /opt/trinity/bin/kwriteconfig --file "/etc/sddm.conf" --group "Autologin" --key "Session" ""
+    chmod a+r /etc/sddm.conf
+  fi
+  echo "Auto-login disabled."
+  exit
+fi
+
+if [ "$1" = "--enable" ] ; then
+  if [ -z "$2" ] ; then
+    LGUSER="$( dash /usr/share/apps/q4os_system/bin/get_first_user.sh --name )"
+  else
+    LGUSER="$2"
+  fi
+  if [ "$3" = "--locking" ] ; then
+    LOCKING="true"
+  else
+    LOCKING="false"
+  fi
+  if [ -z "$4" ] ; then
+    LGDSKTP="trinity.desktop"
+  else
+    LGDSKTP="$4"
+  fi
+  if [ -f "/etc/trinity/tdm/tdmrc" ] ; then
+    /opt/trinity/bin/kwriteconfig --file "/etc/trinity/tdm/tdmrc" --group "X-:0-Core" --key "AutoLoginEnable" "true"
+    /opt/trinity/bin/kwriteconfig --file "/etc/trinity/tdm/tdmrc" --group "X-:0-Core" --key "AutoLoginUser" "$LGUSER"
+    /opt/trinity/bin/kwriteconfig --file "/etc/trinity/tdm/tdmrc" --group "X-:0-Core" --key "AutoLoginLocked" "$LOCKING"
+    chmod a+r /etc/trinity/tdm/tdmrc
+  fi
+  if [ -f "/usr/bin/sddm" ] ; then
+    /opt/trinity/bin/kwriteconfig --file "/etc/sddm.conf" --group "Autologin" --key "User" "$LGUSER"
+    /opt/trinity/bin/kwriteconfig --file "/etc/sddm.conf" --group "Autologin" --key "Session" "$LGDSKTP"
+    chmod a+r /etc/sddm.conf
+  fi
+  echo "Auto-login enabled; User: $LGUSER; Locking: $LOCKING; Desktop: $LGDSKTP"
+  exit
+fi
+
+echo "Usage1: ctrl-autologin --disable"
+echo "Usage2: ctrl-autologin --enable [username] [--locking] [desktop]"

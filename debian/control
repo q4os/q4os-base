@@ -1,0 +1,17 @@
+Source: q4os-base
+Section: none
+Priority: optional
+Maintainer: Q4OS Team <devteam@q4os.org>
+Build-Depends: debhelper (>= 9~), q4os-devpack-base
+Standards-Version: 3.8.4
+
+Package: q4os-base
+Architecture: all
+Pre-Depends: q4os-keyrings
+Depends:
+Recommends:
+Conflicts:
+Provides: q4os-base
+Replaces:
+Breaks:
+Description: Q4OS base tools and files

@@ -1,0 +1,12 @@
+[Desktop Entry]
+X-TDE-ServiceTypes=application/x-q4os-execscript
+#ServiceTypes=application/x-shellscript
+Actions=x-q4os-execscript-2
+#X-TDE-AuthorizeAction=shell_access
+X-TDE-Priority=TopLevel
+# X-TDE-MediaNotifierHide=true
+
+[Desktop Action x-q4os-execscript-2]
+Name=Run as Administrator ...
+Icon=password
+Exec=sudo -k ; tdesudo dash $0

@@ -1,0 +1,9 @@
+##mx-linux repositories
+
+deb http://iso.mxrepo.com/antix/buster buster main
+## deb http://iso.mxrepo.com/antix/buster buster main nosystemd
+
+deb http://mxrepo.com/mx/repo/ buster main non-free
+## deb http://mxrepo.com/mx/repo/ buster main non-free nosystemd
+
+#pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-mxlinux.pub

@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# monitor apt activity
+# possible to nice -n19 this script
+
+if [ "$( id -u )" != "0" ] ; then
+ echo "only root can run, exiting ..."
+ exit 100
+fi
+
+TRAYCMD="/opt/trinity/bin/ksystraycmd --ownicon --icon package --keeprunning --hidden --startonshow kdialog --icon package --title Software_manager --caption working... --msgbox System_update_in_progress..."
+KSTRAY_RUNNING="0"
+
+while [ true ] ; do
+ inotifywait /var/cache/apt/archives/lock /var/lib/apt/lists/lock /var/lib/dpkg/lock
+ RESUSER="$( get_active_user )" ; export DISPLAY="$( echo $RESUSER | awk -F';' '{ print $1 }' )" ; LOGGUID="$( echo $RESUSER | awk -F';' '{ print $2 }' )"
+ if [ -n "$DISPLAY" ] && [ -n "$LOGGUID" ] ; then
+  ( check_apt_busy.sh 2>&1 ) > /dev/null
+  if [ "$?" != "0" ] ; then
+   if [ "$KSTRAY_RUNNING" = "0" ] ; then
+    sudo -n -u#$LOGGUID $TRAYCMD &
+    #todo: get KPID here
+    KSTRAY_RUNNING="1"
+    while [ "$KSTRAY_RUNNING" != "0" ] ; do
+     sleep 3
+     ( check_apt_busy.sh 2>&1 ) > /dev/null
+     if [ "$?" = "0" ] ; then
+      KPID="$( ps -u$LOGGUID -opid,cmd | grep -i "$TRAYCMD" | grep -v grep | awk '{ print $1 }' | head -n1 )"
+      ( kill "$KPID" 2>&1 ) > /dev/null
+      KSTRAY_RUNNING="0"
+     fi
+     inotifywait /var/cache/apt/archives/lock /var/lib/apt/lists/lock /var/lib/dpkg/lock
+    done
+   fi
+  fi
+ fi
+done

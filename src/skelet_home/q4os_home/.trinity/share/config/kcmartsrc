@@ -1,0 +1,3 @@
+[Arts]
+Arguments=\s-F 10 -S 4096 -s 10 -m artsmessage -l 3 -f
+SuspendTime=10

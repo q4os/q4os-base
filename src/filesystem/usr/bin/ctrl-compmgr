@@ -1,0 +1,59 @@
+#!/bin/sh
+
+if [ "$1" = "--enable" ] ; then
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "MoveMode" "Opaque"
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Notification Messages" --key "UseTranslucency" true
+
+  if [ "$2" = "--conf-only" ] ; then
+    exit
+  fi
+
+#todo: check if compton is running
+#   if [ "$( dcop twin KWinInterface kompmgrIsRunning )" = "true" ]
+#     echo "Compositing manager is already running."
+#     exit
+#   fi
+
+  if dcopfind twin 1>/dev/null ; then
+    dcop twin KWinInterface reconfigure
+    dcop twin KWinInterface refresh
+    dcop twin KWinInterface kompmgrReloadSettings
+    dcop twin KWinInterface stopKompmgr
+    dcop twin KWinInterface startKompmgr
+  fi
+  if [ "$2" != "--no-relogin" ] ; then
+    dcop ksmserver ksmserver logoutTimed 0 0 0 &
+  fi
+
+  exit
+fi
+
+if [ "$1" = "--disable" ] ; then
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "MoveMode" "Transparent"
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Notification Messages" --key "UseTranslucency" false
+
+#   if [ "$( dcop twin KWinInterface kompmgrIsRunning )" = "false" ]
+#     echo "Compositing manager is already stopped"
+#     exit
+#   fi
+
+  if [ "$2" = "--conf-only" ] ; then
+    exit
+  fi
+
+  if dcopfind twin 1>/dev/null ; then
+    dcop twin KWinInterface reconfigure
+    dcop twin KWinInterface refresh
+    dcop twin KWinInterface kompmgrReloadSettings
+    dcop twin KWinInterface stopKompmgr
+  fi
+#   if [ "$2" != "--no-relogin" ] ; then
+#     dcop ksmserver ksmserver logoutTimed 0 0 0 &
+#   fi
+
+  exit
+fi
+
+echo "Usage1: ctrl-compmgr --enable [ --conf-only --no-relogin ]"
+echo "Usage2: ctrl-compmgr --disable"
+echo "Usage3: ctrl-compmgr --help"

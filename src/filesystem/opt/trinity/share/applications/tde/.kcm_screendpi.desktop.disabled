@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Screen scaling
+#GenericName=
+#Comment=
+Exec=dash /usr/share/apps/q4os_system/bin/tdecfg_dpi.sh
+Icon=randr
+Type=Application
+Categories=Qt;TDE;X-TDE-settings-system;
+#StartupNotify=false
+#NoDisplay=true
+OnlyShowIn=TDE;
+X-TDE-ParentApp=kcontrol
+#X-TDE-SubstituteUID=true

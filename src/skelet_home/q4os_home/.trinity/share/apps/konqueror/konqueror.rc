@@ -1,0 +1,201 @@
+<?xml version = '1.0'?>
+<!DOCTYPE gui SYSTEM "kpartgui.dtd">
+<gui version="59" name="Konqueror" >
+	<MenuBar>
+		<Menu noMerge="1" name="file" >
+			<text>&amp;Location</text>
+			<Action name="new_window" />
+			<Action name="newtab" />
+			<Action name="duplicate_window" />
+			<Action name="open_location" />
+			<Separator/>
+			<Action name="sendURL" />
+			<Action name="sendPage" />
+			<Separator/>
+			<Merge/>
+			<!--Includes termination separator-->
+			<Action name="print" />
+			<DefineGroup name="print" />
+			<Separator/>
+			<ActionList name="openwith" />
+			<!--Includes termination separator-->
+			<Action name="quit" />
+		</Menu>
+		<Menu noMerge="1" name="edit" >
+			<text>&amp;Edit</text>
+			<!--Here is what applies to a selection-->
+			<Action name="undo" />
+			<Action name="cut" />
+			<Action name="copy" />
+			<Action name="paste" />
+			<Action name="rename" />
+			<Action name="trash" />
+			<Action name="del" />
+			<ActionList name="operations" />
+			<!-- copy files and move files, when two directory views -->
+			<Separator/>
+			<Action name="new_menu" />
+			<Separator/>
+			<Action name="editMimeType" />
+			<Action name="properties" />
+			<WeakSeparator/>
+			<Merge/>
+		</Menu>
+		<Menu noMerge="1" name="view" >
+			<text>&amp;View</text>
+			<!--Here is what applies to the active view-->
+			<ActionList name="viewmode" />
+			<Action name="usehtml" />
+			<Action name="lock" />
+			<Action name="link" />
+			<Separator/>
+			<Action name="reload" />
+			<Action name="stop" />
+			<WeakSeparator/>
+			<Merge/>
+		</Menu>
+		<Menu name="go" >
+			<text>&amp;Go</text>
+			<Action name="back" />
+			<Action name="forward" />
+			<Action name="up" />
+			<Action name="home" />
+			<Separator/>
+			<Action name="go_system" />
+			<Action name="go_applications" />
+			<Action name="go_network_folders" />
+			<Action name="go_settings" />
+			<Action name="go_media" />
+			<Action name="go_dirtree" />
+			<Action name="go_trash" />
+			<Action name="go_autostart" />
+			<Action name="go_history" />
+			<Action name="go_most_often" />
+			<Separator/>
+			<Action name="history" />
+		</Menu>
+		<Action name="bookmarks" />
+		<Menu name="tools" >
+			<text>&amp;Tools</text>
+			<Action name="open_terminal" />
+			<Action name="findfile" />
+			<WeakSeparator/>
+			<Merge/>
+		</Menu>
+		<Menu noMerge="1" name="settings" >
+			<text>&amp;Settings</text>
+			<Action name="options_show_menubar" />
+			<Merge name="StandardToolBarMenuHandler" />
+			<Separator/>
+			<Action name="fullscreen" />
+			<Separator/>
+			<Action name="saveViewPropertiesLocally" />
+			<Action name="removeLocalProperties" />
+			<Separator/>
+<!-- 			<Action name="loadviewprofile" /> -->
+			<Action name="saveviewprofile" />
+			<Action name="saveremoveviewprofile" />
+			<Separator/>
+			<Action name="options_configure_extensions" />
+			<Action name="configurespellcheck" />
+			<Action name="options_configure_keybinding" />
+			<Action name="options_configure_toolbars" />
+			<Action name="options_configure" />
+		</Menu>
+		<Menu append="settings_merge" name="window" >
+			<text>&amp;Window</text>
+			<Action name="splitviewh" />
+			<Action name="splitviewv" />
+			<Action name="removeview" />
+			<Separator/>
+			<Action name="newtab" />
+			<Action name="duplicatecurrenttab" />
+			<Action name="breakoffcurrenttab" />
+			<Action name="removecurrenttab" />
+			<Separator/>
+			<Action name="tab_move_left" />
+			<Action name="tab_move_right" />
+			<Separator/>
+			<ActionList name="toggleview" />
+		</Menu>
+		<Menu append="about_merge" name="help" >
+			<text>&amp;Help</text>
+			<Action name="konqintro" />
+		</Menu>
+		<Merge/>
+	</MenuBar>
+	
+	<!-- 	<ToolBar name="mainToolBar" newline="true" fullWidth="false" hidden="false" iconText="icontextright" index="0" > -->
+		<!-- 		what is noMerge="1" option ?? -->
+		<!-- 		<text>Main Toolbar</text> -->
+		<!-- 	</ToolBar> -->
+	
+	<ToolBar name="q4fmToolBar1" newline="true" fullWidth="false" hidden="false" iconText="icontextright" index="1" >
+		<text>Q4fm Toolbar 1</text>
+		<Action name="back" />
+		<Action name="forward" />
+		<Action name="up" />
+		<!-- 		<Action name="home" /> -->
+		<Separator name="separator_0" />
+		<Action name="findfile" />
+		<Action name="konq_sidebartng" />
+		<!-- 		<Merge/> -->
+		<!-- 		<ActionList name="operations" /> -->
+		<!-- copy files and move files, when two directory views -->
+		<!--   <Action name="copyfiles" /> -->
+	</ToolBar>
+	
+	<ToolBar name="q4fmToolBar2" newline="false" fullWidth="true" hidden="false" iconText="iconsonly" index="2" >
+		<text>Q4fm Toolbar 2</text>
+		<Action name="copy" />
+		<!-- 		<Action name="cut" /> -->
+		<Action name="paste" />
+		<Action name="trash" />
+		<Action name="undo" />
+		<Separator name="separator_0" />
+		<!--	<Action name="home" /> -->
+		<!-- 	<ActionList name="viewmode" /> -->
+		<ActionList name="viewmode_toolbar" />
+<!-- 		<Action name="animated_logo" /> -->
+	</ToolBar>
+	
+	<ToolBar name="q4wbToolBar1" newline="true" fullWidth="true" hidden="false" iconText="icontextright" index="3" >
+		<text>Q4wb Toolbar 1</text>
+		<Action name="back" />
+		<Action name="forward" />
+		<Action name="stop" />
+		<Action name="reload" />
+		<Action name="home" />
+		<!-- 		<Action name="find" /> -->
+	</ToolBar>
+	
+	<ToolBar name="q4wbToolBar2" newline="true" fullWidth="true" hidden="false" iconText="iconsonly" index="4" >
+		<text>Q4wb Toolbar 2</text>
+		<Action name="bookmarks" />
+		<Action name="go_history" />
+		<Action name="print" />
+		<Action name="animated_logo" />
+	</ToolBar>
+	
+	<!-- 	<ToolBar name="extraToolBar" > -->
+		<!-- 		<text>Extra Toolbar</text> -->
+	<!-- 	</ToolBar> -->
+	
+	<ToolBar name="locationToolBar" newline="true" fullWidth="true" hidden="false" iconText="icontextright" index="5" >
+		<text>Location Toolbar</text>
+		<Action name="location_label" />
+		<Action name="toolbar_url_combo" />
+		<Action name="go_url" />
+	</ToolBar>
+	
+	<ToolBar name="bookmarkToolBar" newline="true" fullWidth="true" hidden="true" iconText="icontextright" noEdit="true" index="6" >
+		<text>Bookmark Toolbar</text>
+	</ToolBar>
+	
+	<ActionProperties>
+		<Action shortcut="F9" icon="folder_open" name="konq_sidebartng" text="Folders" />
+		<!-- 		<Action shortcut="F7" icon="1uparrow" name="copyfiles" text="Copy to .." /> -->
+		<!-- 		<Action shortcut="F8" icon="1downarrow" name="movefiles" text="Move to .." /> -->
+	</ActionProperties>
+	
+</gui>

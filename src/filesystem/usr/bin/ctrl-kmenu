@@ -1,0 +1,50 @@
+#!/bin/sh
+
+if [ "$1" = "--classic" ] ; then
+  kwriteconfig --file "kickerrc" --group "General" --key "LegacyKMenu" "true"
+  kwriteconfig --file "kickerrc" --group "General" --key "BourbonMenu" "false"
+  kwriteconfig --file "kickerrc" --group "General" --key "KMenuHeight" "0"
+  kwriteconfig --file "kickerrc" --group "General" --key "KMenuWidth" "0"
+  kwriteconfig --file "kickerrc" --group "menus" --key "NumVisibleEntries" "3"
+  ( tdebuildsycoca 2>&1 ) > /dev/null
+  dcop kicker kicker restart
+  sleep 0.5
+  dcop kicker kicker showKMenu & #waits for classic menu close without '&'
+  sleep 0.2
+  echo "Classic menu set."
+  exit
+fi
+
+if [ "$1" = "--bourbon" ] ; then
+  kwriteconfig --file "kickerrc" --group "General" --key "LegacyKMenu" "false"
+  kwriteconfig --file "kickerrc" --group "General" --key "BourbonMenu" "true"
+  kwriteconfig --file "kickerrc" --group "General" --key "KMenuHeight" ""
+  kwriteconfig --file "kickerrc" --group "General" --key "KMenuWidth" ""
+  kwriteconfig --file "kickerrc" --group "menus" --key "NumVisibleEntries" "7"
+  ( tdebuildsycoca 2>&1 ) > /dev/null
+  dcop kicker kicker restart
+  sleep 0.5
+  dcop kicker kicker showKMenu
+  echo "Bourbon menu set."
+  exit
+fi
+
+if [ "$1" = "--kickoff" ] ; then
+  kwriteconfig --file "kickerrc" --group "General" --key "LegacyKMenu" "false"
+  kwriteconfig --file "kickerrc" --group "General" --key "BourbonMenu" "false"
+  kwriteconfig --file "kickerrc" --group "General" --key "KMenuHeight" "480"
+  kwriteconfig --file "kickerrc" --group "General" --key "KMenuWidth" "0"
+  kwriteconfig --file "kickerrc" --group "menus" --key "NumVisibleEntries" "6"
+  echo " working ..."
+  ( tdebuildsycoca 2>&1 ) > /dev/null
+  dcop kicker kicker restart
+  sleep 0.5
+  dcop kicker kicker showKMenu
+  echo "Kickoff menu set."
+  exit
+fi
+
+echo "Usage1: ctrl_kmenu --classic"
+echo "Usage2: ctrl_kmenu --bourbon"
+echo "Usage3: ctrl_kmenu --kickoff"
+echo "Usage4: ctrl_kmenu --help"

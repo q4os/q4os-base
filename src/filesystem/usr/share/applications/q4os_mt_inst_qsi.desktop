@@ -1,0 +1,25 @@
+[Desktop Entry]
+#remove this file as q4os-5 becomes retired, as replaced with appsetup2.exu.desktop
+#this file defines an association of mimetype and application
+#format specified at http://standards.freedesktop.org/desktop-entry-spec/1.0/
+Type=Application
+#version of the spec for this file, not the application version
+Version=1.0
+Name=Installer-QSI
+GenericName=Q4OS Installer qsi
+Comment=Q4OS Installer for qsi packages
+Icon=package-x-generic
+# Path=
+TryExec=appsetup2.exu
+Exec=appsetup2.exu %u
+Terminal=false
+# TerminalOptions=
+# InitialPreference=2
+MimeType=application/x-q4os-installerqsi;
+StartupNotify=true
+# X-DCOP-ServiceType=
+# X-TDE-SubstituteUID=false
+# X-TDE-Username=
+#category entry according to http://standards.freedesktop.org/menu-spec/1.0/
+# Categories=Graphics;2DGraphics;RasterGraphics;Qt;
+NoDisplay=true

@@ -1,0 +1,13 @@
+# Debian Sid
+
+deb http://ftp.debian.org/debian/ sid main contrib non-free
+#deb-src http://ftp.debian.org/debian/ sid main contrib non-free
+
+#deb http://security.debian.org/ sid/updates contrib non-free main
+#deb-src http://security.debian.org/ sid/updates contrib non-free main
+
+#deb http://ftp.debian.org/debian/ sid-updates main contrib non-free
+#deb-src http://ftp.debian.org/debian/ sid-updates main contrib non-free
+
+#deb http://ftp.debian.org/debian/ sid-proposed-updates contrib non-free main
+#deb-src http://ftp.debian.org/debian/ sid-proposed-updates contrib non-free main

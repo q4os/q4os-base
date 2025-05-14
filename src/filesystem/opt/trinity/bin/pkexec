@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ -x "/usr/bin/pkexec" ] && [ -n "$( ps -fu "$(id -un)" | grep "polkit-agent-tde\|polkit-kde-authentication-agent-1" | grep -v " grep " )" ] ; then
+  #pkexec needs 'polkit_authentication_agent' daemon running
+  /usr/bin/pkexec "$@"
+else
+  ARGS="$( echo "$@" | sed "s/--user/-u/g" )"
+  ARGS="$( echo "$ARGS" | sed "s/--disable-internal-agent//g" )"
+  tdesudo $ARGS
+fi

@@ -1,0 +1,1 @@
+get-q4os-version

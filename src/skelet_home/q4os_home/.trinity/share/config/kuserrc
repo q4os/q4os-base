@@ -1,0 +1,12 @@
+[MainWindow]
+Height 768=550
+Width 1024=774
+
+[connection-default]
+firstGID=1000
+firstUID=1000
+ldappassword=
+shell=/bin/bash
+
+[general]
+showsys=false

@@ -1,0 +1,2 @@
+#Zoom meeting client for Debian
+deb [ arch=amd64 ] http://q4os.org/qexarepo/zoom bullseye-zoom-cn main

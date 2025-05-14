@@ -1,0 +1,34 @@
+#!/bin/sh
+
+. /usr/share/apps/q4os_system/bin/qrepo_functions.sh
+
+SRCLOC="/usr/share/apps/q4os_system/q4p_repos"
+
+if [ -z "$1" ] ; then
+  echo "No argument given, exiting ..."
+  exit 200
+fi
+
+if [ "$( id -u )" != "0" ] ; then
+ echo "only root can run, exiting ..."
+ exit 100
+fi
+
+export QAPTDISTR="$( dash /usr/share/apps/q4os_system/bin/print_qaptdistr.sh )"
+SRCFILE="$SRCLOC/$1.$QAPTDISTR.q4p"
+if [ ! -f "$SRCFILE" ] ; then
+  echo "File $SRCFILE doesn't exist, exiting ..."
+  exit 100
+fi
+
+# todo: check $SRCFILE line by line
+( ( rm /etc/apt/sources.list.d/q4p-$(basename $1)-*.list ) 2>&1 ) > /dev/null
+if [ "$?" != "0" ] ; then
+  echo "Not removed as not present."
+  return 1
+fi
+
+# rm keyring
+
+echo "Removed."
+return 0

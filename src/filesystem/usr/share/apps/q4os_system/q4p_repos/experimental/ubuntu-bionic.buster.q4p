@@ -1,0 +1,9 @@
+deb [signed-by=/usr/share/keyrings/q4a-ubuntu_archive.gpg] http://archive.ubuntu.com/ubuntu bionic main restricted universe multiverse
+deb [signed-by=/usr/share/keyrings/q4a-ubuntu_archive.gpg] http://archive.ubuntu.com/ubuntu bionic-updates main restricted universe multiverse
+
+deb [signed-by=/usr/share/keyrings/q4a-ubuntu_archive.gpg] http://security.ubuntu.com/ubuntu/ bionic-security main restricted universe multiverse
+deb [signed-by=/usr/share/keyrings/q4a-ubuntu_archive.gpg] http://archive.canonical.com/ubuntu/ bionic partner
+
+#deb [signed-by=/usr/share/keyrings/q4a-ubuntu_archive.gpg] http://archive.getdeb.net/ubuntu bionic-getdeb apps
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-ubuntu_archive.pub

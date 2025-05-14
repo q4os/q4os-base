@@ -1,0 +1,15 @@
+ <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+  "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+
+<Menu>
+        <!-- hide q4os shortcuts and menus in the default tde menu -->
+	<Menu>
+		<Name>q4os-hdn</Name>
+		<Directory>q4os-hdn.directory</Directory>
+		<MergeDir>/usr/share/apps/q4os_system/q4os_menus_applications_merged</MergeDir>
+		<Include>
+			<Category>X-q4os-mnu1</Category>
+<!--			<Category>X-q4os-uninstlnk</Category> -->
+		</Include>
+	</Menu>
+</Menu>

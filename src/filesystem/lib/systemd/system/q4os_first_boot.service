@@ -1,0 +1,23 @@
+[Unit]
+Description=Q4OS first boot service
+# Documentation=man:q4os-first-boot
+Before=multi-user.target
+Before=getty@tty1.service
+# Before=getty.target
+Before=systemd-logind.service
+Before=sddm.service
+Before=tdm.service
+After=local-fs.target
+After=live-config.service
+# ConditionPathExists=/etc/sudoers.d/90_sudo_tmp01
+# ConditionKernelCommandLine=boot=live
+# ConditionFirstBoot=yes
+# DefaultDependencies=no
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/dash /usr/share/apps/q4os_system/bin/first_boot.sh
+
+[Install]
+WantedBy=multi-user.target

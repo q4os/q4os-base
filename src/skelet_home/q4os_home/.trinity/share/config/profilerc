@@ -1,0 +1,8 @@
+#-determines the default application to open a mimetype for trinity
+#-applicable only for trinity, other de read xdg compliant mimeapps.list file
+
+[application/x-deb]
+AllowAsDefault=true
+Application=appsetup2.exu.desktop
+GenericServiceType=Application
+ServiceType=application/x-deb

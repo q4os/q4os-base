@@ -1,0 +1,5 @@
+##solydxk-linux repositories
+
+deb [signed-by=/usr/share/keyrings/q4a-solydxklinux.gpg] https://repository.solydxk.com solydxk-10 main upstream import
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-solydxklinux.pub

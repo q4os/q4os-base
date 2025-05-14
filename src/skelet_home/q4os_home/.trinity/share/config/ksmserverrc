@@ -1,0 +1,6 @@
+[General]
+loginMode=default
+
+[Logout]
+doFancyLogout=false
+doUbuntuLogout=false

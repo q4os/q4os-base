@@ -1,0 +1,4 @@
+deb [signed-by=/usr/share/keyrings/q4a-liquorix.gpg arch=amd64] https://liquorix.net/debian bookworm main
+##deb-src [signed-by=/usr/share/keyrings/q4a-liquorix.gpg] https://liquorix.net/debian bookworm main
+
+##install package: linux-image-liquorix-amd64

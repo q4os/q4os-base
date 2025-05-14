@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ ! -x "/usr/bin/flatpak" ] ; then
+  exit "1"
+fi
+
+/usr/bin/flatpak "$@"
+exit "$?"

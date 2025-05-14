@@ -1,0 +1,2 @@
+#disable zoom-fade effect when restoring a minimized window, or opening a new window, see https://stackoverflow.com/questions/43607461/google-chrome-disable-window-animations
+CHROMIUM_FLAGS="${CHROMIUM_FLAGS} --wm-window-animations-disabled"

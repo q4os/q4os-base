@@ -1,0 +1,23 @@
+#!/bin/sh
+# possible to nice -n19 this script
+
+if [ "$( id -u )" != "0" ] ; then
+ echo "only root can run, exiting ..."
+ exit 100
+fi
+
+RCMD="dash /usr/share/apps/q4os_system/bin/reboot_notif.sh"
+
+while [ true ] ; do
+ if [ -f "/var/run/reboot-required" ] ; then
+  RESUSER="$( get_active_user )" ; export DISPLAY="$( echo $RESUSER | awk -F';' '{ print $1 }' )" ; LOGGUID="$( echo $RESUSER | awk -F';' '{ print $2 }' )"
+  while [ -z "$RESUSER" ] ; do
+   sleep 10
+   RESUSER="$( get_active_user )" ; export DISPLAY="$( echo $RESUSER | awk -F';' '{ print $1 }' )" ; LOGGUID="$( echo $RESUSER | awk -F';' '{ print $2 }' )"
+  done
+  sleep 15
+  sudo -n -u#$LOGGUID $RCMD &
+  exit
+ fi
+ inotifywait -e create /var/run/
+done

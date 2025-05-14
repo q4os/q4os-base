@@ -1,0 +1,5 @@
+deb [signed-by=/usr/share/keyrings/q4a-spotify.gpg] http://repository.spotify.com stable non-free
+
+#sudo apt install spotify-client
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-spotify.pub

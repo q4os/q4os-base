@@ -1,0 +1,9 @@
+[Desktop Entry]
+#defines mime type, the same as /usr/share/mime/packages/*.desktop
+Comment=Q4OS installer
+Icon=package-x-generic
+MimeType=application/x-q4os-installerqsi
+Patterns=*.qsi
+Type=MimeType
+Hidden=false
+OnlyShowIn=TDE;

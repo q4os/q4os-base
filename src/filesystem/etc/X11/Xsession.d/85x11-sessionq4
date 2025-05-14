@@ -1,0 +1,22 @@
+#!/bin/sh #sourced script
+
+export QDSK_SESSION="$( dash /usr/share/apps/q4os_system/bin/print_session.sh )"
+# dbus-update-activation-environment --systemd QDSK_SESSION
+
+#for splash screen to read settings from the correct xdg directory
+if [ "$QDSK_SESSION" = "trinity" ] ; then
+  export XDG_CONFIG_HOME="$HOME/.configtde"
+  # export XDG_CACHE_HOME="$HOME/.cachetde"
+fi
+if [ "$QDSK_SESSION" = "plasma" ] ; then
+  export XDG_CONFIG_HOME="$(dash /usr/share/apps/q4os_system/bin/print_xdgcfghome_plasma.sh)"
+  export XDG_CACHE_HOME="$HOME/.cachekde"
+fi
+
+if [ -f "$HOME/.local/share/q4os/.frstlogq4.stp" ] ; then
+  return
+fi
+
+dash /usr/share/apps/q4os_system/bin/85frstrun.sh
+
+. /usr/share/apps/q4os_system/bin/exportlang.sh

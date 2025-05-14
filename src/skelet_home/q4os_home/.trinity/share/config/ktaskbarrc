@@ -1,0 +1,14 @@
+[Appearance]
+ActiveTaskTextColor=255,255,255
+HaloText=true
+IconSize=32
+InactiveTaskTextColor=195,195,195
+Q4ButtonFrameType=1
+TaskBackgroundColor=255,255,255
+UseCustomColors=true
+
+[General]
+CycleWheel=false
+MinimumButtonHeight=38
+MinimumButtonWidth=80
+SortByApp=false

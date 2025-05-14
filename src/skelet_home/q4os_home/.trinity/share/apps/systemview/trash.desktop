@@ -1,0 +1,9 @@
+[Desktop Entry]
+Icon=trashcan_full
+EmptyIcon=trashcan_empty
+Type=Link
+URL=trash:/
+Comment=Trash
+Encoding=UTF-8
+Name=Trash
+X-Trinity-BuiltIn=true

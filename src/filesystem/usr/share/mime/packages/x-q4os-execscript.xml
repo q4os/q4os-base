@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- defines mime type, the same as .trinity/share/mimelnk/application/*.desktop -->
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-q4os-execscript">
+        <comment>Q4OS installer</comment>
+        <icon name="application-x-tar"/>
+        <!-- <magic priority="60">
+            <match offset="0" type="string" value="#!/bin/sh"/>
+      </magic> -->
+        <glob pattern="*.esh" weight="90"/>
+    </mime-type>
+</mime-info>

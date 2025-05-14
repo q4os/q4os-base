@@ -1,0 +1,6 @@
+# LMDE repository
+
+deb [signed-by=/usr/share/keyrings/q4a-mint.gpg] http://packages.linuxmint.com/ betsy main import backport upstream romeo
+deb [signed-by=/usr/share/keyrings/q4a-mint.gpg] http://extra.linuxmint.com/ betsy main
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-mint.pub

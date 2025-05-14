@@ -1,0 +1,47 @@
+#!/bin/sh
+# safely insert record into unattended upgrades configuration
+
+#----------------------------------------------------------------------------------------------
+# normalize_ua_line :
+# remove all '\' chars from the line,
+# remove all trailing and leading whitespaces/tabs from line,
+# emtpy line if commented - beginning with "//"
+#----------------------------------------------------------------------------------------------
+normalize_ua_line () {
+  local INPUT_LINE="$@"
+  local NORMALIZED_LINE="$( echo "$( echo "$INPUT_LINE" | tr -d '\\' | sed -e 's/^[[:blank:]]*//' | sed -e 's/[[:blank:]]*$//' | grep -v "^$" | grep -v "^//" )" )"
+  echo "$NORMALIZED_LINE"
+  return
+}
+
+#----------------------------------------------------------------------------------------------
+# script start
+#----------------------------------------------------------------------------------------------
+
+grep --quiet '-here_to_add_custom_entries---' /etc/apt/apt.conf.d/50unattended-upgrades
+if [ "$?" != "0" ] ; then
+  echo "Q4OS custom entries header not present, fail .."
+  exit 10
+fi
+
+UA_LINE="$( normalize_ua_line "$( echo "$@" )" )"
+if [ -z "$UA_LINE" ] ; then
+  echo "No parameter .."
+  exit 20
+fi
+
+FL_LINE="$( normalize_ua_line "$( grep "\"$UA_LINE\";" /etc/apt/apt.conf.d/50unattended-upgrades )" )"
+if [ "$FL_LINE" = "\"$UA_LINE\";" ] ; then
+  echo "Repository \"$UA_LINE\" already present, no action taken."
+  exit 100
+fi
+
+# check_apt_busy.sh > /dev/null
+# if [ $? != "0" ] ; then
+#   echo "Package system is busy, exiting ..."
+#   exit 30
+# fi
+
+echo "Inserting record: \"$UA_LINE\""
+sed -i "/---here_to_add_custom_entries---/a\ \"$UA_LINE\";" /etc/apt/apt.conf.d/50unattended-upgrades
+exit 0

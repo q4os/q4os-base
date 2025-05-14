@@ -1,0 +1,29 @@
+#!/bin/sh
+
+#todo: solve keyring in the tmpsetup repositories by adding "signed-by=/tmp/_subst_tmpdir_name_/tmpsetup-key1.gpg"
+#afterwards remove this code completely
+
+if [ "$1" = "del_tmpsetup_key" ] ; then
+  rm -f /etc/apt/trusted.gpg.d/tmpsetup-key*.gpg
+  exit
+fi
+
+#remove the complete following code as soon as new q4os-setup compiled
+if [ "$1" != "add" ] ; then
+  exit "10"
+fi
+if [ ! -f "$2" ] ; then
+  exit "11"
+fi
+rm -f /etc/apt/trusted.gpg.d/tmpsetup-key*.gpg
+if [ "$2" = "app_key1.pub" ] ; then
+  GPGKEY="tmpsetup-key1.gpg"
+else
+  GPGKEY="tmpsetup-key2.gpg"
+fi
+gpg --yes --dearmor -o $GPGKEY $2
+if [ -n "$SUDO_USER" ] ; then
+  chown $SUDO_USER $GPGKEY
+else
+  chmod a+rw $GPGKEY
+fi

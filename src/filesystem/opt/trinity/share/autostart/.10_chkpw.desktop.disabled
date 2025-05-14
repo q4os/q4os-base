@@ -1,0 +1,14 @@
+[Desktop Entry]
+#a quick workaround to fix delay on logout dialog invocation
+Exec=dash /usr/share/apps/q4os_system/bin/refresh_pw_options.sh
+#X-DocPath=kmix/index.html
+OnlyShowIn=TDE;
+#Path=
+Type=Application
+Name=refresh_pw_options
+#MimeType=
+#Terminal=false
+#Icon=
+#X-TDE-autostart-condition=
+X-TDE-StartupNotify=false
+X-TDE-autostart-phase=0

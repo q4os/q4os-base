@@ -1,0 +1,9 @@
+#!/bin/sh
+
+/usr/share/apps/q4os_system/bin/qapt_lock.exu
+if [ "$?" != "0" ] ; then
+ echo "[CHKPKSYS] >> Package system status: Busy !"
+ exit 1
+fi
+#echo "[CHKPKSYS] >> Package system status: Ok Ready"
+exit 0

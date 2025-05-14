@@ -1,0 +1,354 @@
+#! /bin/sh
+# postinst script for ksmserver
+#
+# see: dh_installdeb(1)
+
+set -e
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+#
+
+case "$1" in
+    configure)
+
+        SSTAMPF1="/var/lib/dpkg/.q4os-base_install_aptstmp.stamp"
+        if [ ! -f $SSTAMPF1 ] ; then
+         echo "Looks like an upgrade ...."
+         #take some steps here
+        else
+         # echo "Looks like a new q4os-base installation ...."
+         #take some steps here
+         ( rm -f $SSTAMPF1 ) && true
+        fi
+
+#         Q4OSVERSION="$( get-q4os-version )" && true
+#         if [ "$?" != "0" ] ; then
+#          echo "No Q4OS version, exiting."
+#          exit 0
+#         fi
+#         echo "Current Q4OS version: ($Q4OSVERSION)"
+
+        if [ -z "$2" ] ; then
+         echo "This seems to be a new q4os-base installation as no preceding version given."
+         echo "Postinst script completed."
+         exit 0
+        fi
+
+        QBVER_FORMER="$2"
+        QBVER_FIRST="$( /opt/trinity/bin/kreadconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "q4osbase_version" )" && true
+        if [ -z "$QBVER_FIRST" ] ; then
+         QBVER_FIRST="0"
+        fi
+        echo "q4os-base version first:  ($QBVER_FIRST)"
+        echo "q4os-base version former: ($QBVER_FORMER)"
+        # echo "q4os-base version new :   ($QBVER_NEW)"
+
+        QAPDISTR_SCR="$( dash /usr/share/apps/q4os_system/bin/print_qaptdistr.sh )" && true
+        FUSRNAME="$( dash /usr/share/apps/q4os_system/bin/get_first_user.sh --name )" && true
+        echo "Distro: [$QAPDISTR_SCR]"
+        echo "First user: [$FUSRNAME]"
+
+#--------------- fixes --------------------------------------
+  echo "[FX] Fixes start."
+  set +e #do not exit this script on error
+
+  #function
+  is_greater_then_former () {
+    local ISGREATER
+    local QBVER_TOCOMPARE="$1"
+    unset ISGREATER
+    dpkg --compare-versions "$QBVER_TOCOMPARE" gt "$QBVER_FORMER" && ISGREATER="yes"
+    if [ "$ISGREATER" = "yes" ] ; then
+      echo "[FX] Checking diffs ($QBVER_TOCOMPARE)."
+      return 0
+    fi
+    # echo "[FX] False. q4os-base version ($QBVER_TOCOMPARE) is not greater then the previous version."
+    return 1
+  }
+
+  if is_greater_then_former "4.0.0-a1" ; then
+    if [ "$QAPDISTR_SCR" = "bullseye" ] || [ "$QAPDISTR_SCR" = "focal" ] ; then
+      dash /var/lib/q4os/fixes/fix_002_reposrmv.sh
+    fi
+  fi
+
+  if is_greater_then_former "4.0.0-a2" ; then
+    if [ "$QAPDISTR_SCR" = "focal" ] ; then
+      dash /var/lib/q4os/fixes/fix_003_reposrmv.sh
+    fi
+  fi
+
+  if is_greater_then_former "4.1.1-a1" ; then
+    if [ "$QAPDISTR_SCR" = "focal" ] ; then
+      QAPDISTR_SCR="$QAPDISTR_SCR" dash /var/lib/q4os/fixes/fix_004_reposmove.sh
+    fi
+  fi
+
+  if is_greater_then_former "4.2.2-a1" ; then
+    if [ "$QAPDISTR_SCR" != "focal" ] ; then
+      echo "Fixing hplip configuration ..."
+      /opt/trinity/bin/kwriteconfig --file "/home/$FUSRNAME/.hplip/hplip.conf" --group "authentication" --key "su_sudo" "sudo"
+      chmod a+r /home/$FUSRNAME/.hplip/hplip.conf
+      chown -R $FUSRNAME:$FUSRNAME /home/$FUSRNAME/.hplip/
+    fi
+  fi
+
+  if is_greater_then_former "4.2.3-a1" ; then
+    if [ "$QAPDISTR_SCR" != "focal" ] ; then
+      echo "Marking packages ..."
+      apt-mark manual print-manager plasma-discover q4os-debonaire-plasma-theme plasma-browser-integration 2>/dev/null
+    fi
+  fi
+
+  if is_greater_then_former "4.5.2-a1" ; then
+    #fixing a few debian bugs, preconfigure debconf for dpkg to work in noninteractive mode
+    if [ "$( dash /usr/share/apps/q4os_system/bin/print_package_version.sh "grub-pc" )" != "0" ] ; then
+      if [ -z "$( debconf-show grub-pc | grep "grub-pc/install_devices:" | awk -F': ' '{ print $2 }' | tr -d '\n' | tr -d ' ' )" ] ; then
+        echo "Preconfiguring grub-pc ..."
+        echo "set grub-pc/install_devices_empty true" | debconf-communicate -f noninteractive > /dev/null
+      fi
+    fi
+    if [ "$( dash /usr/share/apps/q4os_system/bin/print_package_version.sh "shim-signed-common" )" != "0" ] ; then
+      echo "Preconfiguring shim-signed-common ..."
+      echo "set shim/disable_secureboot false" | debconf-communicate -f noninteractive > /dev/null
+      echo "set shim/enable_secureboot true" | debconf-communicate -f noninteractive > /dev/null
+    fi
+  fi
+
+  if is_greater_then_former "4.5.3-a1" ; then
+    if [ "$QAPDISTR_SCR" != "focal" ] ; then
+      echo "Checking repositories ..."
+      for REPO_FL1 in /etc/apt/sources.list.d/*.list ; do
+        echo " $REPO_FL1"
+        sed -i 's/qextrepo buster-/qextrepo bullseye-/' $REPO_FL1
+      done
+    fi
+  fi
+
+  if is_greater_then_former "4.6.1-a2" ; then
+    echo "Applying fix for X2Go ..."
+    mkdir -p /usr/local/bin/
+    rm -f /usr/local/bin/starttrinity
+    echo '#!/bin/sh' > /usr/local/bin/starttrinity
+    echo '/opt/trinity/bin/starttde' >> /usr/local/bin/starttrinity
+    chmod a+x /usr/local/bin/starttrinity
+    rm -f /usr/local/bin/startkde
+    echo '#!/bin/sh' > /usr/local/bin/startkde
+    echo '/usr/bin/startplasma-x11' >> /usr/local/bin/startkde
+    chmod a+x /usr/local/bin/startkde
+  fi
+
+  if is_greater_then_former "4.6.2-a1" ; then
+    if [ -d "/root/.config/gtk-3.0" ] ; then
+      echo "Fixing root GTK3 themes ..."
+      mv /root/.config/gtk-3.0 /root/.config/.gtk-3.0.q4fx
+    fi
+  fi
+
+  if is_greater_then_former "4.6.3-a1" ; then
+    if [ -f "/etc/apt/sources.list.d/20_debian.list" ] ; then
+      echo "Fixing Debian sources ..."
+      sed -i 's@#deb http://security.debian.org/debian-security/ bullseye/updates@deb http://security.debian.org/debian-security/ bullseye-security@' /etc/apt/sources.list.d/20_debian.list
+      sed -i 's@##deb-src http://security.debian.org/debian-security/ bullseye/updates@##deb-src http://security.debian.org/debian-security/ bullseye-security@' /etc/apt/sources.list.d/20_debian.list
+    fi
+    if [ -f "/home/$FUSRNAME/.xsettingsd" ] ; then
+      echo "Fixing Xsettings daemon ..."
+      sudo -n -u $FUSRNAME mkdir -p /home/$FUSRNAME/.configtde/xsettingsd/
+      sudo -n -u $FUSRNAME mv /home/$FUSRNAME/.xsettingsd /home/$FUSRNAME/.configtde/xsettingsd/xsettingsd.conf
+      chown -R $FUSRNAME:$FUSRNAME /home/$FUSRNAME/.configtde/xsettingsd/
+    fi
+  fi
+
+  if is_greater_then_former "4.7.1-a3" ; then
+    #for logname command to work with tdm, it's needed for mx-packageinstaller to work too
+    if [ -f "/etc/pam.d/tdm-trinity" ] && [ -z "$( grep "pam_loginuid.so" /etc/pam.d/tdm-trinity | grep -v "^#" )" ] ; then
+      echo 'session    optional     pam_loginuid.so' >> /etc/pam.d/tdm-trinity
+    fi
+    if [ -f "/etc/pam.d/tdm-trinity-np" ] && [ -z "$( grep "pam_loginuid.so" /etc/pam.d/tdm-trinity-np | grep -v "^#" )" ] ; then
+      echo 'session    optional     pam_loginuid.so' >> /etc/pam.d/tdm-trinity-np
+    fi
+  fi
+
+  if is_greater_then_former "4.8.1-a1" ; then
+    ( dash /var/lib/q4os/fixes/fix_005_tde11upg.sh 2>&1 ) | tee /tmp/.qapttdeupgrade.log
+    ( dash /usr/share/apps/q4os_system/bin/qapt_tde-upg.sh "4.8.1-a1" "4:14.0.11" "true" 2>&1 ) >> /tmp/.qapttdeupgrade.log &
+  fi
+
+  if is_greater_then_former "4.9.1-a1" ; then
+    echo "Removing obsolete mimetype definitions ..."
+    rm -f /usr/share/applications/q4os-mt-installerqsi.desktop
+    rm -f /usr/share/applications/q4os-mt-q4osexecscript.desktop
+    update-mime-database /usr/share/mime/
+    update-desktop-database /usr/share/applications/
+  fi
+
+  if is_greater_then_former "4.9.1-a2" ; then
+    if [ "$( dash /usr/share/apps/q4os_system/bin/print_package_version.sh "google-chrome-stable" )" != "0" ] && [ -f "/etc/apt/sources.list.d/dvpck_q4os-chrome.list" ] && [ ! -f "/etc/apt/sources.list.d/google-chrome.list" ] ; then
+      echo "Fixing Chrome sources ..."
+      echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' > /etc/apt/sources.list.d/google-chrome.list
+    fi
+  fi
+
+  if is_greater_then_former "4.9.2-a1" ; then
+    if ! q4hw-info --vboxguest 1>/dev/null ; then
+      echo "Marking needless packages ..."
+      apt-mark auto q4os-vboxgutils virtualbox-guest-* 2>/dev/null 1>/dev/null
+    fi
+  fi
+
+  if is_greater_then_former "4.9.3-a1" ; then
+    TDMRCFL="/etc/trinity/tdm/tdmrc"
+    if [ -f "$TDMRCFL" ] && [ -z "$( cat "$TDMRCFL" | grep "^ServerAttempts=" )" ] ; then
+      #workaround: no xorg after q4os install - fixed with plymouth setup, see https://sourceforge.net/p/q4os/tickets/185/
+      echo "Applying fix for TDM ..."
+      /opt/trinity/bin/kwriteconfig --file "$TDMRCFL" --group "X-:0-Core" --key "ServerAttempts" "5"
+      /opt/trinity/bin/kwriteconfig --file "$TDMRCFL" --group "X-:0-Core" --key "OpenDelay" "3"
+      # /opt/trinity/bin/kwriteconfig --file "$TDMRCFL" --group "X-:0-Core" --key "ServerTimeout" "60"
+      chmod a+r $TDMRCFL
+    fi
+  fi
+
+  if is_greater_then_former "4.10.1-a1" ; then
+    echo "Updating keyrings .."
+    export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE="1"
+    rm -f /etc/apt/trusted.gpg.d/opera.archive.key.2019.gpg
+    apt-key del "ABDC4346" #opera.archive.key.2019, expired
+    apt-key del "0D811D58" #spotify key, expired
+    apt-key del "B69735B2" #vivaldi key, expired
+    rm -f /etc/apt/trusted.gpg.d/q4osaptkey1-krk.gpg
+    apt-key del "E2E6A0B3" #q4os key, move to trusted.d dir
+    gpg --yes --dearmor -o /etc/apt/trusted.gpg.d/q4osaptkey1-krk.gpg /usr/share/apps/q4os_system/q4p_keyring/q4a-q4os.pub
+    if [ -n "$( cat /etc/apt/sources.list /etc/apt/sources.list.d/*.list 2>/dev/null | grep "^deb" | grep "anydesk" )" ] ; then
+      echo "Fixing Anydesk keyring .."
+      apt-key add /usr/share/apps/q4os_system/q4p_keyring/q4a-anydesk.pub
+    fi
+    if [ -n "$( cat /etc/apt/sources.list /etc/apt/sources.list.d/*.list 2>/dev/null | grep "^deb" | grep "spotify" )" ] ; then
+      echo "Fixing Spotify keyring .."
+      apt-key add /usr/share/apps/q4os_system/q4p_keyring/q4a-spotify.pub
+    fi
+    unset APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE
+  fi
+
+  if is_greater_then_former "4.10.3-a1" ; then
+    if [ "$QAPDISTR_SCR" = "bullseye" ] ; then
+      ( dash /usr/share/apps/q4os_system/bin/qapt_tde-upg.sh "4.10.3-a1" "4:14.0.12" "true" 2>&1 ) >> /tmp/.qapttdeupgrade.log &
+    fi
+  fi
+
+  if is_greater_then_former "4.11.2-a1" ; then
+    if [ "$QAPDISTR_SCR" = "jammy" ] || [ "$QAPDISTR_SCR" = "focal" ] ; then
+      echo "Disabling release upgrades .."
+      dash /usr/share/apps/q4os_system/bin/disable_release_upgrades.sh
+    fi
+  fi
+
+  if is_greater_then_former "4.11.3-a1" ; then
+    if [ "$QAPDISTR_SCR" = "bullseye" ] ; then
+      if dpkg --compare-versions "$( dash /usr/share/apps/q4os_system/bin/print_package_version.sh "firefox" )" gt "0" ; then
+        echo "Running script to check and possibly upgrade Firefox release ..."
+        ( dash /var/lib/q4os/fixes/fix_006_ff109upg.sh 2>&1 ) >> /tmp/.ff109upgrade.log &
+      fi
+    fi
+  fi
+
+  if is_greater_then_former "4.12.1-a1" ; then
+    /opt/trinity/bin/kwriteconfig --file "/etc/q4os/q4base.conf" --group "General" --key "xdgcfghome_plasma" ".configkde"
+    /opt/trinity/bin/kwriteconfig --file "/etc/q4os/q4base.conf" --group "General" --key "xdgcfghome_trinity" ".configtde"
+    /opt/trinity/bin/kwriteconfig --file "/etc/q4os/q4base.conf" --group "General" --key "tdehome_plasma" ".configkde/trinity"
+  fi
+
+  if is_greater_then_former "4.13.1-a1" ; then
+    echo "Handling systemd services .."
+    if systemctl is-enabled q4os_first_boot.service 1>/dev/null ; then
+      systemctl disable q4os_first_boot.service
+      systemctl enable q4os_first_boot.service
+    fi
+    systemctl enable on_boot.service
+    systemctl --global enable populate_homedir.service
+  fi
+
+  if is_greater_then_former "4.13.4-a1" ; then
+    if [ "$QAPDISTR_SCR" = "jammy" ] ; then
+      if [ -f "/etc/apt/sources.list.d/12_qtde.list" ] && [ -f "/opt/trinity/bin/tdm" ] ; then
+        echo "Fixing Quarkos sources ..."
+        sed -i 's@qubuntu.org/quarktde jammy basic$@qubuntu.org/quarktde jammy main@' /etc/apt/sources.list.d/12_qtde.list
+      fi
+      ( dash /usr/share/apps/q4os_system/bin/qapt_tde-upg.sh "4.13.4-a1" "4:14.1.1" "true" 2>&1 ) >> /tmp/.qapttdeupgrade.log &
+    fi
+  fi
+
+  if is_greater_then_former "4.16.1-a1" ; then
+    rm -f /etc/apt/preferences.d/pin80-quark
+    if [ "$QAPDISTR_SCR" = "jammy" ] || [ "$QAPDISTR_SCR" = "bookworm" ] ; then
+      ( dash /usr/share/apps/q4os_system/bin/qapt_tde-upg.sh "4.13.4-a1" "4:14.1.1" "true" 2>&1 ) >> /tmp/.qapttdeupgrade.log &
+    fi
+  fi
+
+  if is_greater_then_former "4.18.1-a1" ; then
+    if [ "$QAPDISTR_SCR" = "jammy" ] || [ "$QAPDISTR_SCR" = "focal" ] ; then
+      echo "Fixing Quarkos apt sources ..."
+      if [ -f "/etc/apt/preferences.d/pin80-quark" ] ; then
+        # echo " /etc/apt/preferences.d/pin80-quark"
+        sed -i "s@qubuntu.org@q4os.org@" /etc/apt/preferences.d/pin80-quark
+      fi
+      if [ -f "/etc/apt/sources.list" ] ; then
+        # echo " /etc/apt/sources.list"
+        sed -i "s@qubuntu.org@q4os.org@" /etc/apt/sources.list
+      fi
+      for REPOFL1 in /etc/apt/sources.list.d/*.list ; do
+        # echo " $REPOFL1"
+        sed -i "s@qubuntu.org@q4os.org@" $REPOFL1
+      done
+    fi
+  fi
+
+  if is_greater_then_former "4.19.4-a2" ; then
+    if [ "$QAPDISTR_SCR" = "noble" ] ; then
+      echo "Amending Ubuntu defaults ..."
+      KDESDDMCG1="/etc/sddm.conf.d/kde_settings.conf"
+      if [ -z "$( /opt/trinity/bin/kreadconfig --file "$KDESDDMCG1" --group "Theme" --key "Current" )" ] ; then
+        mkdir -p /etc/sddm.conf.d/
+        /opt/trinity/bin/kwriteconfig --file "$KDESDDMCG1" --group "Theme" --key "Current" "breeze"
+        chmod a+r $KDESDDMCG1
+      fi
+      /opt/trinity/bin/kwriteconfig --file "/etc/xdg/plasma-welcomerc" --group "General" --key "ShouldShow" "false" #don't run plasma-welcome wizzard
+      chmod a+r /etc/xdg/plasma-welcomerc
+    fi
+  fi
+
+  set -e
+  echo "[FX] Fixes end."
+#--------------- fixes end --------------------------------------
+
+#         # trigger an update notification, which recommends to reboot
+#         echo "Trigerring reboot notification ..."
+#         [ -x /usr/share/update-notifier/notify-reboot-required ] && \
+#             /usr/share/update-notifier/notify-reboot-required || true
+#
+#         watch_apt_reboot_required &
+
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+# dh_installdeb will replace this with shell code automatically
+# generated by other debhelper scripts.
+
+exit 0

@@ -1,0 +1,9 @@
+# MX Community Main and Test Repos
+deb [signed-by=/usr/share/keyrings/q4a-mxlinux.gpg] http://mirrors.rit.edu/mxlinux/mx-packages/mx/repo/ bullseye main non-free
+#deb [signed-by=/usr/share/keyrings/q4a-mxlinux.gpg] http://mirrors.rit.edu/mxlinux/mx-packages/mx/testrepo/ bullseye test
+
+#ahs hardware stack repo
+deb [signed-by=/usr/share/keyrings/q4a-mxlinux.gpg] http://mirrors.rit.edu/mxlinux/mx-packages/mx/repo/ bullseye ahs
+
+#pin: 100
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-mxlinux.pub

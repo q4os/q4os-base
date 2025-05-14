@@ -1,0 +1,4 @@
+#!/bin/sh
+
+dash /usr/share/apps/q4os_system/bin/qapt_fix.sh --noninteractive 2>&1
+exit 0

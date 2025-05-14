@@ -1,0 +1,15 @@
+[Unit]
+Description=Populate user's home directory with initial configuration files
+Before=default.target
+Before=pulseaudio.service
+Before=plasma-kcminit.service 
+ConditionUser=!root
+ConditionPathExists=!/home/%u/.local/share/q4os/.extrdq4.stp
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/dash /usr/share/apps/q4os_system/bin/populate_homedir.sh
+
+[Install]
+WantedBy=basic.target

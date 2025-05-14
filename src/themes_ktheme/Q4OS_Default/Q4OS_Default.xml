@@ -1,0 +1,171 @@
+<!DOCTYPE ktheme>
+<ktheme version="1" >
+  <general>
+    <author value="Q4OS Team" />
+    <email value="q4os@q4os.org" />
+    <homepage value="https://www.q4os.org" />
+    <comment value="Q4OS Default theme" />
+    <version value="1.0" />
+  </general>
+  <desktop number="0" common="1" >
+    <mode id="Flat" />
+    <color1 rgb="#264a6e" />
+    <color2 rgb="" />
+    <blending mode="NoBlending" balance="100" reverse="0" />
+    <pattern name="" />
+    <wallpaper mode="ScaleAndCrop" url="q4os-wp01.png" />
+<!--     <wallpaper mode="ScaleAndCrop" url="theme:/wallpapers/desktop/q4os-wp01.png" /> -->
+  </desktop>
+  <screensaver name="KClock.desktop" />
+  <icons name="crystalsvg" >
+    <Animated value="0" object="desktop" />
+    <DoublePixels value="0" object="desktop" />
+    <Size value="32" object="desktop" />
+<!--    <ActiveColor rgb="#ffff66" object="desktop" />
+    <ActiveColor2 rgb="#000066" object="desktop" />-->
+    <ActiveEffect name="none" object="desktop" />
+    <ActiveSemiTransparent value="0" object="desktop" />
+    <ActiveValue value="32" object="desktop" />
+<!--    <DefaultColor rgb="#ffffff" object="desktop" />
+    <DefaultColor2 rgb="#000000" object="desktop" />-->
+    <DefaultEffect name="none" object="desktop" />
+    <DefaultSemiTransparent value="0" object="desktop" />
+    <DefaultValue value="32" object="desktop" />
+<!--    <DisabledColor rgb="#808080" object="desktop" />
+    <DisabledColor2 rgb="#333333" object="desktop" />-->
+    <DisabledEffect name="togray" object="desktop" />
+    <DisabledSemiTransparent value="0" object="desktop" />
+    <DisabledValue value="32" object="desktop" />
+    <Animated value="0" object="mainToolbar" />
+    <DoublePixels value="0" object="mainToolbar" />
+    <Size value="22" object="mainToolbar" />
+    <ActiveColor rgb="#a99cff" object="mainToolbar" />
+    <ActiveColor2 rgb="#000000" object="mainToolbar" />
+    <ActiveEffect name="none" object="mainToolbar" />
+    <ActiveSemiTransparent value="0" object="mainToolbar" />
+    <ActiveValue value="1" object="mainToolbar" />
+    <DefaultColor rgb="#9080f8" object="mainToolbar" />
+    <DefaultColor2 rgb="#000000" object="mainToolbar" />
+    <DefaultEffect name="none" object="mainToolbar" />
+    <DefaultSemiTransparent value="0" object="mainToolbar" />
+    <DefaultValue value="1" object="mainToolbar" />
+    <DisabledColor rgb="#22ca00" object="mainToolbar" />
+    <DisabledColor2 rgb="#000000" object="mainToolbar" />
+    <DisabledEffect name="togray" object="mainToolbar" />
+    <DisabledSemiTransparent value="1" object="mainToolbar" />
+    <DisabledValue value="1" object="mainToolbar" />
+    <Animated value="0" object="panel" />
+    <DoublePixels value="0" object="panel" />
+    <Size value="32" object="panel" />
+<!--    <ActiveColor rgb="#ffff66" object="panel" />
+    <ActiveColor2 rgb="#000066" object="panel" />-->
+    <ActiveEffect name="none" object="panel" />
+    <ActiveSemiTransparent value="0" object="panel" />
+    <ActiveValue value="0" object="panel" />
+    <DefaultColor rgb="#9080f8" object="panel" />
+    <DefaultColor2 rgb="#000000" object="panel" />
+    <DefaultEffect name="none" object="panel" />
+    <DefaultSemiTransparent value="0" object="panel" />
+    <DefaultValue value="1" object="panel" />
+    <DisabledColor rgb="#22ca00" object="panel" />
+    <DisabledColor2 rgb="#000000" object="panel" />
+    <DisabledEffect name="togray" object="panel" />
+    <DisabledSemiTransparent value="1" object="panel" />
+    <DisabledValue value="1" object="panel" />
+    <Animated value="0" object="small" />
+    <DoublePixels value="0" object="small" />
+    <Size value="16" object="small" />
+    <ActiveColor rgb="#a99cff" object="small" />
+    <ActiveColor2 rgb="#000000" object="small" />
+    <ActiveEffect name="none" object="small" />
+    <ActiveSemiTransparent value="0" object="small" />
+    <ActiveValue value="1" object="small" />
+    <DefaultColor rgb="#9080f8" object="small" />
+    <DefaultColor2 rgb="#000000" object="small" />
+    <DefaultEffect name="none" object="small" />
+    <DefaultSemiTransparent value="0" object="small" />
+    <DefaultValue value="1" object="small" />
+    <DisabledColor rgb="#22ca00" object="small" />
+    <DisabledColor2 rgb="#000000" object="small" />
+    <DisabledEffect name="togray" object="small" />
+    <DisabledSemiTransparent value="1" object="small" />
+    <DisabledValue value="1" object="small" />
+    <Animated value="0" object="toolbar" />
+    <DoublePixels value="0" object="toolbar" />
+    <Size value="22" object="toolbar" />
+    <ActiveColor rgb="#a99cff" object="toolbar" />
+    <ActiveColor2 rgb="#000000" object="toolbar" />
+    <ActiveEffect name="none" object="toolbar" />
+    <ActiveSemiTransparent value="0" object="toolbar" />
+    <ActiveValue value="1" object="toolbar" />
+    <DefaultColor rgb="#9080f8" object="toolbar" />
+    <DefaultColor2 rgb="#000000" object="toolbar" />
+    <DefaultEffect name="none" object="toolbar" />
+    <DefaultSemiTransparent value="0" object="toolbar" />
+    <DefaultValue value="1" object="toolbar" />
+    <DisabledColor rgb="#22ca00" object="toolbar" />
+    <DisabledColor2 rgb="#000000" object="toolbar" />
+    <DisabledEffect name="togray" object="toolbar" />
+    <DisabledSemiTransparent value="1" object="toolbar" />
+    <DisabledValue value="1" object="toolbar" />
+  </icons>
+  <sounds/>
+  <colors contrast="7" >
+    <background rgb="#e9e9e9" object="global" />
+    <selectBackground rgb="#ffdd76" object="global" />
+    <foreground rgb="#000000" object="global" />
+    <windowForeground rgb="#000000" object="global" />
+    <windowBackground rgb="#ffffff" object="global" />
+    <selectForeground rgb="#030303" object="global" />
+    <buttonBackground rgb="#f6f6f6" object="global" />
+    <buttonForeground rgb="#000000" object="global" />
+    <linkColor rgb="#0000c0" object="global" />
+    <visitedLinkColor rgb="#800080" object="global" />
+    <alternateBackground rgb="#eef6ff" object="global" />
+    <activeForeground rgb="#ffffff" object="twin" />
+    <inactiveBackground rgb="#d2d2d2" object="twin" />
+    <inactiveBlend rgb="#d7d7d7" object="twin" />
+    <activeBackground rgb="#97adc3" object="twin" />
+    <activeBlend rgb="#97adc3" object="twin" />
+    <inactiveForeground rgb="#ffffff" object="twin" />
+    <activeTitleBtnBg rgb="#dcdcdc" object="twin" />
+    <inactiveTitleBtnBg rgb="#dcdcdc" object="twin" />
+    <frame rgb="#e9e9e9" object="twin" />
+    <inactiveFrame rgb="#e9e9e9" object="twin" />
+    <handle rgb="#e9e9e9" object="twin" />
+    <inactiveHandle rgb="#e9e9e9" object="twin" />
+  </colors>
+  <cursors name="DMZ-White" />
+  <wm type="builtin" name="twin3_plastik" >
+    <buttons right="IAX" left="M_" />
+    <border size="1" />
+  </wm>
+  <konqueror>
+    <wallpaper url="" />
+<!--     <wallpaper url="theme:/wallpapers/konqueror/noise.png" /> -->
+    <bgcolor rgb="#ffffff" />
+  </konqueror>
+  <panel>
+    <background colorize="1" url="/opt/trinity/share/apps/kicker/pics/panel-gradient1-q4.png" />
+<!--     <background colorize="1" url="theme:/wallpapers/panel/panel-gradient1-q4.png" /> -->
+    <transparent value="0" />
+    <position value="3" />
+    <showlefthidebutton value="0" />
+    <showrighthidebutton value="0" />
+  </panel>
+  <widgets name="q4os_tstyle02" />
+  <fonts>
+    <font value="Droid Sans,9,-1,5,50,0,0,0,0,0" object="General" />
+    <fixed value="Droid Sans Mono,9,-1,5,50,0,0,0,0,0" object="General" />
+    <toolBarFont value="Droid Sans,9,-1,5,50,0,0,0,0,0" object="General" />
+    <menuFont value="Droid Sans,9,-1,5,50,0,0,0,0,0" object="General" />
+    <activeFont value="Droid Sans,9,-1,5,50,0,0,0,0,0" object="WM" />
+    <taskbarFont value="Droid Sans,9,-1,5,50,0,0,0,0,0" object="General" />
+<!--     <StandardFont value="Droid Sans,9,-1,5,50,0,0,0,0,0" object="FMSettings" /> *disabled to workaround desktop font bug #70 -->
+  </fonts>
+  <keyboard>
+    <show_flag value="1" />
+  </keyboard>
+  <pre_uncompress filename="/opt/trinity/share/apps/kthememanager/themes/q4os_default.tar.gz" />
+  <lsw_postscript scriptname="/opt/trinity/share/apps/kthememanager/themes/lswpscr_q4os_default.sh" />
+</ktheme>

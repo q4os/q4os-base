@@ -1,0 +1,8 @@
+[FMSettings]
+HoverCloseButton=true
+MMBOpensTab=true
+TabCloseActivatePrevious=true
+
+[Notification Messages]
+askSaveapplication/octet-stream=yes
+plugin-application/x-shockwave-flash=no

@@ -1,0 +1,22 @@
+#!/bin/sh #sourced script
+
+#fix debian bug - inspired by ubuntu "Xsession" file
+#need to truncate "$HOME/.xsession-errors", if it is too big to avoid disk usage DoS
+
+if [ -n "$( cat /etc/os-release 2>/dev/null | grep "^ID=" | grep "ubuntu" )" ] ; then
+  return
+fi
+
+# DDISTRO1="$( dash /usr/share/apps/q4os_system/bin/print_qaptdistr.sh )"
+# if [ "$DDISTRO1" = "trixie" ] || [ "$DDISTRO1" = "bookworm" ] ; then
+
+ERRFILE1="$HOME/.xsession-errors"
+if [ "$( stat -c%s "$ERRFILE1" )" -gt 700000 ]; then
+  TMP_FL1="$( mktemp -p "/tmp/" )"
+  tail -c 350000 "$ERRFILE1" > "$TMP_FL1" && cat "$TMP_FL1" > "$ERRFILE1"
+  unset TMP_FL1
+fi
+unset ERRFILE1
+
+# fi
+# unset DDISTRO1

@@ -1,0 +1,8 @@
+[Desktop Action download_photos_q401]
+Exec=/usr/share/apps/q4os_system/bin/copy_images.sh "%u"
+Icon=inline_image
+Name=Download Photos
+
+[Desktop Entry]
+Actions=download_photos_q401
+X-TDE-ServiceTypes=media/removable_unmounted,media/camera_unmounted,media/removable_unmounted_encrypted,media/removable_unmounted_decrypted

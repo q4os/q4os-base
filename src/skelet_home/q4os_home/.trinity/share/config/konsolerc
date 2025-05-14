@@ -1,0 +1,5 @@
+[Desktop Entry]
+defaultfont=Liberation Mono,10,-1,5,75,0,0,0,0,0
+
+[TipOfDay]
+RunOnStart=false

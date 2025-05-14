@@ -1,0 +1,15 @@
+[General]
+StandardFont=Droid Sans,9,-1,5,50,0,0,0,0,0
+activeFont=Droid Sans,9,-1,5,50,0,0,0,0,0
+background=233,233,233
+desktopFont=Droid Sans,9,-1,5,50,0,0,0,0,0
+fixed=Droid Sans Mono,9,-1,5,50,0,0,0,0,0
+font=Droid Sans,9,-1,5,50,0,0,0,0,0
+menuFont=Droid Sans,9,-1,5,50,0,0,0,0,0
+selectBackground=255,221,118
+selectForeground=3,3,3
+smallestReadableFont=Droid Sans,8,-1,5,50,0,0,0,0,0
+taskbarFont=Droid Sans,9,-1,5,50,0,0,0,0,0
+toolBarFont=Droid Sans,9,-1,5,50,0,0,0,0,0
+windowBackground=255,255,255
+windowForeground=0,0,0

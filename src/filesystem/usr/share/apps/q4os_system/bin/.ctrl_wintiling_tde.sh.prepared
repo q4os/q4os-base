@@ -1,0 +1,29 @@
+#!/bin/sh
+
+#enable/reset windows tiling for trinity desktop
+
+if [ "$1" = "--turn-on" ] ; then
+  echo "Setting windows tiling active ..."
+  TWINRECONF="1"
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "ElectricBorders" ""
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "ElectricBorderDelay" ""
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "ActiveBorders" "4"
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "ActiveBorderDelay" "150"
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "ResetMaximizedWindowGeometry" "false"
+elif [ "$1" = "--reset" ] ; then
+  echo "Reseting active corners to default values ..."
+  TWINRECONF="1"
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "ElectricBorders" ""
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "ElectricBorderDelay" ""
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "ActiveBorders" ""
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "ActiveBorderDelay" ""
+  kwriteconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "ResetMaximizedWindowGeometry" ""
+else
+  echo "No argument, only printing ActiveBorders value: $(kreadconfig --file "$HOME/.trinity/share/config/twinrc" --group "Windows" --key "ActiveBorders")"
+fi
+
+if [ "$TWINRECONF" = "1" ] ; then
+  if dcopfind twin 1>/dev/null ; then
+    dcop twin KWinInterface reconfigure
+  fi
+fi

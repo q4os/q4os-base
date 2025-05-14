@@ -1,0 +1,12 @@
+Sheets[$e]=$HOME/.trinity/share/apps/ksysguard//Process Table.sgrd,$HOME/.trinity/share/apps/ksysguard//System Load.sgrd
+WorkDir[$e]=$HOME/.trinity/share/apps/ksysguard/
+alarmColor=255,0,0
+backgroundColor=88,88,88
+fgColor1=160,160,160
+fgColor2=160,160,160
+fontSize=9
+isMinimized=false
+sensorColors=#1889ff,#ff7f08,#ffeb14,#ff0000,#00a900,#0028a9,#a92928,#28a929,#297da9,#a9bd7d,#7dbdbd,#bdfdbd,#bde7fd,#fd87e7,#e78787,#87a787,#879ca7,#a7ec9c,#9cecec,#ec7cec,#ec777c,#7c1f77,#771f1f,#1fe71f,#1fe4e7,#e7b8e4,#e4b8b8,#b81cb8,#b81b1c,#1c051b,#1b0505,#05b705
+
+[Colors]
+CurrentPalette=Forty Colors

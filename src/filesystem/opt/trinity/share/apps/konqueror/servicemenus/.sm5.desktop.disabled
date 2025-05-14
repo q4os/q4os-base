@@ -1,0 +1,12 @@
+[Desktop Entry]
+X-TDE-ServiceTypes=application/x-q4os-executable
+#ServiceTypes=application/x-shellscript
+Actions=x-q4os-executable-1
+#X-TDE-AuthorizeAction=shell_access
+X-TDE-Priority=TopLevel
+# X-TDE-MediaNotifierHide=true
+
+[Desktop Action x-q4os-executable-1]
+Name=Run
+Icon=application-x-executable
+Exec=kstart --activate $0

@@ -1,0 +1,26 @@
+[Desktop Entry]
+Comment=Language Pack installation
+Comment[cs]=Jazykový balíček instalace
+Comment[de]=Sprachpaket installation
+Comment[es]=Paquete de Idioma instalación
+Comment[it]=Lingua Pacchetto installazione
+Comment[ru]=Язык Пакет установка
+Exec[$e]=dash $HOME/.addlang_ai_01.sh
+#GenericName=
+Icon=locale
+#MimeType=
+Name=Language Pack installation
+Name[cs]=Jazykový balíček instalace
+Name[de]=Sprachpaket installation
+Name[es]=Paquete de Idioma instalación
+Name[it]=Lingua Pacchetto installazione
+Name[ru]=Язык Пакет установка
+Path=/tmp
+StartupNotify=true
+Terminal=false
+#TerminalOptions=
+Type=Application
+#X-DCOP-ServiceType=
+X-TDE-SubstituteUID=false
+#X-TDE-Username=
+OnlyShowIn=TDE;

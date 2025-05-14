@@ -81,7 +81,7 @@ if false ; then
   fi
 fi
 
-if [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "jammy" ] || [ "$QAPTDISTR1" = "noble" ] ; then
+if [ "$QAPTDISTR1" = "trixie" ] || [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "jammy" ] || [ "$QAPTDISTR1" = "noble" ] ; then
   #don't start device applet for tde-14.1.1
   /opt/trinity/bin/kwriteconfig --file "tdehwdevicetrayrc" --group "General" --key "Autostart" "false"
 fi

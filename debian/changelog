@@ -1,8 +1,10 @@
 q4os-base (4.25.3-a1) UNRELEASED; urgency=medium
 
   * Detect Plasma 6 on the first time login
+  * Don't start TDE device applet for Trixie
+  * Update changelog
 
- -- Q4OS Team <devteam@q4os.org>  Wed, 14 May 2025 14:29:48 +0200
+ -- Q4OS Team <devteam@q4os.org>  Wed, 14 May 2025 21:07:21 +0200
 
 q4os-base (4.25.2-a2) UNRELEASED; urgency=medium
 

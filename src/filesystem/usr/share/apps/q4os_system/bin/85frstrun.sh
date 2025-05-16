@@ -124,21 +124,29 @@ if [ -n "$THEME1" ] ; then
   pkill -n kdialog
   echo "custom theme done."
 fi
-echo "configuring twin .."
-TWINRCTMPCFG="/tmp/.fsttwinrc_$ACTIVE_USER"
-cp "$HOME/.trinity/share/config/twinrc" "$TWINRCTMPCFG"
-# kwriteconfig --file "$TWINRCTMPCFG" --group "Style" --key "PluginLib" "twin3_plastik"
-kwriteconfig --file "$TWINRCTMPCFG" --group "Style" --key "ButtonsOnLeft" "_"
-kwriteconfig --file "$TWINRCTMPCFG" --group "Style" --key "ButtonsOnRight" "AX"
-kwriteconfig --file "$TWINRCTMPCFG" --group "Style" --key "CustomButtonPositions" "true"
-kwriteconfig --file "$TWINRCTMPCFG" --group "MouseBindings" --key "CommandActiveTitlebar2" "Nothing"
-kwriteconfig --file "$TWINRCTMPCFG" --group "MouseBindings" --key "CommandActiveTitlebar3" "Nothing"
-kwriteconfig --file "$TWINRCTMPCFG" --group "MouseBindings" --key "CommandInactiveTitlebar2" "Nothing"
-kwriteconfig --file "$TWINRCTMPCFG" --group "MouseBindings" --key "CommandInactiveTitlebar3" "Nothing"
-echo "launching twin .."
-$TDEDIR/bin/twin --disablecompositionmanager --lock --replace --config "$TWINRCTMPCFG" &
-CTR1="100" ; while [ "$CTR1" -gt "0" ] && [ -z "$( dcopfind twin )" ] ; do echo "wait for twin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.1
-echo "twin ready."
+
+if false && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell6" ] && [ -f "/usr/bin/kwin" ] ; then
+  #disabled now, todo: need to configure kwin not to show minimize/close buttons
+  /usr/bin/kwin --replace --lock --no-kactivities &
+  CTR1="100" ; while [ "$CTR1" -gt "0" ] && [ -z "$( ps -ef | grep "kwin" )" ] ; do echo "wait for kwin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.1
+  echo "kwin ready."
+else
+  echo "configuring twin .."
+  TWINRCTMPCFG="/tmp/.fsttwinrc_$ACTIVE_USER"
+  cp "$HOME/.trinity/share/config/twinrc" "$TWINRCTMPCFG"
+  # kwriteconfig --file "$TWINRCTMPCFG" --group "Style" --key "PluginLib" "twin3_plastik"
+  kwriteconfig --file "$TWINRCTMPCFG" --group "Style" --key "ButtonsOnLeft" "_"
+  kwriteconfig --file "$TWINRCTMPCFG" --group "Style" --key "ButtonsOnRight" "AX"
+  kwriteconfig --file "$TWINRCTMPCFG" --group "Style" --key "CustomButtonPositions" "true"
+  kwriteconfig --file "$TWINRCTMPCFG" --group "MouseBindings" --key "CommandActiveTitlebar2" "Nothing"
+  kwriteconfig --file "$TWINRCTMPCFG" --group "MouseBindings" --key "CommandActiveTitlebar3" "Nothing"
+  kwriteconfig --file "$TWINRCTMPCFG" --group "MouseBindings" --key "CommandInactiveTitlebar2" "Nothing"
+  kwriteconfig --file "$TWINRCTMPCFG" --group "MouseBindings" --key "CommandInactiveTitlebar3" "Nothing"
+  echo "launching twin .."
+  $TDEDIR/bin/twin --disablecompositionmanager --lock --replace --config "$TWINRCTMPCFG" &
+  CTR1="100" ; while [ "$CTR1" -gt "0" ] && [ -z "$( dcopfind twin )" ] ; do echo "wait for twin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.1
+  echo "twin ready."
+fi
 
 MEMTOTAL="$( q4hw-info --memtotal )"
 echo "Memtotal: $MEMTOTAL"
@@ -152,6 +160,7 @@ else
   kdialog --passivepopup "<font size=4><p>$(eval_gettext "Configuring the profile ...")</p></font>" 6 &
 fi
 
+#screen scaling
 if [ -n "$SYSTEM_INSTALL" ] ; then
   PROBE_DPI="$( q4hw-info --probe-dpi | tail -n1 )"
   echo "dpi probed: $PROBE_DPI"
@@ -161,19 +170,13 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
       kdialog --icon "message" --title "Q4OS" --caption "$(eval_gettext "Display setup")" --msgbox "$MSG2"
       /opt/trinity/bin/screenscalerp.exu
       . /opt/trinity/env/60_q4xftdpi.sh
-    elif [ "$QDSK_SESSION" = "plasma" ] && [ -z "$IS_QUARK_OS" ] ; then
+    elif [ -z "$IS_QUARK_OS" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell5" ] ; then
       #we need to start the full kded for display resolution to be saved in $HOME/.local/share/kscreen/
       export KDE_FULL_SESSION="true"
       export KDE_SESSION_VERSION="5"
       LD_BIND_NOW=true /usr/lib/x86_64-linux-gnu/libexec/kf5/start_kdeinit_wrapper --kded +kcminit_startup
       /usr/bin/kdialog --icon "message" --title "$(eval_gettext "Display setup")" --msgbox "$MSG2"
-      if [ -f "/usr/bin/kcmshell6" ] ; then
-        /usr/bin/kcmshell6 kcm_kscreen
-      elif [ -f "/usr/bin/kcmshell5" ] ; then
-        /usr/bin/kcmshell5 kcm_kscreen
-      else
-        kdialog --icon "message" --title "Q4OS" --caption "$(eval_gettext "Display setup")" --msgbox "<p>$(eval_gettext "No screen scaling tool found.")</p>"
-      fi
+      /usr/bin/kcmshell5 kcm_kscreen
       kbuildsycoca5
       sleep 1 #need to write to $HOME/.local/share/kscreen/; why ?
       DPICFG1="$( /usr/bin/kreadconfig5 --file "kcmfonts" --group "General" --key "forceFontDPI" )"
@@ -184,6 +187,34 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
       if [ -n "$DPICFG1" ] && [ "$DPICFG1" -gt "130" ] ; then
         TDEHOME="" dash /usr/share/apps/q4os_system/bin/dpi_set.sh "$DPICFG1"
       fi
+    elif false && [ -z "$IS_QUARK_OS" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell6" ] ; then
+      #disabled now, todo: first fix "kcmshell6 kcm_kscreen" bug - it doesn't exit when clicked the ok button, likely kde bug
+      #we need to start the full kded for display resolution to be saved in $HOME/.local/share/kscreen/
+      export KDE_FULL_SESSION="true"
+      export KDE_SESSION_VERSION="6"
+      /usr/bin/kded6 &
+      /usr/bin/kdialog --icon "message" --title "$(eval_gettext "Display setup")" --msgbox "$MSG2"
+      echo "[dbg:]before:kcm_kscreen"
+      /usr/bin/kcmshell6 kcm_kscreen
+      echo "[dbg:]after:kcm_kscreen"
+      kbuildsycoca6
+      sleep 1 #need to write to $HOME/.local/share/kscreen/; why ?
+      DPICFG1="$( /usr/bin/kreadconfig6 --file "kcmfonts" --group "General" --key "forceFontDPI" )"
+      /usr/lib/x86_64-linux-gnu/libexec/kactivitymanagerd stop &
+      pkill -f kactivitymanagerd ; killall kactivitymanagerd
+      pkill kded6
+      pkill -f xdg-desktop-portal-kde
+      pkill -f xdg-desktop-portal-gtk
+      # pkill xdg-*
+      # echo "[dbg:]listing_processes:" ; ps -ef ; echo "[dbg:]----listing_processes_finished----"
+      unset KDE_FULL_SESSION
+      unset KDE_SESSION_VERSION
+      if [ -n "$DPICFG1" ] && [ "$DPICFG1" -gt "130" ] ; then
+        TDEHOME="" dash /usr/share/apps/q4os_system/bin/dpi_set.sh "$DPICFG1"
+      fi
+    else
+      echo "No screen scaling tool to use."
+      # kdialog --icon "message" --title "Q4OS" --caption "$(eval_gettext "Display setup")" --msgbox "<p>$(eval_gettext "No screen scaling tool found.")</p>"
     fi
   fi
 fi
@@ -420,6 +451,7 @@ kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" -
 
 if [ "$SYSTEM_INSTALL" = "livemedia" ] ; then
   pkill --signal SIGCONT qapt_lock.exu
+  pkill kwin
   $TDEDIR/bin/dcopquit twin
   $TDEDIR/bin/dcopserver_shutdown --wait
   rm "$TWINRCTMPCFG"
@@ -448,6 +480,7 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
     rm -f /var/lib/q4os/.swprfl-acndrq-30.tmp
     ENDMESSAGE="$ENDMESSAGE<p>$(eval_gettext "Click Ok to reboot your computer now.")</p>"
     kdialog --icon "message" --title "Q4OS" --caption "setup" --msgbox "$ENDMESSAGE"
+    pkill kwin
     $TDEDIR/bin/dcopquit twin
     $TDEDIR/bin/dcopserver_shutdown --wait
     rm "$TWINRCTMPCFG"
@@ -463,6 +496,7 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
     rm -f /var/lib/q4os/.swprfl-acndrq-20.tmp
     ENDMESSAGE="$ENDMESSAGE<p>$(eval_gettext "Click Ok to reboot your computer now.")</p>" # todo: ENDMESSAGE="$ENDMESSAGE<p>Click OK to get login screen now.</p>"
     kdialog --icon "message" --title "Q4OS" --caption "setup" --msgbox "$ENDMESSAGE"
+    pkill kwin
     $TDEDIR/bin/dcopquit twin
     $TDEDIR/bin/dcopserver_shutdown --wait
     rm "$TWINRCTMPCFG"
@@ -479,6 +513,7 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
     ENDMESSAGE="$ENDMESSAGE<p>$(eval_gettext "Click OK to get login screen now.")</p>"
     kdialog --icon "message" --title "Q4OS" --caption "setup" --msgbox "$ENDMESSAGE"
     artsshell -q terminate
+    pkill kwin
     $TDEDIR/bin/dcopquit twin
     $TDEDIR/bin/dcopserver_shutdown --wait
     rm "$TWINRCTMPCFG"
@@ -491,6 +526,7 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
   kdialog --icon "message" --title "Q4OS" --caption "setup" --msgbox "$ENDMESSAGE"
 fi
 
+pkill kwin
 $TDEDIR/bin/dcopquit twin
 $TDEDIR/bin/dcopserver_shutdown --wait
 rm "$TWINRCTMPCFG"

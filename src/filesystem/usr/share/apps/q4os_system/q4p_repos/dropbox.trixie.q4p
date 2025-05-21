@@ -1,0 +1,3 @@
+deb [signed-by=/usr/share/keyrings/q4a-dropbox.gpg] http://linux.dropbox.com/debian trixie main
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-dropbox.pub

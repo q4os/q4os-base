@@ -1,0 +1,6 @@
+deb [signed-by=/usr/share/keyrings/q4a-openvpn_as.gpg arch=amd64] http://as-repository.openvpn.net/as/debian trixie main
+
+### OpenVPN access server
+### wget -qO - https://as-repository.openvpn.net/as-repo-public.gpg
+### apt install openvpn-as
+### read https://debianpolska.pl/en/instalacja-serwera-openvpn-debian-11/

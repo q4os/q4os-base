@@ -1,3 +1,10 @@
+q4os-base (4.25.5-a1) UNRELEASED; urgency=medium
+
+  * Add Anydesk to the optional repositories
+  * Use qrepolist tool from q4os-api
+
+ -- Q4OS Team <devteam@q4os.org>  Thu, 29 May 2025 18:39:00 +0200
+
 q4os-base (4.25.4-a1) UNRELEASED; urgency=medium
 
   * Add deb-multimedia to the optional repositories

@@ -325,6 +325,17 @@ case "$1" in
     fi
   fi
 
+  if is_greater_then_former "4.25.5-a2" ; then
+    if [ "$QAPDISTR_SCR" = "noble" ] ; then
+      if [ "$(md5sum /etc/apt/sources.list.d/mozillateam-ubuntu-ppa-noble.sources | awk '{ print $1 }')" = "9d5c9476f7f23ffdd07063f140dfa14c" ] ; then
+        echo "Restore Firefox repository for Quarkos Noble ..."
+        rm -f /etc/apt/sources.list.d/mozillateam-ubuntu-ppa-noble.sources
+        tar -x -C /etc/apt/sources.list.d -f /var/lib/q4os/fixes/fix_007_mozrepo.tar.gz
+        rm -f /etc/apt/apt.conf.d/99weakkey-warning
+      fi
+    fi
+  fi
+
   set -e
   echo "[FX] Fixes end."
 #--------------- fixes end --------------------------------------

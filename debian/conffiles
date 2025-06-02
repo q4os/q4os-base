@@ -3,5 +3,6 @@
 /etc/chromium.d/92-chromiumtdefx
 /etc/chromium.d/50-dis_wm-window-anim
 /etc/sysctl.d/50-q4ossctl.conf
-/etc/apt/apt.conf.d/99q4os-cert
+/etc/apt/apt.conf.d/50certverifpeer
+/etc/apt/apt.conf.d/50sourceformatwarnquell
 /etc/ld.so.conf.d/35_localq4.conf

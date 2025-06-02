@@ -1,0 +1,3 @@
+##Keep apt shut about preferring the "deb822" sources file format
+##https://daniel-lange.com/archives/192-Make-apt-shut-up-about-modernize-sources-in-Trixie.html
+#APT::Get::Update::SourceListWarnings "false";

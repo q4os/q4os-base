@@ -29,11 +29,10 @@ if [ -f "$XDGCFGHOMEPATH/gtk-3.0/settings_trinity.ini" ] ; then
 else
   CFG_FILE1="settings.ini"
 fi
-if [ -n "$( cat $XDGCFGHOMEPATH/gtk-3.0/$CFG_FILE1 | grep 'gtk-theme-name=' | grep -v '^#' | grep 'Q4OS01' )" ] ; then
-  C_THEME="Q4OS01"
-fi
 if [ -n "$( cat $XDGCFGHOMEPATH/gtk-3.0/$CFG_FILE1 | grep 'gtk-theme-name=' | grep -v '^#' | grep 'Q4OS02' )" ] ; then
   C_THEME="Q4OS02"
+elif [ -n "$( cat $XDGCFGHOMEPATH/gtk-3.0/$CFG_FILE1 | grep 'gtk-theme-name=' | grep -v '^#' | grep 'Q4OS01' )" ] ; then
+  C_THEME="Q4OS01"
 fi
 if [ -z "$C_THEME" ] ; then
   exit 10

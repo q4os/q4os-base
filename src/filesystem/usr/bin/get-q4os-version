@@ -7,7 +7,13 @@ fi
 
 VERS1="$( dash /usr/share/apps/q4os_system/bin/print_package_version.sh "q4os-desktop" )"
 # todo: check result format to be xx.xx.xx-rx
-echo "$VERS1"
+if [ "$1" = "-g" ] ; then
+  CODENM1="$( OPT_UPPER_FIRST=1 OPT_CODENAME=1 dash /usr/share/apps/q4os_system/bin/print_qaptdistr.sh )"
+  DSKENV1="$( kreadconfig --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "defaultdesktopenv" | awk '{ print substr(toupper($0),1,1) substr($0,2) }' )"
+  echo "Q4OS $(echo "$VERS1" | awk -F '.' '{ print $1"."$2 }') '$CODENM1', $DSKENV1 desktop"
+else
+  echo "$VERS1"
+fi
 
 VERS2="$( cat /etc/q4os_version )"
 if [ ! "$VERS1" = "$VERS2" ] ; then

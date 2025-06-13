@@ -14,7 +14,7 @@ lspci >> /tmp/reportq4/files/rep03.txt
 echo "dmesg:" >> /tmp/reportq4/files/rep04.txt
 dmesg >> /tmp/reportq4/files/rep04.txt
 echo "lsmod:" >> /tmp/reportq4/files/rep05.txt
-lsmod >> /tmp/reportq4/files/rep05.txt
+lsmod | sort >> /tmp/reportq4/files/rep05.txt
 echo "lsusb:" >> /tmp/reportq4/files/rep06.txt
 lsusb >> /tmp/reportq4/files/rep06.txt
 echo "dpkg --get-selections:" >> /tmp/reportq4/files/rep07.txt

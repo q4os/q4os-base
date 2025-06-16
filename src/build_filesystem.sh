@@ -55,8 +55,12 @@ ln -s q4os_home_bullseye.tar.gz q4os_home_noble.tar.gz
 # --- generate localization .po files ---
 cd $OUTDIR1/
 find . -iname "*.sh" -o -iname "addlanguage" -o -iname "qrepoadd" | xargs xgettext -L shell -s --no-wrap --package-name "q4os-base" -o $OUTDIR2/.q4os-base1.pot
-find /mnt/tmsworkspace/q4os-4.0/a_my_files/ -iname "*.sh" -o -iname "kwhksh" | xargs xgettext -L shell -s --no-wrap --package-name "q4os-base" -o $OUTDIR2/.q4os-base2.pot
-msgcat -u --no-location -s --no-wrap -o $OUTDIR2/q4os-base.pot $OUTDIR2/.q4os-base1.pot $OUTDIR2/.q4os-base2.pot
+if [ -d "/mnt/tmsworkspace/q4os-4.0/a_my_files" ] ; then
+  find /mnt/tmsworkspace/q4os-4.0/a_my_files/ -iname "*.sh" -o -iname "kwhksh" | xargs xgettext -L shell -s --no-wrap --package-name "q4os-base" -o $OUTDIR2/.q4os-base2.pot
+  msgcat -u --no-location -s --no-wrap -o $OUTDIR2/q4os-base.pot $OUTDIR2/.q4os-base1.pot $OUTDIR2/.q4os-base2.pot
+else
+  mv $OUTDIR2/.q4os-base1.pot $OUTDIR2/q4os-base.pot
+fi
 
 # --- remove unneeded files ---
 rm $OUTDIR1/usr/share/applications/todo.txt

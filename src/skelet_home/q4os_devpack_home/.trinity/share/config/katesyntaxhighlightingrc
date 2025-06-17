@@ -1,0 +1,7 @@
+[Highlighting C++ - Schema kdevelop - Normal]
+C++:Decimal=3,ffdd0000,ffff0000,,,,,,,---
+C++:Extensions=1,ff003255,ffffffff,1,0,,,,,---
+C++:Float=5,ffdd0000,ffff0000,,,,,,,---
+C++:Hex=4,ffdd0000,ffff0000,,,,,,,---
+C++:Octal=4,ffdd0000,ffff0000,,,,,,,---
+C++:String=7,ff0000ff,ff00ffff,,,,,,,---

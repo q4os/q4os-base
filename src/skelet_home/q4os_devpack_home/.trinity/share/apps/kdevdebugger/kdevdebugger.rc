@@ -1,0 +1,90 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui version="11" name="KDevDebugger" >
+ <MenuBar>
+  <Menu name="debug" >
+   <text>&amp;Debug</text>
+   <Action group="debug" name="debug_run" />
+   <Action group="debug" name="debug_stop" />
+   <Action group="debug" name="debug_pause" />
+   <Action group="debug" name="debug_runtocursor" />
+   <Action group="debug" name="debug_jumptocursor" />
+   <Separator group="debug" />
+   <Action group="debug" name="debug_stepover" />
+   <Action group="debug" name="debug_stepoverinst" />
+   <Action group="debug" name="debug_stepinto" />
+   <Action group="debug" name="debug_stepintoinst" />
+   <Action group="debug" name="debug_stepout" />
+   <Action group="debug" name="debug_restart" />
+   <Separator group="debug" />
+   <Action group="debug" name="debug_toggle_breakpoint" />
+   <Action group="debug" name="debug_disable_breakpoint" />
+   <Separator group="debug" />
+   <Action group="debug" name="debug_memview" />
+   <Action group="debug" name="debug_core" />
+   <Action group="debug" name="debug_attach" />
+   <Separator group="debug" />
+  </Menu>
+ </MenuBar>
+ <ToolBar noMerge="1" name="debugToolBar" >
+  <text>Debugger Toolbar</text>
+  <Action name="debug_run" />
+  <Action name="debug_restart" />
+  <Action name="debug_stepover" />
+  <Action name="debug_stepinto" />
+  <Action name="debug_stepout" />
+  <WeakSeparator/>
+ </ToolBar>
+ <State name="stopped" >
+  <enable>
+   <Action name="debug_run" />
+   <Action name="debug_core" />
+   <Action name="debug_attach" />
+  </enable>
+  <disable>
+   <Action name="debug_stop" />
+   <Action name="debug_pause" />
+   <Action name="debug_runtocursor" />
+   <Action name="debug_stepover" />
+   <Action name="debug_stepoverinst" />
+   <Action name="debug_stepinto" />
+   <Action name="debug_stepintoinst" />
+   <Action name="debug_stepout" />
+   <Action name="debug_memview" />
+  </disable>
+ </State>
+ <State name="paused" >
+  <enable>
+   <Action name="debug_run" />
+   <Action name="debug_stop" />
+   <Action name="debug_runtocursor" />
+   <Action name="debug_stepover" />
+   <Action name="debug_stepoverinst" />
+   <Action name="debug_stepinto" />
+   <Action name="debug_stepintoinst" />
+   <Action name="debug_stepout" />
+   <Action name="debug_memview" />
+  </enable>
+  <disable>
+   <Action name="debug_core" />
+   <Action name="debug_attach" />
+  </disable>
+ </State>
+ <State name="active" >
+  <enable>
+   <Action name="debug_pause" />
+   <Action name="debug_stop" />
+  </enable>
+  <disable>
+   <Action name="debug_run" />
+   <Action name="debug_runtocursor" />
+   <Action name="debug_stepover" />
+   <Action name="debug_stepoverinst" />
+   <Action name="debug_stepinto" />
+   <Action name="debug_stepintoinst" />
+   <Action name="debug_stepout" />
+   <Action name="debug_memview" />
+   <Action name="debug_core" />
+   <Action name="debug_attach" />
+  </disable>
+ </State>
+</kpartgui>

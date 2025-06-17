@@ -1,0 +1,9 @@
+[External Tools]
+Dir Context=
+File Context=
+Tool Menu=Installer Builder
+
+[Tool Menu Installer Builder]
+Captured=true
+CommandLine=SHOWDEBDIALOG=1 dash /opt/program_files/q4os-devpack/bin/create_q4app_setup.sh %D/installer.cfg
+DesktopFile=false

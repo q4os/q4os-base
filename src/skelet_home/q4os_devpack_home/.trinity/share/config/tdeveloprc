@@ -1,0 +1,93 @@
+[BottomToolWindow]
+ViewWidth=150
+
+[General Options]
+DefaultProjectsDir[$e]=$HOME
+OutputViewFont=Liberation Sans,10,-1,5,50,0,0,0,0,0
+Read Last Project On Startup=false
+
+[Mainwindow Toolbar astyleToolBar]
+Hidden=true
+IconText=IconOnly
+Index=6
+
+[Mainwindow Toolbar browserToolBar]
+Hidden=true
+Index=3
+NewLine=false
+Offset=584
+
+[Mainwindow Toolbar buildToolBar]
+IconText=IconOnly
+Index=1
+Offset=305
+
+[Mainwindow Toolbar debugToolBar]
+IconText=IconOnly
+Index=2
+Offset=424
+
+[Mainwindow Toolbar extraToolBar]
+Hidden=false
+IconText=IconOnly
+Index=5
+Offset=1136
+
+[Mainwindow Toolbar mainToolBar]
+NewLine=true
+Offset=-6
+
+[Mainwindow Toolbar viewsession_toolbar]
+Hidden=true
+IconText=IconOnly
+Index=4
+Offset=1109
+
+[MakeOutputView]
+CompilerOutputLevel=0
+
+[Notification Messages]
+gdb_error=false
+
+[SimpleMainWindow Toolbar astyleToolBar]
+IconText=IconOnly
+Index=6
+
+[SimpleMainWindow Toolbar browserToolBar]
+Hidden=true
+IconText=IconOnly
+Index=3
+Offset=584
+
+[SimpleMainWindow Toolbar buildToolBar]
+IconText=IconOnly
+Index=1
+Offset=305
+
+[SimpleMainWindow Toolbar debugToolBar]
+IconText=IconOnly
+Index=2
+Offset=424
+
+[SimpleMainWindow Toolbar extraToolBar]
+IconText=IconOnly
+Index=5
+Offset=1136
+
+[SimpleMainWindow Toolbar layoutToolBar]
+IconText=IconOnly
+Index=7
+
+[SimpleMainWindow Toolbar mainToolBar]
+Index=0
+Offset=-6
+
+[SimpleMainWindow Toolbar toolsToolBar]
+IconText=IconOnly
+Index=8
+
+[SimpleMainWindow Toolbar viewsession_toolbar]
+Hidden=true
+IconText=IconOnly
+Index=4
+Offset=1109

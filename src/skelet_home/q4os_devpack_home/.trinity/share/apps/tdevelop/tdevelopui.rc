@@ -1,0 +1,188 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui version="33" name="kdevelop" >
+ <MenuBar>
+  <Menu noMerge="1" name="file" >
+   <text>&amp;File</text>
+   <DefineGroup name="new_merge" />
+   <Separator/>
+   <Action name="file_open" />
+   <Action name="file_open_recent" />
+   <DefineGroup name="open_merge" />
+   <Separator/>
+   <DefineGroup name="save_merge" />
+   <Action name="file_save_all" />
+   <Separator/>
+   <DefineGroup name="revert_merge" />
+   <Action name="file_revert_all" />
+   <Separator/>
+   <DefineGroup name="print_merge" />
+   <Merge/>
+   <Separator/>
+   <Action name="file_close" />
+   <DefineGroup name="close_merge" />
+   <Action name="file_close_all" />
+   <Action name="file_closeother" />
+   <Separator/>
+   <Action name="file_quit" />
+  </Menu>
+  <Menu name="edit" >
+   <text>&amp;Edit</text>
+   <DefineGroup name="edit_undo_merge" />
+   <Separator/>
+   <DefineGroup name="edit_paste_merge" />
+   <Separator/>
+   <DefineGroup name="edit_select_merge" />
+   <Separator/>
+   <DefineGroup name="edit_find_merge" />
+   <DefineGroup name="kdev_edit_find_merge" />
+   <Separator/>
+   <DefineGroup name="edit_astyle" />
+   <Separator/>
+   <Merge/>
+  </Menu>
+  <Menu name="view" >
+   <text>&amp;View</text>
+   <DefineGroup name="history_operations" />
+   <Action name="history_back" />
+   <Action name="history_forward" />
+   <Action name="goto_last_edit_pos" />
+   <Separator/>
+   <Action name="file_switchto" />
+   <Action name="raise_editor" />
+   <Separator/>
+   <DefineGroup name="error_operations" />
+   <Separator/>
+   <Merge/>
+   <Separator/>
+   <DefineGroup name="view_operations" />
+  </Menu>
+  <Menu name="project" >
+   <text>&amp;Project</text>
+   <DefineGroup name="project_new" />
+   <Action name="project_open" />
+   <Action name="project_open_recent" />
+<!--    <Action name="project_active_language"/> -->   <DefineGroup name="project_import" />
+   <Separator/>
+   <DefineGroup name="project_classes" />
+   <Merge/>
+   <DefineGroup name="designer_project" />
+   <Action name="project_options" />
+   <Separator/>
+   <Action name="project_close" />
+  </Menu>
+  <Menu name="build" >
+   <text>Bu&amp;ild</text>
+   <Merge/>
+   <Separator/>
+   <Action name="stop_processes" />
+  </Menu>
+  <Menu name="debug" >
+   <text>&amp;Debug</text>
+   <DefineGroup name="debug" />
+   <DefineGroup name="profile" />
+  </Menu>
+  <Merge/>
+  <Menu name="tools" >
+   <text>&amp;Tools</text>
+   <DefineGroup name="tools_operations" />
+   <Separator/>
+   <DefineGroup name="tools_file_operations" />
+   <Separator/>
+   <DefineGroup name="tools_language_operations" />
+   <Separator/>
+   <DefineGroup name="tools_project_operations" />
+   <Separator/>
+   <Merge/>
+  </Menu>
+  <Menu noMerge="1" name="settings" >
+   <text>&amp;Settings</text>
+   <Action name="settings_show_menubar" />
+   <Merge name="StandardToolBarMenuHandler" />
+   <Action name="settings_main_toolbar" />
+   <Action name="settings_build_toolbar" />
+   <Action name="settings_view_toolbar" />
+   <Action name="settings_browser_toolbar" />
+   <DefineGroup name="show_toolbar_merge" />
+   <Action name="settings_viewbar" />
+   <Action name="settings_statusbar" />
+   <DefineGroup name="show_merge" />
+   <Separator/>
+   <Action name="settings_configure_shortcuts" />
+   <Action name="set_configure_toolbars" />
+   <Action name="settings_configure_notifications" />
+   <Action name="settings_configure_plugins" />
+   <Action name="settings_configure_editors" />
+   <Action name="settings_configure" />
+   <DefineGroup name="configure_merge" />
+  </Menu>
+  <Menu append="settings_merge" name="window" >
+   <text>&amp;Window</text>
+   <Action name="view_next_window" />
+   <Action name="view_previous_window" />
+   <Separator/>
+   <Action name="split_h" />
+   <Action name="split_v" />
+   <Separator/>
+   <Action name="switch_left_dock" />
+   <Action name="switch_right_dock" />
+   <Action name="switch_bottom_dock" />
+   <Separator/>
+   <DefineGroup name="window_operations" />
+   <Merge/>
+  </Menu>
+  <Menu append="about_merge" name="help" >
+   <text>&amp;Help</text>
+   <Merge/>
+  </Menu>
+ </MenuBar>
+ <ToolBar newline="true" position="Top" noMerge="1" name="mainToolBar" fullWidth="true" >
+  <text>Main Toolbar</text>
+  <Action name="project_open" />
+  <Merge/>
+  <DefineGroup name="project_operations" />
+  <DefineGroup name="file_operations" />
+  <Separator name="separator_2" />
+  <DefineGroup name="edit_operations" />
+  <Separator name="separator_1" />
+  <Action name="goto_last_edit_pos" />
+  <Action name="history_back" />
+  <Action name="history_forward" />
+  <Separator lineSeparator="false" name="separator_0" />
+  <DefineGroup name="print_merge" />
+  <DefineGroup name="find_operations" />
+  <DefineGroup name="view_operations" />
+  <DefineGroup name="screenmode_operations" />
+  <DefineGroup name="zoom_operations" />
+ </ToolBar>
+ <ToolBar position="Top" noMerge="1" name="buildToolBar" >
+  <text>Build Toolbar</text>
+  <Merge/>
+<!--  <DefineGroup name="build_operations"/>
+  <DefineGroup name="debug_operations"/>-->  <Separator lineSeparator="false" name="separator_0" />
+ </ToolBar>
+ <ToolBar position="Top" noMerge="1" name="browserToolBar" >
+  <text>Browser Toolbar</text>
+<!--  <DefineGroup name="class_operations" />
+  <DefineGroup name="browser_operations" />-->  <Merge/>
+ </ToolBar>
+ <ToolBar position="Top" hidden="true" noMerge="1" name="extraToolBar" >
+  <text>Extra Toolbar</text>
+  <Action name="settings_show_menubar" />
+  <Separator lineSeparator="false" name="separator_0" />
+ </ToolBar>
+ <Menu name="rb_popup" >
+  <Separator/>
+  <Action name="file_close" />
+  <Action name="file_closeother" />
+ </Menu>
+ <ToolBar noMerge="1" name="debugToolBar" >
+  <text>Debugger Toolbar</text>
+  <Merge/>
+  <Action name="stop_processes" />
+  <Separator lineSeparator="false" name="separator_0" />
+ </ToolBar>
+ <ToolBar name="viewsession_toolbar" >
+  <text>View Sessions Toolbar</text>
+  <Merge/>
+ </ToolBar>
+</kpartgui>

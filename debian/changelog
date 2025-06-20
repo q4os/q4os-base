@@ -1,3 +1,18 @@
+q4os-base (4.26.1-a1) UNRELEASED; urgency=medium
+
+  * Rename apt config file
+  * Prepare apt to keep shut about preferring the "deb822" sources file format
+  * Make get-q4os-version tool option to print nice output
+  * Fix reportq4 script
+  * Bash code optimization
+  * Add license file
+  * Create README.md
+  * Fix build from source on external platforms
+  * Move q4os_devpack_home directory from q4os-devpack-base package
+  * Update TDE compositor shadowing and settings
+
+ -- Q4OS Team <devteam@q4os.org>  Fri, 20 Jun 2025 13:43:24 +0200
+
 q4os-base (4.25.5-a2) UNRELEASED; urgency=medium
 
   * Fix signature key uses weak algorithm warning for Quarkos Noble

@@ -1,3 +1,9 @@
+q4os-base (4.26.2-a1) UNRELEASED; urgency=medium
+
+  * Add update icons for Breeze theme
+
+ -- Q4OS Team <devteam@q4os.org>  Sat, 28 Jun 2025 14:47:00 +0200
+
 q4os-base (4.26.1-a1) UNRELEASED; urgency=medium
 
   * Rename apt config file

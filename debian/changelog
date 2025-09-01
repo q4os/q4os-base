@@ -1,3 +1,10 @@
+q4os-base (4.26.3-a1) UNRELEASED; urgency=medium
+
+  * Add signed-by option for external repositories
+  * Fix sudo commands for Trixie TDE session
+
+ -- Q4OS Team <devteam@q4os.org>  Mon, 01 Sep 2025 13:36:15 +0200
+
 q4os-base (4.26.2-a1) UNRELEASED; urgency=medium
 
   * Add update icons for Breeze theme

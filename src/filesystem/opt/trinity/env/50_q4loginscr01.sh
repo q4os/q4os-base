@@ -5,8 +5,6 @@
 export Q4KDEHOME="$HOME/.trinity" # $( tde-config --localprefix )
 export Q4DESKTOP="tde14"
 
-export XAUTHORITY="$HOME/.Xauthority" #for sudo commands
-
 #xdg dirs
 export QDSK_SESSION="trinity"
 # export DESKTOP_SESSION="trinity"
@@ -30,6 +28,10 @@ export KDE_SESSION_VERSION="3"
 # export QT_STYLE_OVERRIDE="gtk"
 # unset QT_STYLE_OVERRIDE
 export QT_QPA_PLATFORMTHEME="q4ostde" #platform plugin to set complete theme to follow - icons/fonts/colors/style/etc..
+
+if [ -z "$XAUTHORITY" ] && [ -f "$HOME/.Xauthority" ] ; then
+  export XAUTHORITY="$HOME/.Xauthority" #for sudo commands
+fi
 
 #some other variables
 # export KDEDIRS=$HOME/.userapps/kde3:$KDEDIRS

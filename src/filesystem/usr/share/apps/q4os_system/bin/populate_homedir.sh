@@ -118,11 +118,6 @@ for SCRPT1 in /usr/share/apps/q4os_system/bhooks/bhook4_*.sh ; do
 done
 echo "Finished hooks ..."
 
-# IS_WAYLAND_SESSION="_determine_wayland_session_" #check, if we are using wayland instead of xorg
-if [ "$IS_WAYLAND_SESSION" = "true" ] ; then
-  #need to be done here as 85frstrun.sh script will not be ran under wayland
-  sudo -n rm -f /etc/sudoers.d/90_sudo_tmp01 #remove temporary passwordless config
-fi
 /opt/trinity/bin/kwriteconfig --file "$HOME/.local/share/q4os/.extrdq4.stp" --group "install" --key "timestamp_completed" "$( date +%Y-%m-%d-%H-%M-%S )"
 /opt/trinity/bin/kwriteconfig --file "$HOME/.local/share/q4os/.extrdq4.stp" --group "install" --key "desc" "do_not_delete_this_file"
 # systemctl --user disable populate_homedir.service #doesn't work for some reason

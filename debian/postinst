@@ -336,6 +336,13 @@ case "$1" in
     fi
   fi
 
+  if is_greater_then_former "4.27.1-a1" ; then
+    if [ "$QAPDISTR_SCR" = "trixie" ] && [ -f "/usr/bin/startplasma-wayland" ] ; then
+      echo "Confiugring sudo group ..."
+      rm -f /etc/sudoers.d/90_sudo_tmp01
+    fi
+  fi
+
   set -e
   echo "[FX] Fixes end."
 #--------------- fixes end --------------------------------------

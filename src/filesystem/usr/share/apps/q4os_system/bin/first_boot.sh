@@ -211,11 +211,6 @@ fi
 chmod a+r /etc/q4os/q4base.conf
 rm -rf /.trinity #fix: kwriteconfig creates this directory in rootfs; probably TDEHOME=/root must be set for kwriteconfig to fix the glitch
 
-# if [ -f "/usr/bin/startplasma-x11" ] ; then
-#   echo "KDE Plasma detected, so removing temporary passwordless sudo config."
-#   rm -f /etc/sudoers.d/90_sudo_tmp01
-# fi
-
 touch "/var/lib/q4os/first_boot_script_done.stp"
 systemctl disable q4os_first_boot.service
 echo "\n>> Q4OS first boot script finished: $( date +%Y-%m-%d-%H-%M-%S ) <<"

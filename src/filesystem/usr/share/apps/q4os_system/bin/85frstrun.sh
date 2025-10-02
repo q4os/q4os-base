@@ -1,5 +1,68 @@
 #!/bin/sh
 
+deinit1 () {
+  pkill --signal SIGCONT qapt_lock.exu
+
+  if ps -ef | grep -v 'grep' | grep -q 'twin' ; then
+    echo "Stopping Twin window manager ..."
+    $TDEDIR/bin/dcopquit twin
+    # rm -f "$TWINRCTMPCFG"
+  fi
+  if ps -ef | grep -v 'grep' | grep -q 'kwin' ; then
+    echo "Stopping Kwin window manager ..."
+    pkill kwin_wayland
+    pkill kwin
+    killall -sKILL kwin_wayland
+  fi
+  $TDEDIR/bin/artsshell -q terminate
+  $TDEDIR/bin/dcopserver_shutdown --wait
+  export PATH="$ORIG_PATH"
+  export XDG_CONFIG_DIRS="$ORIG_XDG_CONFIG_DIRS"
+  unset ORIG_PATH
+  unset ORIG_XDG_CONFIG_DIRS
+  unset ROOTXAUTH1
+  unset SYSTEM_INSTALL
+  unset TEXTDOMAIN
+  # unset XDG_CONFIG_HOME
+
+  if [ -n "$WAYLAND_DISPLAY" ] ; then
+    echo "Reverting back window decorations ..."
+    kwriteconfig6 --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnLeft" --delete
+    kwriteconfig6 --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnRight" --delete
+  fi
+
+  echo "\n>> $SRCFNAME1 almost finished: $( date +%Y-%m-%d-%H-%M-%S ) <<"
+
+  local ACTION1="$1"
+  if [ "$ACTION1" = "--reboot" ] ; then
+    echo "Rebooting ..."
+    systemctl reboot
+    sleep 20 #necessary for login process not to continue
+  elif [ "$ACTION1" = "--restartx" ] ; then
+    echo "Rebooting ..."
+    systemctl reboot #todo: restart xserver instead of reboot
+    sleep 20 #necessary for login process not to continue
+  elif [ "$ACTION1" = "--logout" ] ; then
+    echo "Logout ..."
+    loginctl terminate-user "$ACTIVE_USER"
+    sleep 20 #necessary for login process not to continue
+  elif [ "$ACTION1" = "--continue-session" ] ; then
+    echo "Continue session ..."
+    if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ -f "/usr/bin/startplasma-wayland" ] ; then
+      echo "Running Plasma Wayland ..."
+      unset XDG_SESSION_CLASS
+      unset QT_QPA_PLATFORMTHEME
+      unset DISPLAY
+      unset WAYLAND_DISPLAY
+      startplasma-wayland #based on ubuntu-installer-prompt package
+      # /usr/lib/x86_64-linux-gnu/libexec/plasma-dbus-run-session-if-needed /usr/bin/startplasma-wayland
+    fi
+  fi
+}
+
+# --------------------
+# --- script start ---
+# --------------------
 if [ -f "$HOME/.local/share/q4os/.frstlogq4.stp" ] ; then
   exit
 fi
@@ -15,8 +78,11 @@ mkdir -p "$( dirname "$LOGT_FILE" )"
 ( (
 echo "\n>> Q4OS $SRCFNAME1 started: $START_DT <<"
 
+export ORIG_PATH="$PATH"
 export PATH="/opt/trinity/bin:$PATH"
+export ORIG_XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS"
 export XDG_CONFIG_DIRS="/opt/trinity/etc/xdg:/etc/xdg:$XDG_CONFIG_DIRS"
+export XDG_SESSION_CLASS="user"
 export TDEDIR="/opt/trinity"
 
 QDSK_SESSION="$( dash /usr/share/apps/q4os_system/bin/print_session.sh )"
@@ -56,15 +122,20 @@ QAPTDISTR1="$( dash /usr/share/apps/q4os_system/bin/print_qaptdistr.sh )"
 XDGCFGHOMEDIR_PLASMA="$( dash /usr/share/apps/q4os_system/bin/print_xdgcfghome_plasma.sh )"
 echo "Distro: $QAPTDISTR1"
 echo "XDG config home for plasma: $XDGCFGHOMEDIR_PLASMA"
-if [ -f "$XDGCFGHOMEDIR_PLASMA/kmixrc" ] ; then
+
+#this code ensures that this script will not run if an x11 Plasma session was selected after starting a Wayland session
+#only applies to Bookworm and Trixie installations
+#fixed for Trixie installations from 11/2025
+#to remove once Trixie is discontinued
+if [ -f "$XDGCFGHOMEDIR_PLASMA/kmixrc" ] || [ -f "$XDGCFGHOMEDIR_PLASMA/kwinrc" ] ; then
   echo "Plasma session has been started already, a previous logon detected."
   if [ "$SYSTEM_INSTALL" != "livemedia" ] ; then
     if [ "$QAPTDISTR1" = "trixie" ] || [ "$QAPTDISTR1" = "bookworm" ] ; then
       echo "Todo: resolve xorg x wayland clash to be able to run this script $SRCFNAME1, exiting ..."
-      pkill --signal SIGCONT qapt_lock.exu
       kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "debug1" "not_allowed_to_run"
       kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "timestamp" "$( date +%Y-%m-%d-%H-%M-%S )"
       kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "desc" "do_not_delete_this_file"
+      deinit1 --continue-session
       exit
     fi
   fi
@@ -120,16 +191,19 @@ if [ -n "$THEME1" ] ; then
     sudo -n mkdir -p $XDGCFGHOMEROOT/menus/
     sudo -n ln -s /opt/trinity/etc/xdg/menus/tde-applications.menu $XDGCFGHOMEROOT/menus/tde-applications.menu
   fi
-  # $TDEDIR/bin/dcopserver_shutdown --wait
   pkill -n kdialog
   echo "custom theme done."
 fi
 
-if false && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell6" ] && [ -f "/usr/bin/kwin" ] ; then
-  #disabled now, todo: need to configure kwin not to show minimize/close buttons
-  /usr/bin/kwin --replace --lock --no-kactivities &
-  CTR1="100" ; while [ "$CTR1" -gt "0" ] && [ -z "$( ps -ef | grep "kwin" )" ] ; do echo "wait for kwin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.1
-  echo "kwin ready."
+if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell6" ] && [ -f "/usr/bin/kwin_wayland" ] ; then
+  kwriteconfig6 --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnLeft" ""
+  kwriteconfig6 --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnRight" ""
+  echo "launching kwin.."
+  kwin_wayland --no-lockscreen --no-global-shortcuts --no-kactivities --lock --xwayland-display :0 --xwayland 2>/dev/null 1>/dev/null & #--x11-display :0 --socket wayland-0 --replace
+  CTR1="100" ; while [ "$CTR1" -gt "0" ] && ( ! qdbus6 org.kde.KWin 2>/dev/null 1>/dev/null ) ; do echo "wait for kwin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.1
+  export WAYLAND_DISPLAY="wayland-0"
+  export DISPLAY=":0"
+  echo " ..kwin ready."
 else
   echo "configuring twin .."
   TWINRCTMPCFG="/tmp/.fsttwinrc_$ACTIVE_USER"
@@ -142,10 +216,10 @@ else
   kwriteconfig --file "$TWINRCTMPCFG" --group "MouseBindings" --key "CommandActiveTitlebar3" "Nothing"
   kwriteconfig --file "$TWINRCTMPCFG" --group "MouseBindings" --key "CommandInactiveTitlebar2" "Nothing"
   kwriteconfig --file "$TWINRCTMPCFG" --group "MouseBindings" --key "CommandInactiveTitlebar3" "Nothing"
-  echo "launching twin .."
+  echo "launching twin.."
   $TDEDIR/bin/twin --disablecompositionmanager --lock --replace --config "$TWINRCTMPCFG" &
   CTR1="100" ; while [ "$CTR1" -gt "0" ] && [ -z "$( dcopfind twin )" ] ; do echo "wait for twin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.1
-  echo "twin ready."
+  echo " ..twin ready."
 fi
 
 MEMTOTAL="$( q4hw-info --memtotal )"
@@ -166,7 +240,32 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
   echo "dpi probed: $PROBE_DPI"
   if [ "$PROBE_DPI" -lt "40" ] || [ "$PROBE_DPI" -gt "130" ] ; then
     MSG2="<p>$(eval_gettext "You may want to enlarge text and widgets size to improve readability. Click OK to run a configuration tool for screen setup and scaling.")</p>"
-    if [ "$QDSK_SESSION" = "trinity" ] ; then
+    if false && [ -z "$IS_QUARK_OS" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell6" ] ; then
+      #disabled now, todo: first fix "kcmshell6 kcm_kscreen" bug - it doesn't exit when clicked the ok button, likely kde bug
+      #we need to start the full kded for display resolution to be saved in $HOME/.local/share/kscreen/
+#       export KDE_FULL_SESSION="true"
+#       export KDE_SESSION_VERSION="6"
+#       /usr/bin/kded6 &
+      /usr/bin/kdialog --icon "message" --title "$(eval_gettext "Display setup")" --msgbox "$MSG2"
+      echo "[dbg:]before:kcm_kscreen"
+      /usr/bin/kcmshell6 kcm_kscreen
+      echo "[dbg:]after:kcm_kscreen"
+      # kbuildsycoca6
+      sleep 1 #need to write to $HOME/.local/share/kscreen/; why ?
+      DPICFG1="$( /usr/bin/kreadconfig6 --file "kcmfonts" --group "General" --key "forceFontDPI" )"
+#       /usr/lib/x86_64-linux-gnu/libexec/kactivitymanagerd stop &
+#       pkill -f kactivitymanagerd ; killall kactivitymanagerd
+#       pkill kded6
+#       pkill -f xdg-desktop-portal-kde
+#       pkill -f xdg-desktop-portal-gtk
+      # pkill xdg-*
+      # echo "[dbg:]listing_processes:" ; ps -ef ; echo "[dbg:]----listing_processes_finished----"
+#       unset KDE_FULL_SESSION
+#       unset KDE_SESSION_VERSION
+      if [ -n "$DPICFG1" ] && [ "$DPICFG1" -gt "130" ] ; then
+        TDEHOME="" dash /usr/share/apps/q4os_system/bin/dpi_set.sh "$DPICFG1"
+      fi
+    elif false && [ -z "$IS_QUARK_OS" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell6" ] ; then
       kdialog --icon "message" --title "Q4OS" --caption "$(eval_gettext "Display setup")" --msgbox "$MSG2"
       /opt/trinity/bin/screenscalerp.exu
       . /opt/trinity/env/60_q4xftdpi.sh
@@ -187,31 +286,10 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
       if [ -n "$DPICFG1" ] && [ "$DPICFG1" -gt "130" ] ; then
         TDEHOME="" dash /usr/share/apps/q4os_system/bin/dpi_set.sh "$DPICFG1"
       fi
-    elif false && [ -z "$IS_QUARK_OS" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell6" ] ; then
-      #disabled now, todo: first fix "kcmshell6 kcm_kscreen" bug - it doesn't exit when clicked the ok button, likely kde bug
-      #we need to start the full kded for display resolution to be saved in $HOME/.local/share/kscreen/
-      export KDE_FULL_SESSION="true"
-      export KDE_SESSION_VERSION="6"
-      /usr/bin/kded6 &
-      /usr/bin/kdialog --icon "message" --title "$(eval_gettext "Display setup")" --msgbox "$MSG2"
-      echo "[dbg:]before:kcm_kscreen"
-      /usr/bin/kcmshell6 kcm_kscreen
-      echo "[dbg:]after:kcm_kscreen"
-      kbuildsycoca6
-      sleep 1 #need to write to $HOME/.local/share/kscreen/; why ?
-      DPICFG1="$( /usr/bin/kreadconfig6 --file "kcmfonts" --group "General" --key "forceFontDPI" )"
-      /usr/lib/x86_64-linux-gnu/libexec/kactivitymanagerd stop &
-      pkill -f kactivitymanagerd ; killall kactivitymanagerd
-      pkill kded6
-      pkill -f xdg-desktop-portal-kde
-      pkill -f xdg-desktop-portal-gtk
-      # pkill xdg-*
-      # echo "[dbg:]listing_processes:" ; ps -ef ; echo "[dbg:]----listing_processes_finished----"
-      unset KDE_FULL_SESSION
-      unset KDE_SESSION_VERSION
-      if [ -n "$DPICFG1" ] && [ "$DPICFG1" -gt "130" ] ; then
-        TDEHOME="" dash /usr/share/apps/q4os_system/bin/dpi_set.sh "$DPICFG1"
-      fi
+    elif [ "$QDSK_SESSION" = "trinity" ] ; then
+      kdialog --icon "message" --title "Q4OS" --caption "$(eval_gettext "Display setup")" --msgbox "$MSG2"
+      /opt/trinity/bin/screenscalerp.exu
+      . /opt/trinity/env/60_q4xftdpi.sh
     else
       echo "No screen scaling tool to use."
       # kdialog --icon "message" --title "Q4OS" --caption "$(eval_gettext "Display setup")" --msgbox "<p>$(eval_gettext "No screen scaling tool found.")</p>"
@@ -445,18 +523,15 @@ if [ -f "/var/lib/q4os/.swprfl-acndrq-10.tmp" ] || [ -f "/var/lib/q4os/.swprfl-a
 fi
 # sudo -n rm -f /usr/share/apps/q4os_system/share/.instlq4langpack.desktop
 # sudo -n rm -f /usr/share/apps/q4os_system/bin/.addlang_ai_*
+sudo -n $TDEDIR/bin/dcopserver_shutdown --wait
+sudo -n rm -f /usr/share/wayland-sessions/plasma.desktop
+sudo -n dpkg-divert --rename --remove /usr/share/wayland-sessions/plasma.desktop
 sudo -n rm -f /etc/sudoers.d/90_sudo_tmp01 #remove temporary passwordless config
 kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "timestamp" "$( date +%Y-%m-%d-%H-%M-%S )"
 kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "desc" "do_not_delete_this_file"
 
 if [ "$SYSTEM_INSTALL" = "livemedia" ] ; then
-  pkill --signal SIGCONT qapt_lock.exu
-  pkill kwin
-  $TDEDIR/bin/dcopquit twin
-  $TDEDIR/bin/dcopserver_shutdown --wait
-  rm "$TWINRCTMPCFG"
-  # unset XDG_CONFIG_HOME
-  echo "\n>> Q4OS $SRCFNAME1 completed: $( date +%Y-%m-%d-%H-%M-%S ) <<"
+  deinit1 --continue-session
   exit
 fi
 
@@ -467,70 +542,43 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
       echo "sw profiler execute .."
       pkill --signal SIGCONT qapt_lock.exu
       HIDE_DECORATION1="1" TDE_DEBUG="1" swprofiler.exu
+      pkill kdialog
     fi
     #re-read desktop profiler result
     if [ "$( kreadconfig --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "needtoapply" )" != "0" ] ; then
       ENDMESSAGE="$ENDMESSAGE<p>$(eval_gettext "No desktop profile has been applied yet. It's highly recommended to run <b>Desktop Profiler</b> tool and apply one of available profiles as soon as possible.")</p>"
     fi
   fi
-  pkill --signal SIGCONT qapt_lock.exu
+
   if [ -f "/tmp/.swprfl-acndrq-30.tmp" ] || [ -f "/var/lib/q4os/.swprfl-acndrq-30.tmp" ] ; then
     #reboot
     rm -f /tmp/.swprfl-acndrq-30.tmp
     rm -f /var/lib/q4os/.swprfl-acndrq-30.tmp
     ENDMESSAGE="$ENDMESSAGE<p>$(eval_gettext "Click Ok to reboot your computer now.")</p>"
     kdialog --icon "message" --title "Q4OS" --caption "setup" --msgbox "$ENDMESSAGE"
-    pkill kwin
-    $TDEDIR/bin/dcopquit twin
-    $TDEDIR/bin/dcopserver_shutdown --wait
-    rm "$TWINRCTMPCFG"
-    # unset XDG_CONFIG_HOME
-    # loginctl terminate-user "$ACTIVE_USER" ; sleep 2
-    systemctl reboot
-    sleep 20 #necessary for login process not to continue
+    deinit1 --reboot
     exit
-  fi
-  if [ -f "/tmp/.swprfl-acndrq-20.tmp" ] || [ -f "/var/lib/q4os/.swprfl-acndrq-20.tmp" ] ; then
+  elif [ -f "/tmp/.swprfl-acndrq-20.tmp" ] || [ -f "/var/lib/q4os/.swprfl-acndrq-20.tmp" ] ; then
     #restart X server
     rm -f /tmp/.swprfl-acndrq-20.tmp
     rm -f /var/lib/q4os/.swprfl-acndrq-20.tmp
     ENDMESSAGE="$ENDMESSAGE<p>$(eval_gettext "Click Ok to reboot your computer now.")</p>" # todo: ENDMESSAGE="$ENDMESSAGE<p>Click OK to get login screen now.</p>"
     kdialog --icon "message" --title "Q4OS" --caption "setup" --msgbox "$ENDMESSAGE"
-    pkill kwin
-    $TDEDIR/bin/dcopquit twin
-    $TDEDIR/bin/dcopserver_shutdown --wait
-    rm "$TWINRCTMPCFG"
-    # unset XDG_CONFIG_HOME
-    # loginctl terminate-user "$ACTIVE_USER" ; sleep 2
-    systemctl reboot #todo: do not reboot but kill X only, use dbus or sudo -n systemctl restart ...
-    sleep 20
+    deinit1 --restartx
     exit
-  fi
-  if [ -f "/tmp/.swprfl-acndrq-10.tmp" ] || [ -f "/var/lib/q4os/.swprfl-acndrq-10.tmp" ] ; then
+  elif [ -f "/tmp/.swprfl-acndrq-10.tmp" ] || [ -f "/var/lib/q4os/.swprfl-acndrq-10.tmp" ] ; then
     #re-login
     rm -f /tmp/.swprfl-acndrq-10.tmp
     rm -f /var/lib/q4os/.swprfl-acndrq-10.tmp
     ENDMESSAGE="$ENDMESSAGE<p>$(eval_gettext "Click OK to get login screen now.")</p>"
     kdialog --icon "message" --title "Q4OS" --caption "setup" --msgbox "$ENDMESSAGE"
-    artsshell -q terminate
-    pkill kwin
-    $TDEDIR/bin/dcopquit twin
-    $TDEDIR/bin/dcopserver_shutdown --wait
-    rm "$TWINRCTMPCFG"
-    # unset XDG_CONFIG_HOME
-    loginctl terminate-user "$ACTIVE_USER"
-    sleep 20
+    deinit1 --logout
     exit
   fi
 
   kdialog --icon "message" --title "Q4OS" --caption "setup" --msgbox "$ENDMESSAGE"
 fi
 
-pkill kwin
-$TDEDIR/bin/dcopquit twin
-$TDEDIR/bin/dcopserver_shutdown --wait
-rm "$TWINRCTMPCFG"
-# unset XDG_CONFIG_HOME
+deinit1 --continue-session
 
-echo "\n>> Q4OS $SRCFNAME1 completed: $( date +%Y%m%d_%H:%M:%S ) <<"
 ) 2>&1 ) >> "$LOGT_FILE"

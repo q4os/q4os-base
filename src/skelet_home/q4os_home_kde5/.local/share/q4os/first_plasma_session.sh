@@ -21,9 +21,11 @@ echo "Distro: $QAPTDISTR1"
 echo "Plasma XDG homedir: $XDGCFGHOMEFULL"
 echo "Lang: $LANG"
 
-if [ "$QAPTDISTR1" != "bullseye" ] && [ "$QAPTDISTR1" != "focal" ] ; then
-  echo "Seting keyboard for Plasma ..."
-  dash /usr/share/apps/q4os_system/bin/kblayout_mod.sh --write-plasmaconfig
+if [ "$QAPTDISTR1" != "bullseye" ] ; then
+  if [ -z "$(kreadconfig5 --file "$XDGCFGHOMEFULL/kxkbrc" --group "Layout" --key "LayoutList")" ] ; then
+    echo "Seting keyboard for Plasma ..."
+    dash /usr/share/apps/q4os_system/bin/kblayout_mod.sh --write-plasmaconfig
+  fi
 fi
 
 if [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "raspbian12" ] ; then
@@ -41,7 +43,7 @@ if [ "$ACTIVE_USER" = "$FIRST_USER" ] ; then
   # chmod a+r "$XDGCFGHOMEFULL/ksmserverrc"
 fi
 
-if [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "bullseye" ] || [ "$QAPTDISTR1" = "raspbian12" ] || [ "$QAPTDISTR1" = "noble" ] || [ "$QAPTDISTR1" = "jammy" ] || [ "$QAPTDISTR1" = "focal" ] ; then
+if [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "bullseye" ] || [ "$QAPTDISTR1" = "raspbian12" ] || [ "$QAPTDISTR1" = "noble" ] || [ "$QAPTDISTR1" = "jammy" ] ; then
   if [ -f "$XDGCFGHOMEFULL/kcminputrc" ] ; then
     #workaround for a plasma bug, as it doesn't follow the XDG standard locations for "kcminputrc"
     #see https://www.q4os.org/forum/viewtopic.php?id=2778
@@ -82,5 +84,7 @@ xdg-user-dirs-update #create $XDG_CONFIG_HOME/.userdirs.dirs file ; check if nee
 
 #remove this script after the first run
 rm "$0"
+rm $XDGCFGHOMEFULL/autostart/first_plasma_session.desktop
+rm -f $XDGCFGHOMEFULL/autostart/50-frst_rsession.sh.desktop #auto generated for obsolete script, remove as soon as trixie retires
 
 ) 2>&1 ) >> "$LOGT_FILE"

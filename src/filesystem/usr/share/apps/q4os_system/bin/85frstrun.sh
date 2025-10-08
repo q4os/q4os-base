@@ -1,6 +1,17 @@
 #!/bin/sh
 
+deactivate_this () {
+  echo "Disabling this script to run for good ..."
+  sudo -n rm -f /usr/share/wayland-sessions/plasma.desktop
+  sudo -n dpkg-divert --rename --remove /usr/share/wayland-sessions/plasma.desktop
+  sudo -n rm -f /etc/sudoers.d/90_sudo_tmp01 #remove temporary passwordless config
+  kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "timestamp" "$( date +%Y-%m-%d-%H-%M-%S )"
+  kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "desc" "do_not_delete_this_file"
+}
+
 deinit1 () {
+  echo "Deinitialization of environment ..."
+
   pkill --signal SIGCONT qapt_lock.exu
 
   if ps -ef | grep -v 'grep' | grep -q 'twin' ; then
@@ -49,12 +60,18 @@ deinit1 () {
   elif [ "$ACTION1" = "--continue-session" ] ; then
     echo "Continue session ..."
     if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ -f "/usr/bin/startplasma-wayland" ] ; then
-      echo "Running Plasma Wayland ..."
+      # pkill -f xdg-desktop-portal-kde
+      # pkill -f xdg-desktop-portal-gtk
+      # pkill xdg-*
+      # echo "[dbg:]listing_processes:" ; ps -ef ; echo "[dbg:]----listing_processes_finished----"
+      rm -f $XAUTHORITY
       unset XDG_SESSION_CLASS
       unset QT_QPA_PLATFORMTHEME
+      unset XAUTHORITY
       unset DISPLAY
       unset WAYLAND_DISPLAY
-      startplasma-wayland #based on ubuntu-installer-prompt package
+      echo "Running Plasma Wayland ..."
+      startplasma-wayland 2>/dev/null 1>/dev/null
       # /usr/lib/x86_64-linux-gnu/libexec/plasma-dbus-run-session-if-needed /usr/bin/startplasma-wayland
     fi
   fi
@@ -133,8 +150,7 @@ if [ -f "$XDGCFGHOMEDIR_PLASMA/kmixrc" ] || [ -f "$XDGCFGHOMEDIR_PLASMA/kwinrc" 
     if [ "$QAPTDISTR1" = "trixie" ] || [ "$QAPTDISTR1" = "bookworm" ] ; then
       echo "Todo: resolve xorg x wayland clash to be able to run this script $SRCFNAME1, exiting ..."
       kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "debug1" "not_allowed_to_run"
-      kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "timestamp" "$( date +%Y-%m-%d-%H-%M-%S )"
-      kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "desc" "do_not_delete_this_file"
+      deactivate_this
       deinit1 --continue-session
       exit
     fi
@@ -171,8 +187,10 @@ echo "starting dcopserver .."
 $TDEDIR/bin/dcopserver --nosid
 echo "running tdebuildsycoca .."
 $TDEDIR/bin/tdebuildsycoca
-echo "running tdebuildsycoca for root .."
-sudo -n XAUTHORITY="$ROOTXAUTH1" $TDEDIR/bin/tdebuildsycoca
+if [ -f "$ROOTXAUTH1" ] ; then
+  echo "running tdebuildsycoca for root .."
+  sudo -n XAUTHORITY="$ROOTXAUTH1" $TDEDIR/bin/tdebuildsycoca
+fi
 echo "checking custom theme .."
 THEME1="$( kreadconfig --file "/etc/q4os/q4base.conf" --group "General" --key "default_theme" )"
 echo "custom theme: $THEME1"
@@ -183,7 +201,9 @@ if [ -n "$THEME1" ] ; then
   THQ_THNAME="$THEME1" ktheme_setter
   if [ -n "$SYSTEM_INSTALL" ] ; then
     echo "applying custom theme for root .."
-    sudo -n XAUTHORITY="$ROOTXAUTH1" THQ_THNAME="$THEME1" ktheme_setter
+    if [ -f "$ROOTXAUTH1" ] ; then
+      sudo -n XAUTHORITY="$ROOTXAUTH1" THQ_THNAME="$THEME1" ktheme_setter
+    fi
     #previous command may remove/modify the "$XDGCFGHOMEROOT/menus/tde-applications.menu" file, so fix it
     XDGCFGHOMEROOT="$(dash /usr/share/apps/q4os_system/bin/print_xdgcfghome_plasma.sh "root")/menus/tde-applications.menu"
     echo "xdgcfghomeroot: $XDGCFGHOMEROOT"
@@ -199,11 +219,19 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f
   kwriteconfig6 --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnLeft" ""
   kwriteconfig6 --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnRight" ""
   echo "launching kwin.."
-  kwin_wayland --no-lockscreen --no-global-shortcuts --no-kactivities --lock --xwayland-display :0 --xwayland 2>/dev/null 1>/dev/null & #--x11-display :0 --socket wayland-0 --replace
-  CTR1="100" ; while [ "$CTR1" -gt "0" ] && ( ! qdbus6 org.kde.KWin 2>/dev/null 1>/dev/null ) ; do echo "wait for kwin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.1
-  export WAYLAND_DISPLAY="wayland-0"
-  export DISPLAY=":0"
+  kwin_wayland_wrapper --xwayland 2>/dev/null 1>/dev/null &
+  CTR1="150" ; while [ "$CTR1" -gt "0" ] && ( ! qdbus6 org.kde.KWin 2>/dev/null 1>/dev/null ) ; do echo "wait for kwin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.5
   echo " ..kwin ready."
+  WLINE="$(ps -ef | grep -v " grep " | grep "/kwin_wayland " | tail -n1)"
+  export WAYLAND_DISPLAY="$(echo $WLINE | awk -F'--socket ' '{ print $2 }' | awk -F' ' '{ print $1 }')"
+  export DISPLAY="$(echo $WLINE | awk -F'--xwayland-display ' '{ print $2 }' | awk -F' ' '{ print $1 }')"
+  export XAUTHORITY="$(echo $WLINE | awk -F'--xwayland-xauthority ' '{ print $2 }' | awk -F' ' '{ print $1 }')"
+  echo "WAYLAND_DISPLAY: $WAYLAND_DISPLAY"
+  echo "DISPLAY:         $DISPLAY"
+  echo "XAUTHORITY:      $XAUTHORITY"
+  cp $XAUTHORITY /tmp/.wkrootxauth
+  chmod a+r /tmp/.wkrootxauth
+  export ROOTXAUTH1="/tmp/.wkrootxauth"
 else
   echo "configuring twin .."
   TWINRCTMPCFG="/tmp/.fsttwinrc_$ACTIVE_USER"
@@ -256,10 +284,6 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
 #       /usr/lib/x86_64-linux-gnu/libexec/kactivitymanagerd stop &
 #       pkill -f kactivitymanagerd ; killall kactivitymanagerd
 #       pkill kded6
-#       pkill -f xdg-desktop-portal-kde
-#       pkill -f xdg-desktop-portal-gtk
-      # pkill xdg-*
-      # echo "[dbg:]listing_processes:" ; ps -ef ; echo "[dbg:]----listing_processes_finished----"
 #       unset KDE_FULL_SESSION
 #       unset KDE_SESSION_VERSION
       if [ -n "$DPICFG1" ] && [ "$DPICFG1" -gt "130" ] ; then
@@ -267,7 +291,7 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
       fi
     elif false && [ -z "$IS_QUARK_OS" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell6" ] ; then
       kdialog --icon "message" --title "Q4OS" --caption "$(eval_gettext "Display setup")" --msgbox "$MSG2"
-      /opt/trinity/bin/screenscalerp.exu
+      FORCE_TSCR="1" /opt/trinity/bin/screenscalerp.exu
       . /opt/trinity/env/60_q4xftdpi.sh
     elif [ -z "$IS_QUARK_OS" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell5" ] ; then
       #we need to start the full kded for display resolution to be saved in $HOME/.local/share/kscreen/
@@ -486,6 +510,14 @@ kwriteconfig --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entr
 # cp "/opt/trinity/share/apps/kdesktop/Desktop/Trash" "$( xdg-user-dir DESKTOP )/q4os_Trash.desktop"
 # cp "/opt/trinity/share/apps/kdesktop/Desktop/Web_Browser" "$( xdg-user-dir DESKTOP )/q4os_Web_Browser.desktop"
 
+if [ "$QAPTDISTR1" != "bookworm" ] && [ "$QAPTDISTR1" != "bullseye" ] && [ "$QAPTDISTR1" != "noble" ] && [ "$QAPTDISTR1" != "jammy" ] && [ "$QAPTDISTR1" != "raspbian12" ] ; then
+  if [ -z "$(kreadconfig --file "$XDGCFGHOMEDIR_PLASMA/kxkbrc" --group "Layout" --key "LayoutList")" ] ; then
+    #need to write keybard layout already here as plasma session scripts don't affect session settings
+    echo "Seting keyboard for Plasma user ..."
+    dash /usr/share/apps/q4os_system/bin/kblayout_mod.sh --write-plasmaconfig
+  fi
+fi
+
 if [ -n "$SYSTEM_INSTALL" ] && [ "$LANG_PACK_FAIL" != "0" ] ; then
   echo "language pack installation failed, creating desktop shortcut .."
   cp "/usr/share/apps/q4os_system/share/.instlq4langpack.desktop" "$( xdg-user-dir DESKTOP )/instlq4langpack.desktop"
@@ -521,14 +553,9 @@ if [ -f "/var/lib/q4os/.swprfl-acndrq-10.tmp" ] || [ -f "/var/lib/q4os/.swprfl-a
   sudo -n chown $ACTIVE_USER /tmp/.swprfl-acndrq-*
   sudo -n chmod a+rw /tmp/.swprfl-acndrq-*
 fi
-# sudo -n rm -f /usr/share/apps/q4os_system/share/.instlq4langpack.desktop
-# sudo -n rm -f /usr/share/apps/q4os_system/bin/.addlang_ai_*
+
 sudo -n $TDEDIR/bin/dcopserver_shutdown --wait
-sudo -n rm -f /usr/share/wayland-sessions/plasma.desktop
-sudo -n dpkg-divert --rename --remove /usr/share/wayland-sessions/plasma.desktop
-sudo -n rm -f /etc/sudoers.d/90_sudo_tmp01 #remove temporary passwordless config
-kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "timestamp" "$( date +%Y-%m-%d-%H-%M-%S )"
-kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "desc" "do_not_delete_this_file"
+deactivate_this
 
 if [ "$SYSTEM_INSTALL" = "livemedia" ] ; then
   deinit1 --continue-session
@@ -576,7 +603,9 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
     exit
   fi
 
-  kdialog --icon "message" --title "Q4OS" --caption "setup" --msgbox "$ENDMESSAGE"
+  if [ "$WANT_PROFILER" = "1" ] ; then
+    kdialog --icon "message" --title "Q4OS" --caption "setup" --msgbox "$ENDMESSAGE"
+  fi
 fi
 
 deinit1 --continue-session

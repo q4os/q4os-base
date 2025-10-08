@@ -81,6 +81,7 @@ deinit1 () {
 # --- script start ---
 # --------------------
 if [ -f "$HOME/.local/share/q4os/.frstlogq4.stp" ] ; then
+  deactivate_this
   exit
 fi
 

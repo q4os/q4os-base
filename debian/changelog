@@ -1,3 +1,11 @@
+q4os-base (4.27.2-a1) UNRELEASED; urgency=medium
+
+  * Fix keyboard variant configuration for Plasma
+  * Replace script for the first Plasma session login
+  * Improve configuring Wayland session for the first time login
+
+ -- Q4OS Team <devteam@q4os.org>  Mon, 06 Oct 2025 17:27:02 +0200
+
 q4os-base (4.27.1-a1) UNRELEASED; urgency=medium
 
   * Run first login script for Wayland session too

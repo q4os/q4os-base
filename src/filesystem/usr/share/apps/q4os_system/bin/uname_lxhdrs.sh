@@ -15,12 +15,10 @@ if [ "$QAPTDISTR_A" = "bullseye" ] || [ "$QAPTDISTR_A" = "bookworm" ]  || [ "$QA
   if [ "$KERNEL_TP" != "amd64" ] && [ "$KERNEL_TP" != "686-pae" ] && [ "$KERNEL_TP" != "686" ] && [ "$KERNEL_TP" != "arm64" ] && [ "$KERNEL_TP" != "armmp" ] ; then
     unset KERNEL_TP
   fi
-elif [ "$QAPTDISTR_A" = "focal" ] ; then
-  KERNEL_TP="generic" #generic-hwe-20.04
 elif [ "$QAPTDISTR_A" = "jammy" ] ; then
-  KERNEL_TP="generic" #generic-hwe-22.04
+  KERNEL_TP="generic-hwe-22.04" #generic-hwe-22.04 | generic
 elif [ "$QAPTDISTR_A" = "noble" ] ; then
-  KERNEL_TP="generic" #generic-hwe-24.04
+  KERNEL_TP="generic-hwe-24.04" #generic-hwe-24.04 | generic
 else
   unset KERNEL_TP
 fi

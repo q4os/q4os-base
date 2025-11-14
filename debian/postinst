@@ -76,37 +76,21 @@ case "$1" in
   }
 
   if is_greater_then_former "4.0.0-a1" ; then
-    if [ "$QAPDISTR_SCR" = "bullseye" ] || [ "$QAPDISTR_SCR" = "focal" ] ; then
+    if [ "$QAPDISTR_SCR" = "bullseye" ] ; then
       dash /var/lib/q4os/fixes/fix_002_reposrmv.sh
     fi
   fi
 
-  if is_greater_then_former "4.0.0-a2" ; then
-    if [ "$QAPDISTR_SCR" = "focal" ] ; then
-      dash /var/lib/q4os/fixes/fix_003_reposrmv.sh
-    fi
-  fi
-
-  if is_greater_then_former "4.1.1-a1" ; then
-    if [ "$QAPDISTR_SCR" = "focal" ] ; then
-      QAPDISTR_SCR="$QAPDISTR_SCR" dash /var/lib/q4os/fixes/fix_004_reposmove.sh
-    fi
-  fi
-
   if is_greater_then_former "4.2.2-a1" ; then
-    if [ "$QAPDISTR_SCR" != "focal" ] ; then
-      echo "Fixing hplip configuration ..."
-      /opt/trinity/bin/kwriteconfig --file "/home/$FUSRNAME/.hplip/hplip.conf" --group "authentication" --key "su_sudo" "sudo"
-      chmod a+r /home/$FUSRNAME/.hplip/hplip.conf
-      chown -R $FUSRNAME:$FUSRNAME /home/$FUSRNAME/.hplip/
-    fi
+    echo "Fixing hplip configuration ..."
+    /opt/trinity/bin/kwriteconfig --file "/home/$FUSRNAME/.hplip/hplip.conf" --group "authentication" --key "su_sudo" "sudo"
+    chmod a+r /home/$FUSRNAME/.hplip/hplip.conf
+    chown -R $FUSRNAME:$FUSRNAME /home/$FUSRNAME/.hplip/
   fi
 
   if is_greater_then_former "4.2.3-a1" ; then
-    if [ "$QAPDISTR_SCR" != "focal" ] ; then
-      echo "Marking packages ..."
-      apt-mark manual print-manager plasma-discover q4os-debonaire-plasma-theme plasma-browser-integration 2>/dev/null
-    fi
+    echo "Marking packages ..."
+    apt-mark manual print-manager plasma-discover q4os-debonaire-plasma-theme plasma-browser-integration 2>/dev/null
   fi
 
   if is_greater_then_former "4.5.2-a1" ; then
@@ -125,13 +109,11 @@ case "$1" in
   fi
 
   if is_greater_then_former "4.5.3-a1" ; then
-    if [ "$QAPDISTR_SCR" != "focal" ] ; then
-      echo "Checking repositories ..."
-      for REPO_FL1 in /etc/apt/sources.list.d/*.list ; do
-        echo " $REPO_FL1"
-        sed -i 's/qextrepo buster-/qextrepo bullseye-/' $REPO_FL1
-      done
-    fi
+    echo "Checking repositories ..."
+    for REPO_FL1 in /etc/apt/sources.list.d/*.list ; do
+      echo " $REPO_FL1"
+      sed -i 's/qextrepo buster-/qextrepo bullseye-/' $REPO_FL1
+    done
   fi
 
   if is_greater_then_former "4.6.1-a2" ; then
@@ -245,7 +227,7 @@ case "$1" in
   fi
 
   if is_greater_then_former "4.11.2-a1" ; then
-    if [ "$QAPDISTR_SCR" = "jammy" ] || [ "$QAPDISTR_SCR" = "focal" ] ; then
+    if [ "$QAPDISTR_SCR" = "jammy" ] ; then
       echo "Disabling release upgrades .."
       dash /usr/share/apps/q4os_system/bin/disable_release_upgrades.sh
     fi
@@ -294,7 +276,7 @@ case "$1" in
   fi
 
   if is_greater_then_former "4.18.1-a1" ; then
-    if [ "$QAPDISTR_SCR" = "jammy" ] || [ "$QAPDISTR_SCR" = "focal" ] ; then
+    if [ "$QAPDISTR_SCR" = "jammy" ] ; then
       echo "Fixing Quarkos apt sources ..."
       if [ -f "/etc/apt/preferences.d/pin80-quark" ] ; then
         # echo " /etc/apt/preferences.d/pin80-quark"

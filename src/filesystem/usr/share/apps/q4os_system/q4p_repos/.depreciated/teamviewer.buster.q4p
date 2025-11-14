@@ -1,5 +1,0 @@
-deb [signed-by=/usr/share/keyrings/q4a-teamviewer.gpg] http://linux.teamviewer.com/deb stable main
-##deb [signed-by=/usr/share/keyrings/q4a-teamviewer.gpg] http://linux.teamviewer.com/deb preview main
-##deb [signed-by=/usr/share/keyrings/q4a-teamviewer.gpg] http://linux.teamviewer.com/deb development main
-
-#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-teamviewer.pub

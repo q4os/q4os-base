@@ -11,7 +11,7 @@ if dpkg --compare-versions "$( dash /usr/share/apps/q4os_system/bin/print_packag
 else
   # if [ ! -f "$HOME/.local/share/q4os/.movedpitde11.stp" ] ; then
   #   #transition from tde 14.0.10 to 14.0.11, one-shot only
-  #   #keep this transition code for bullseye,focal remove for following distros
+  #   #keep this transition code for bullseye remove for following distros
   #   MOVE_DPI1="$( /opt/trinity/bin/kreadconfig --file "q4osrc" --group "Screen" --key "force_screen_dpi" )"
   #   if [ -n "$MOVE_DPI1" ] ; then
   #     dash /usr/share/apps/q4os_system/bin/dpi_set.sh "$MOVE_DPI1"

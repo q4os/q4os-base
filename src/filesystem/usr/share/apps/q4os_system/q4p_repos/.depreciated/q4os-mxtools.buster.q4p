@@ -1,3 +1,0 @@
-#MX tools for Debian
-#Install q4os-mxtools-plasma or q4os-mxtools-trinity metapackage
-deb [ arch=amd64,i386 ] http://q4os.org/qextrepo buster-mx-cn main

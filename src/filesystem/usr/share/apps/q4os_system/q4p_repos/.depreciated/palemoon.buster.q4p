@@ -1,5 +1,0 @@
-#palemoon for debian repository
-
-deb [signed-by=/usr/share/keyrings/q4a-suse_spusser.gpg] http://download.opensuse.org/repositories/home:/stevenpusser/Debian_10/ /
-
-#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-suse_spusser.pub

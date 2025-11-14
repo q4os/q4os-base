@@ -1,3 +1,12 @@
+q4os-base (4.28.1-a1) UNRELEASED; urgency=medium
+
+  * Make sure to deactivate the first run script for Plasma
+  * Move to generic-hwe kernel for Quarkos
+  * Remove buster and focal support completely
+  * Add support for forky and resolute
+
+ -- Q4OS Team <devteam@q4os.org>  Fri, 14 Nov 2025 20:03:28 +0100
+
 q4os-base (4.27.2-a1) UNRELEASED; urgency=medium
 
   * Fix keyboard variant configuration for Plasma

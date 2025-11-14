@@ -146,12 +146,14 @@ if [ "$DWNL_TYPE" = "dt_q4os" ] ; then
     DWNL_Q4PAGE="downloads_app5.html"
   elif [ "$QAPTDISTR" = "trixie" ] ; then
     DWNL_Q4PAGE="downloads_app6.html"
-  elif [ "$QAPTDISTR" = "focal" ] ; then
-    DWNL_Q4PAGE="downloads_apu_20.04.html"
+  elif [ "$QAPTDISTR" = "forky" ] ; then
+    DWNL_Q4PAGE="downloads_app7.html"
   elif [ "$QAPTDISTR" = "jammy" ] ; then
     DWNL_Q4PAGE="downloads_apu_22.04.html"
   elif [ "$QAPTDISTR" = "noble" ] ; then
     DWNL_Q4PAGE="downloads_apu_24.04.html"
+  elif [ "$QAPTDISTR" = "resolute" ] ; then
+    DWNL_Q4PAGE="downloads_apu_26.04.html"
   elif [ "$QAPTDISTR" = "raspbian12" ] ; then
     DWNL_Q4PAGE="downloads_app5.html"
   else

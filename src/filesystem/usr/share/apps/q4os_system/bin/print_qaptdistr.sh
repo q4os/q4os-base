@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ -z "$QAPTDISTR" ] ; then
-  QAPTDISTR="bookworm" #fallback
+  QAPTDISTR="trixie" #fallback
 
   DDISTRIBUTOR="$( /usr/bin/lsb_release -i -s )"
   DCODENAME="$( /usr/bin/lsb_release -c -s )"
@@ -12,12 +12,16 @@ if [ -z "$QAPTDISTR" ] ; then
     QAPTDISTR="bookworm"
   elif [ "$DDISTRIBUTOR" = "Debian" ] && [ "$DCODENAME" = "trixie" ] ; then
     QAPTDISTR="trixie"
+  elif [ "$DDISTRIBUTOR" = "Debian" ] && [ "$DCODENAME" = "forky" ] ; then
+    QAPTDISTR="forky"
   elif [ "$DDISTRIBUTOR" = "Raspbian" ] && [ "$DCODENAME" = "bookworm" ] ; then
     QAPTDISTR="raspbian12"
   elif [ "$DDISTRIBUTOR" = "Ubuntu" ] && [ "$DCODENAME" = "jammy" ] ; then
     QAPTDISTR="jammy"
   elif [ "$DDISTRIBUTOR" = "Ubuntu" ] && [ "$DCODENAME" = "noble" ] ; then
     QAPTDISTR="noble"
+  elif [ "$DDISTRIBUTOR" = "Ubuntu" ] && [ "$DCODENAME" = "resolute" ] ; then
+    QAPTDISTR="resolute"
   fi
 fi
 
@@ -28,12 +32,16 @@ if [ "$OPT_CODENAME" = "1" ] ; then
     QCODENAME1="aquarius"
   elif [ $QAPTDISTR = "trixie" ] ; then
     QCODENAME1="andromeda"
+  elif [ $QAPTDISTR = "forky" ] ; then
+    QCODENAME1="perseus"
   elif [ $QAPTDISTR = "raspbian12" ] ; then
     QCODENAME1="aquarius"
   elif [ $QAPTDISTR = "jammy" ] ; then
     QCODENAME1="jammy"
   elif [ $QAPTDISTR = "noble" ] ; then
     QCODENAME1="noble"
+  elif [ $QAPTDISTR = "resolute" ] ; then
+    QCODENAME1="resolute"
   else
     QCODENAME1="unknown"
   fi

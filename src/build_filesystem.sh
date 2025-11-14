@@ -47,10 +47,11 @@ gzip -n $OUTDIR1/usr/share/apps/q4os_system/share/q4os_home_bullseye.tar
 cd $OUTDIR1/usr/share/apps/q4os_system/share/
 ln -s q4os_home_bullseye.tar.gz q4os_home_bookworm.tar.gz
 ln -s q4os_home_bullseye.tar.gz q4os_home_trixie.tar.gz
+ln -s q4os_home_bullseye.tar.gz q4os_home_forky.tar.gz
 ln -s q4os_home_bullseye.tar.gz q4os_home_raspbian12.tar.gz
-ln -s q4os_home_bullseye.tar.gz q4os_home_focal.tar.gz
 ln -s q4os_home_bullseye.tar.gz q4os_home_jammy.tar.gz
 ln -s q4os_home_bullseye.tar.gz q4os_home_noble.tar.gz
+ln -s q4os_home_bullseye.tar.gz q4os_home_resolute.tar.gz
 
 # --- generate localization .po files ---
 cd $OUTDIR1/

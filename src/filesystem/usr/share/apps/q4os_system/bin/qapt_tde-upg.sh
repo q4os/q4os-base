@@ -48,12 +48,14 @@ if [ "$3" = "true" ] && dash /usr/share/apps/q4os_system/bin/print_package_versi
     Q4RLS="Aquarius"
   elif [ "$QAPDIST" = "trixie" ] ; then
     Q4RLS="Andromeda"
-  elif [ "$QAPDIST" = "focal" ] ; then
-    Q4RLS="Focal"
+  elif [ "$QAPDIST" = "forky" ] ; then
+    Q4RLS="Perseus"
   elif [ "$QAPDIST" = "jammy" ] ; then
     Q4RLS="Jammy"
   elif [ "$QAPDIST" = "noble" ] ; then
     Q4RLS="Noble"
+  elif [ "$QAPDIST" = "resolute" ] ; then
+    Q4RLS="Resolute"
   fi
   echo "Adding TDE startup notification ..."
   sudo -n -u $FUSRNAME mkdir -p "/home/$FUSRNAME/.trinity/Autostart/"

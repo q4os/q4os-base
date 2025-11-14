@@ -44,7 +44,7 @@ mkdir -p "$XDGCFGHOMEDIR_PLASMA/"
 rsync -a "$HOME/.config_plasma.template/." "$XDGCFGHOMEDIR_PLASMA/"
 rm -rf "$HOME/.config_plasma.template/"
 
-if [ "$QAPTDISTR1" = "bullseye" ] || [ "$QAPTDISTR1" = "focal" ] || [ "$QAPTDISTR1" = "jammy" ] ; then
+if [ "$QAPTDISTR1" = "bullseye" ] || [ "$QAPTDISTR1" = "jammy" ] ; then
   #to keep backward compatibility for older installations
   echo "Copying TDEHOME files for Plasma ..."
   mkdir -p "$XDGCFGHOMEDIR_PLASMA/trinity/"
@@ -54,7 +54,7 @@ fi
 echo "Writing Plasma settings ..."
 /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/kwalletrc" --group "Wallet" --key "Enabled" "false" #don't ask for password manager for chrome/chromium
 chmod a+r "$XDGCFGHOMEDIR_PLASMA/kwalletrc"
-if [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "bullseye" ] || [ "$QAPTDISTR1" = "raspbian12" ] || [ "$QAPTDISTR1" = "noble" ] || [ "$QAPTDISTR1" = "jammy" ] || [ "$QAPTDISTR1" = "focal" ] ; then
+if [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "bullseye" ] || [ "$QAPTDISTR1" = "noble" ] || [ "$QAPTDISTR1" = "jammy" ] || [ "$QAPTDISTR1" = "raspbian12" ] ; then
   /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorSize" "0"
   /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorTheme" "breeze_cursors"
   # /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorTheme" "Breeze_Light"
@@ -81,11 +81,10 @@ if false ; then
   fi
 fi
 
-if [ "$QAPTDISTR1" = "trixie" ] || [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "jammy" ] || [ "$QAPTDISTR1" = "noble" ] ; then
-  #don't start device applet for tde-14.1.1
-  /opt/trinity/bin/kwriteconfig --file "tdehwdevicetrayrc" --group "General" --key "Autostart" "false"
-fi
-# if [ "$QAPTDISTR1" != "bullseye" ] && [ "$QAPTDISTR1" != "focal" ] && [ "$QAPTDISTR1" != "jammy" ] ; then
+#don't start device applet for tde-14.1.1
+/opt/trinity/bin/kwriteconfig --file "tdehwdevicetrayrc" --group "General" --key "Autostart" "false"
+
+# if [ "$QAPTDISTR1" != "bullseye" ] && [ "$QAPTDISTR1" != "jammy" ] ; then
 #   #workaround a nasty bug for tde-14.1.1, see https://sourceforge.net/p/q4os/tickets/202/ - TDEPowersave loads CPU at 99%
 #   /opt/trinity/bin/kwriteconfig --file "tdepowersaverc" --group "Acoustic" --key "autoDimm" "false"
 #   /opt/trinity/bin/kwriteconfig --file "tdepowersaverc" --group "Performance" --key "autoDimm" "false"

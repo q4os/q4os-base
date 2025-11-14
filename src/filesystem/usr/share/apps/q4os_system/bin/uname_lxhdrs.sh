@@ -7,7 +7,7 @@
 # CARCH="$( dpkg --print-architecture )"
 QAPTDISTR_A="$( dash /usr/share/apps/q4os_system/bin/print_qaptdistr.sh )"
 
-if [ "$QAPTDISTR_A" = "bullseye" ] || [ "$QAPTDISTR_A" = "bookworm" ]  || [ "$QAPTDISTR_A" = "trixie" ] ; then
+if [ "$QAPTDISTR_A" = "bullseye" ] || [ "$QAPTDISTR_A" = "bookworm" ]  || [ "$QAPTDISTR_A" = "trixie" ] || [ "$QAPTDISTR_A" = "forky" ] ; then
   KERNEL_TP="$( uname -r  | awk -F'-' '{ print $NF }' )"
   if [ "$KERNEL_TP" = "pae" ] ; then
     KERNEL_TP="686-pae"
@@ -19,6 +19,8 @@ elif [ "$QAPTDISTR_A" = "jammy" ] ; then
   KERNEL_TP="generic-hwe-22.04" #generic-hwe-22.04 | generic
 elif [ "$QAPTDISTR_A" = "noble" ] ; then
   KERNEL_TP="generic-hwe-24.04" #generic-hwe-24.04 | generic
+elif [ "$QAPTDISTR_A" = "resolute" ] ; then
+  KERNEL_TP="generic-hwe-26.04" #generic-hwe-26.04 | generic
 else
   unset KERNEL_TP
 fi

@@ -9,7 +9,7 @@ export TEXTDOMAIN="q4os-base"
 SYSARCH="$( dpkg --print-architecture )"
 QAPTDISTR_A="$( dash /usr/share/apps/q4os_system/bin/print_qaptdistr.sh )"
 
-if [ "$QAPTDISTR_A" = "focal" ] || [ "$QAPTDISTR_A" = "jammy" ] || [ "$QAPTDISTR_A" = "noble" ] ; then
+if [ "$QAPTDISTR_A" = "jammy" ] || [ "$QAPTDISTR_A" = "noble" ] || [ "$QAPTDISTR_A" = "resolute" ] ; then
   WDIR1="http://www.q4os.org/quarktde/"
   # WDIR1="http://www.quarkos.org/quarktde/"
   WDIR2="dists/$QAPTDISTR_A/main/binary-$SYSARCH/"

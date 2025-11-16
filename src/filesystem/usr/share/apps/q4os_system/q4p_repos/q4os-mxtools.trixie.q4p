@@ -1,3 +1,3 @@
 #MX tools for Debian
 #Install q4os-mxtools-plasma or q4os-mxtools-trinity metapackage
-deb [signed-by=/usr/share/keyrings/q4a-q4os.gpg arch=amd64,i386] http://q4os.org/qexarepo/mxtools trixie-mxtools-cn main
+deb [signed-by=/usr/share/keyrings/q4a-q4os.gpg arch=amd64] https://q4os.sourceforge.io/qexarepo/mxtools trixie-mxtools-cn main

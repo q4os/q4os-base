@@ -1,0 +1,3 @@
+deb [signed-by=/usr/share/keyrings/q4a-anydesk.gpg] http://deb.anydesk.com/ all main
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-anydesk.pub

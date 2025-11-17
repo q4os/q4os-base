@@ -1,0 +1,3 @@
+deb [signed-by=/usr/share/keyrings/q4a-microsoft_edge.gpg arch=amd64] https://packages.microsoft.com/repos/edge stable main
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-microsoft_edge.pub

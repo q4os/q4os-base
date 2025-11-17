@@ -1,0 +1,3 @@
+deb [signed-by=/usr/share/keyrings/q4a-mozilla.gpg] https://packages.mozilla.org/apt mozilla main
+
+#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-mozilla.pub

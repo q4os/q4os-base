@@ -27,7 +27,11 @@ export KDE_SESSION_VERSION="3"
 #for QT5 lib
 # export QT_STYLE_OVERRIDE="gtk"
 # unset QT_STYLE_OVERRIDE
-export QT_QPA_PLATFORMTHEME="q4ostde" #platform plugin to set complete theme to follow - icons/fonts/colors/style/etc..
+
+#remove this chunk as soon as trixie retires
+if [ -f "/usr/share/doc/q4os-tde-qtplugin/changelog.gz" ] && [ ! -f "/var/lib/q4os/.disable_qt5tde_plugin.stp" ] ; then
+  export QT_QPA_PLATFORMTHEME="q4ostde"
+fi
 
 if [ -z "$XAUTHORITY" ] && [ -f "$HOME/.Xauthority" ] ; then
   export XAUTHORITY="$HOME/.Xauthority" #for sudo commands

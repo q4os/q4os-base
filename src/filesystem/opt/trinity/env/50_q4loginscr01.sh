@@ -29,7 +29,7 @@ export KDE_SESSION_VERSION="3"
 # unset QT_STYLE_OVERRIDE
 
 #remove this chunk as soon as trixie retires
-if [ -f "/usr/share/doc/q4os-tde-qtplugin/changelog.gz" ] && [ ! -f "/var/lib/q4os/.disable_qt5tde_plugin.stp" ] ; then
+if [ -f "/usr/share/doc/q4os-tde-qtplugin/changelog.Debian.gz" ] && [ ! -f "/var/lib/q4os/.disable_qt5tde_plugin.stp" ] ; then
   export QT_QPA_PLATFORMTHEME="q4ostde"
 fi
 

@@ -51,6 +51,7 @@ if [ -z "$FUSERNAME" ] ; then
   adduser $FUSERNAME netdev
   adduser $FUSERNAME bluetooth
   adduser $FUSERNAME lpadmin
+  adduser $FUSERNAME scanner
   adduser $FUSERNAME users
   # chown -R $FUSERNAME:$FUSERNAME /home/$FUSERNAME
   if [ -z "$FPASSWORD" ] ; then

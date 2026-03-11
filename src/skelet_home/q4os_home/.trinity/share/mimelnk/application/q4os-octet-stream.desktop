@@ -1,11 +1,13 @@
 [Desktop Entry]
 #defines mime type, the same as /usr/share/mime/packages/*.desktop
 #override the default trinity octet-stream mimetype
-Comment=Unknown
-#Icon=
+#see also https://wiki.trinitydesktop.org/Tips_And_Tricks#Unable_to_find_mime_type_application.2Foctet-stream
+Comment=octet-stream
+Hidden=false
+Icon=
 MimeType=application/octet-stream
-#X-TDE-PatternsAccuracy=0
-#Patterns=
+Patterns=
 Type=MimeType
 OnlyShowIn=TDE;
 X-Ubuntu-Gettext-Domain=desktop_tdelibs-trinity
+#X-TDE-PatternsAccuracy=0

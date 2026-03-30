@@ -1,3 +1,0 @@
-deb [signed-by=/usr/share/keyrings/q4a-vivaldi.gpg] http://repo.vivaldi.com/archive/deb/ stable main
-
-#-rem-pubkey: /usr/share/apps/q4os_system/q4p_keyring/q4a-vivaldi.pub

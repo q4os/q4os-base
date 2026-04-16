@@ -12,6 +12,10 @@ jobs:
       image: debian:bullseye
 
     steps:
+
+      - name: Remove .git directory
+        run: rm -rf .git
+  
       - name: Install base tools
         run: |
           apt-get update

@@ -20,7 +20,7 @@ jobs:
             dh-make fakeroot lintian equivs dpkg-dev
 
       - name: Checkout source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Optional: add Q4OS repo if needed
       - name: Add Q4OS repository (if required)

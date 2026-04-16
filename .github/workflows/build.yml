@@ -53,12 +53,12 @@ jobs:
 
       - name: Build source package
         run: |
-          dpkg-buildpackage -us -uc -S -d
+          dpkg-buildpackage -us -uc -S
 
       # -------- BINARY PACKAGE --------
       - name: Build binary package
         run: |
-          dpkg-buildpackage -us -uc -b -d
+          dpkg-buildpackage -us -uc -b
 
       # -------- QA --------
       - name: Run lintian

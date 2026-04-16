@@ -81,12 +81,16 @@ jobs:
           name: q4os-packages
           path: artifacts/*
 
-      - name: Upload source packages
+      - name: Collect source artifacts_src
+        run: |
+          mkdir -p artifacts_src
+          mv ../*.dsc artifacts_src/ 2>/dev/null || true
+          mv ../*.tar.* artifacts_src/ 2>/dev/null || true
+          mv ../*.changes artifacts_src/ 2>/dev/null || true
+          mv ../*.buildinfo artifacts_src/ 2>/dev/null || true
+
+      - name: Upload source artifacts
         uses: actions/upload-artifact@v4
         with:
           name: deb-source
-          path: |
-            ../*.dsc
-            ../*.tar.*
-            ../*.changes
-            ../*.buildinfo
+          path: artifacts_src/*

@@ -13,9 +13,6 @@ jobs:
 
     steps:
 
-      - name: Remove .git directory
-        run: rm -rf .git
-  
       - name: Install base tools
         run: |
           apt-get update
@@ -26,6 +23,9 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
+      - name: Remove .git directory
+        run: rm -rf .git
+  
       # Optional: add Q4OS repo if needed
       - name: Add Q4OS repository (if required)
         run: |

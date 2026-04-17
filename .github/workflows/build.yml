@@ -29,7 +29,7 @@ jobs:
       # Optional: add Q4OS repo if needed
       - name: Add Q4OS repository (if required)
         run: |
-          echo "deb http://q4os.org/debian bullseye main" >> /etc/apt/sources.list || true
+          echo "deb http://q4os.org/q4repo q4os-4-0-cn main" >> /etc/apt/sources.list || true
           apt-get update || true
 
       - name: Install build dependencies

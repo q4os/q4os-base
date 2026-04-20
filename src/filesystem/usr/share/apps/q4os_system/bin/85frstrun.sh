@@ -205,12 +205,12 @@ if [ -n "$THEME1" ] ; then
     if [ -f "$ROOTXAUTH1" ] ; then
       sudo -n XAUTHORITY="$ROOTXAUTH1" THQ_THNAME="$THEME1" ktheme_setter
     fi
-    #previous command may remove/modify the "$XDGCFGHOMEROOT/menus/tde-applications.menu" file, so fix it
-    XDGCFGHOMEROOT="$(dash /usr/share/apps/q4os_system/bin/print_xdgcfghome_plasma.sh "root")/menus/tde-applications.menu"
-    echo "xdgcfghomeroot: $XDGCFGHOMEROOT"
-    sudo -n rm -f $XDGCFGHOMEROOT/menus/tde-applications.menu
-    sudo -n mkdir -p $XDGCFGHOMEROOT/menus/
-    sudo -n ln -s /opt/trinity/etc/xdg/menus/tde-applications.menu $XDGCFGHOMEROOT/menus/tde-applications.menu
+    # #previous command may remove/modify the "$XDGCFGHOMEROOT/menus/tde-applications.menu" file, so fix it
+    # XDGCFGHOMEROOT="$(dash /usr/share/apps/q4os_system/bin/print_xdgcfghome_plasma.sh "root")/menus/tde-applications.menu"
+    # echo "xdgcfghomeroot: $XDGCFGHOMEROOT"
+    # sudo -n rm -f $XDGCFGHOMEROOT/menus/tde-applications.menu
+    # sudo -n mkdir -p $XDGCFGHOMEROOT/menus/
+    # sudo -n ln -s /opt/trinity/etc/xdg/menus/tde-applications.menu $XDGCFGHOMEROOT/menus/tde-applications.menu
   fi
   pkill -n kdialog
   echo "custom theme done."

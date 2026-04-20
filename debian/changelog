@@ -1,3 +1,27 @@
+q4os-base (4.29.1-a1) UNRELEASED; urgency=medium
+
+  * Add first user to scanner group on the first boot
+  * Update fix by upstream https://wiki.trinitydesktop.org/Tips_And_Tricks#Unable_to_find_mime_type_application.2Foctet-stream
+  * Remove qrepoadd tool completely in favor of extrepo package
+  * Add GitHub Actions workflow for building Debian packages
+  * Upgrade checkout action from v3 to v4
+  * Update build.yml to include dependency resolution
+  * Remove .git directory in build workflow
+  * Move .git removal step after source checkout
+  * Fix .pot generating
+  * Update build.yml
+  * Rename and update artifact collection steps
+  * Collect and upload source artifacts in build workflow
+  * Fix dependencies
+  * Fix .pot generation
+  * Update build dependencies
+  * Fix build commands in GitHub Actions workflow
+  * Remove source artifact collection and upload steps
+  * Update Q4OS repository URL in build.yml
+  * Make TDE menu structure the default
+
+ -- Q4OS Team <devteam@q4os.org>  Mon, 20 Apr 2026 11:14:43 +0200
+
 q4os-base (4.28.2-a2) UNRELEASED; urgency=medium
 
   * Fix q4os-tde-qtplugin detection for Quarkos

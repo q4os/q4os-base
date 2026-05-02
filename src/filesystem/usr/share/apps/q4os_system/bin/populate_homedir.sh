@@ -40,6 +40,16 @@ tar -C $HOME/ -xhzf /usr/share/apps/q4os_system/share/q4os_home_$QAPTDISTR1.tar.
 if [ -f "/usr/share/apps/q4os_system/share/q4os_home_custom1.tar.gz" ] ; then
   tar -C $HOME/ -xhzf /usr/share/apps/q4os_system/share/q4os_home_custom1.tar.gz
 fi
+
+#placed in qtdeinit script so disabled here
+# #remove konqueror toolbars configuration as it has changed from 14.1.6
+# #todo: consider to restore toolbars for new distros
+# if [ "$QAPTDISTR1" != "trixie" ] && [ "$QAPTDISTR1" != "bookworm" ] && [ "$QAPTDISTR1" != "bullseye" ] && [ "$QAPTDISTR1" != "noble" ] && [ "$QAPTDISTR1" != "jammy" ] && [ "$QAPTDISTR1" != "raspbian12" ] ; then
+#   echo "Removing toolbars configuration as it has changed since 14.1.6 ..."
+#   rm -r $HOME/.trinity/share/apps/konqueror/
+#   rm -r $HOME/.trinitykde/share/apps/konqueror/
+# fi
+
 mkdir -p "$XDGCFGHOMEDIR_PLASMA/"
 rsync -a "$HOME/.config_plasma.template/." "$XDGCFGHOMEDIR_PLASMA/"
 rm -rf "$HOME/.config_plasma.template/"

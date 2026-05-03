@@ -63,11 +63,13 @@ case "$1" in
 
   #function
   is_greater_then_former () {
+    if [ -z "$QBVER_FORMER" ] ; then
+      return 1
+    fi
     local ISGREATER
     local QBVER_TOCOMPARE="$1"
     unset ISGREATER
-    dpkg --compare-versions "$QBVER_TOCOMPARE" gt "$QBVER_FORMER" && ISGREATER="yes"
-    if [ "$ISGREATER" = "yes" ] ; then
+    if dpkg --compare-versions "$QBVER_TOCOMPARE" gt "$QBVER_FORMER" ; then
       echo "[FX] Checking diffs ($QBVER_TOCOMPARE)."
       return 0
     fi
@@ -322,6 +324,17 @@ case "$1" in
     if [ "$QAPDISTR_SCR" = "trixie" ] && [ -f "/usr/bin/startplasma-wayland" ] ; then
       echo "Confiugring sudo group ..."
       rm -f /etc/sudoers.d/90_sudo_tmp01
+    fi
+  fi
+
+  if is_greater_then_former "4.29.1-a2" ; then
+    if [ "$QAPDISTR_SCR" = "resolute" ] || [ "$QAPDISTR_SCR" = "noble" ] || [ "$QAPDISTR_SCR" = "jammy" ] ; then
+      FILE1="/etc/apt/preferences.d/pin50-mozillateamppa"
+      if [ -f "$FILE1" ] && [ "$(md5sum "$FILE1" | awk '{ print $1 }')" = "a70790bd1d2e1c33f517b2dc2ff5c9af" ] ; then
+        echo "Fix Mozilla repository pinning for Quarkos ..."
+        cp /var/lib/q4os/fixes/fix_008_pin50-mozillateamppa "$FILE1"
+      fi
+      unset FILE1
     fi
   fi
 

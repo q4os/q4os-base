@@ -1,3 +1,16 @@
+q4os-base (4.30.1-a1) UNRELEASED; urgency=medium
+
+  * Treat build compatibility level the proper way
+  * Move to debhelper 13 compatibility level
+  * Minor prepare to fix konqueror toolbars configuration for new distros
+  * Fix Mozilla pinning for Quarkos
+  * Add wrapper script for Plasma kwriteconfig
+  * Remove altdeski, an obsolete tool
+  * Move Trinity specific tools to the Trinity files location
+  * Fix version in postinst script
+
+ -- Q4OS Team <devteam@q4os.org>  Thu, 07 May 2026 12:17:49 +0200
+
 q4os-base (4.29.1-a1) UNRELEASED; urgency=medium
 
   * Add first user to scanner group on the first boot

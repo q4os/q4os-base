@@ -427,7 +427,8 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
           sudo -n nmcli connection delete uuid "$WIFI_CREATED"
           kdialog --icon "message" --title "Q4OS" --caption "WiFi setup" --msgbox "<p>$(eval_gettext "Connection not successful, check the Wifi password please.")</p>"
         else
-          unset RUN_WIFICON ; echo " [w1:] success connecing ..."
+          unset RUN_WIFICON ; echo " [w1:] success connecting ..."
+          # sleep 1
         fi
       else
         unset RUN_WIFICON ; echo " [w1:] no connection has been created ..."

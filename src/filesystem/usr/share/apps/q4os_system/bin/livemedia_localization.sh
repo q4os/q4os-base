@@ -2,14 +2,31 @@
 
 echo "livemedia_localization starting ..."
 
-WKFL1="/tmp/.geoiplookup1"
-wget -T2 -t1 -qq -O- https://geoip.ubuntu.com/lookup > $WKFL1
-TMZONE1="$( cat $WKFL1 | grep "TimeZone" | awk -F'<TimeZone>' '{ print $2 }' | awk -F'</TimeZone>' '{ print $1 }' )"
-CTRYCODE1="$( cat $WKFL1 | grep "CountryCode" | awk -F'CountryCode' '{ print $2 }' | tr -d '<>/' )"
+#geoip:
+WKFL_GEOIP="/tmp/.geoiplookup1"
+URL1="https://ipinfo.io/json"
+echo "Downloading geoip info ..."
+rm -f $WKFL_GEOIP
+wget -T2 -t1 -qq -O "$WKFL_GEOIP" "$URL1"
+TMZONE1=$( awk -F'"' '/"timezone"/ {print $4}' $WKFL_GEOIP )
+CTRYCODE1=$( awk -F'"' '/"country"/ {print $4}' $WKFL_GEOIP )
+if [ -z "$TMZONE1$CTRYCODE1" ] ; then
+  echo "Geoip failed."
+  URL1="https://geoip.ubuntu.com/lookup"
+  echo "Trying another geoip service ..."
+  rm -f $WKFL_GEOIP
+  wget -T2 -t1 -qq -O "$WKFL_GEOIP" "$URL1"
+  TMZONE1="$( cat $WKFL_GEOIP | grep "TimeZone" | awk -F'<TimeZone>' '{ print $2 }' | awk -F'</TimeZone>' '{ print $1 }' )"
+  CTRYCODE1="$( cat $WKFL_GEOIP | grep "CountryCode" | awk -F'CountryCode' '{ print $2 }' | tr -d '<>/' )"
+fi
 echo "geoip timezone detected:     $TMZONE1"
 echo "geoip country code detected: $CTRYCODE1"
-echo "geoip info:                  $WKFL1"
-
+echo "geoip info:                  $WKFL_GEOIP"
+# sudo -n /opt/trinity/bin/kwriteconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "geoip_timezone" "$TMZONE1"
+# sudo -n /opt/trinity/bin/kwriteconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "geoip_ctrycode" "$CTRYCODE1"
+# if [ -f "/etc/q4os/q4base.conf" ] ; then
+#   sudo -n chmod a+r /etc/q4os/q4base.conf
+# fi
 if [ -n "$TMZONE1" ] ; then
   sudo -n timedatectl set-timezone $TMZONE1
 fi
@@ -23,6 +40,8 @@ if [ -n "$(cat /proc/cmdline | grep "locales=")" ] ; then
   fi
 else
   #localization hasn't been set via grub options
+  # CTRYCODE1="$( /opt/trinity/bin/kreadconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "geoip_ctrycode" )"
+  echo "Geoip country code: $CTRYCODE1"
   if [ "$CTRYCODE1" != "US" ] && [ "$CTRYCODE1" != "GB" ] && [ "$CTRYCODE1" != "AU" ] ; then
     #show dialog to ask user for a language, preset geoip info if possible
     if [ "$QDSK_SESSION" = "trinity" ] ; then

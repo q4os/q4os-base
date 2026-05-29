@@ -338,6 +338,17 @@ case "$1" in
     fi
   fi
 
+  if is_greater_then_former "4.30.1-a3" ; then
+    FILEA="/var/lib/q4os/fixes/fix_009_efi_chnld_signed.tgz"
+    FILEB="/boot/efi/EFI/DebianBoot/shimx64.efi"
+    if [ -f "$FILEA" ] && [ -f "$FILEB" ] && [ "$(md5sum "$FILEB" | awk '{ print $1 }')" = "21c1cef8f2d2b69c6d2ef019f23a1a7a" ] ; then
+      echo "Fixing secure boot certificates (062026) ..."
+      tar -x -C "/boot/efi/EFI/DebianBoot" -f $FILEA
+    fi
+    unset FILEB
+    unset FILEA
+  fi
+
   set -e
   echo "[FX] Fixes end."
 #--------------- fixes end --------------------------------------

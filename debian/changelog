@@ -1,3 +1,10 @@
+q4os-base (4.30.1-a3) UNRELEASED; urgency=medium
+
+  * Fix Plasma Wayland detection on first boot
+  * Fix secureboot certificates ending June 2026
+
+ -- Q4OS Team <devteam@q4os.org>  Fri, 29 May 2026 18:28:22 +0200
+
 q4os-base (4.30.1-a2) UNRELEASED; urgency=medium
 
   * Minor fix typo

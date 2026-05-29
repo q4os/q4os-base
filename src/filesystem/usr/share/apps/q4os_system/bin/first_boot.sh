@@ -56,7 +56,7 @@ if [ -z "$FUSERNAME" ] ; then
   # chown -R $FUSERNAME:$FUSERNAME /home/$FUSERNAME
   if [ -z "$FPASSWORD" ] ; then
     passwd -d $FUSERNAME
-    if [ -f "/usr/bin/startplasma-x11" ] ; then
+    if [ -f "/usr/bin/startplasma-wayland" ] || [ -f "/usr/bin/startplasma-x11" ] ; then
       echo "Enabling autologin into Plasma ..."
       ctrl-autologin --enable "$FUSERNAME" "" "plasma.desktop"
     elif [ -f "/opt/trinity/bin/starttde" ] ; then
@@ -166,7 +166,7 @@ echo "decide whether to enable unattended-upgrades ..."
 if [ "$SYSTEM_INSTALL" = "livemedia" ] ; then
   echo "do not enable unattended-upgrades for live media"
 else
-  if [ -f "/usr/bin/startplasma-x11" ] ; then
+  if [ -f "/usr/bin/startplasma-wayland" ] || [ -f "/usr/bin/startplasma-x11" ] ; then
     echo "periodic updates enabled, while unattended-upgrades disabled for plasma"
     dash /usr/share/apps/q4os_system/bin/aptwriteconfig.sh "/etc/apt/apt.conf.d/20auto-upgrades" "APT::Periodic::Update-Package-Lists" "1"
     dash /usr/share/apps/q4os_system/bin/aptwriteconfig.sh "/etc/apt/apt.conf.d/20auto-upgrades" "APT::Periodic::Unattended-Upgrade" "0"

@@ -109,6 +109,12 @@ if q4hw-info --thinkpad-r51 ; then
   touch /tmp/.swprfl-acndrq-30.tmp #restart needed for i915 options to be activated
 fi
 
+#fix for winsetup installations
+if [ ! -f "/boot/grub/fonts/unicode.pf2" ] && [ -f "/usr/share/grub/unicode.pf2" ] ; then
+  mkdir -p /boot/grub/fonts/
+  cp /usr/share/grub/unicode.pf2 /boot/grub/fonts/
+fi
+
 if [ "$SYSTEM_INSTALL" != "livemedia" ] ; then
   #fixing a few debian bugs, preconfigure debconf for dpkg to work in noninteractive mode
   if [ "$( dash /usr/share/apps/q4os_system/bin/print_package_version.sh "grub-pc" )" != "0" ] ; then

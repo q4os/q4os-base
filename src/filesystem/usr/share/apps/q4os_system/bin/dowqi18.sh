@@ -277,7 +277,7 @@ if [ "$1" = "--install2" ] ; then
     PCK_TOINST="$PCK_TOINST fcitx5-mozc"
   fi
   if [ -n "$( echo "$3" | grep -i '.UTF-8' | grep 'zh_' )" ] ; then
-    PCK_TOINST="$PCK_TOINST fcitx5-chewing"
+    PCK_TOINST="$PCK_TOINST fcitx5-chewing fcitx5-chinese-addons"
   fi
   echo "Packages to install: $PCK_TOINST"
   if [ -n "$( check_apt_busy.sh )" ] ; then

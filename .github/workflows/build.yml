@@ -3,13 +3,27 @@ name: Build Debian Packages (binary + source)
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - codename: bullseye
+            q4os_suite: q4os-4-0-cn
+          - codename: bookworm
+            q4os_suite: q4os-5-0-cn
+          - codename: trixie
+            q4os_suite: q4os-6-0-cn
+          - codename: forky
+            q4os_suite: q4os-7-0-cn
+
     container:
-      image: debian:bullseye
+      image: debian:${{ matrix.codename }}
 
     steps:
 
@@ -26,10 +40,10 @@ jobs:
       - name: Remove .git directory
         run: rm -rf .git
   
-      # Optional: add Q4OS repo if needed
+      # Optional: add the matching Q4OS repo, in case build-deps pull in q4os packages
       - name: Add Q4OS repository (if required)
         run: |
-          echo "deb http://q4os.org/q4repo q4os-4-0-cn main" >> /etc/apt/sources.list || true
+          echo "deb http://q4os.org/q4repo ${{ matrix.q4os_suite }} main" >> /etc/apt/sources.list || true
           apt-get update || true
 
       - name: Install build dependencies
@@ -78,5 +92,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: q4os-packages
+          name: q4os-packages-${{ matrix.codename }}
           path: artifacts/*

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if command -v kreadconfig5 >/dev/null 2>&1; then
+    exec kreadconfig5 "$@"
+elif command -v kreadconfig6 >/dev/null 2>&1; then
+    exec kreadconfig6 "$@"
+else
+    echo "kreadconfig not found" >&2
+    exit 1
+fi

@@ -84,9 +84,9 @@ if false ; then
   #dpi setting below doesn't work for some reason, investigate
   DPICFG1="$( kreadconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "screen_ffdpi_plasma" )"
   echo "Get DPI from preconfig: $DPICFG1"
-  if [ -n "$DPICFG1" ] && [ -x "/usr/bin/kwriteconfig5" ] ; then
+  if [ -n "$DPICFG1" ] && [ -x "/usr/bin/kwrtcfgpm" ] ; then
     echo "Writing screen DPI setting: $DPICFG1"
-    /usr/bin/kwriteconfig5 --file "$XDGCFGHOMEDIR_PLASMA/kcmfonts" --group "General" --key "forceFontDPI" "$DPICFG1"
+    /usr/bin/kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kcmfonts" --group "General" --key "forceFontDPI" "$DPICFG1"
     # dash /usr/share/apps/q4os_system/bin/dpi_set.sh "$DPICFG1"
   fi
 fi

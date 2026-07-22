@@ -22,7 +22,7 @@ echo "Plasma XDG homedir: $XDGCFGHOMEFULL"
 echo "Lang: $LANG"
 
 if [ "$QAPTDISTR1" != "bullseye" ] ; then
-  if [ -z "$(kreadconfig5 --file "$XDGCFGHOMEFULL/kxkbrc" --group "Layout" --key "LayoutList")" ] ; then
+  if [ -z "$(kreadcfgpm --file "$XDGCFGHOMEFULL/kxkbrc" --group "Layout" --key "LayoutList")" ] ; then
     echo "Seting keyboard for Plasma ..."
     dash /usr/share/apps/q4os_system/bin/kblayout_mod.sh --write-plasmaconfig
   fi
@@ -30,16 +30,16 @@ fi
 
 if [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "raspbian12" ] ; then
   echo "Disable power saving for Bookworm to avoid desktop freeze .. fixing Debian bug"
-  # kwriteconfig5 --file "$XDGCFGHOMEFULL/powermanagementprofilesrc" --group AC --group DPMSControl --key idleTime --type int 21600
-  kwriteconfig5 --file "$XDGCFGHOMEFULL/powermanagementprofilesrc" --group AC --group SuspendSession --key idleTime --type int 21600000
-  kwriteconfig5 --file "$XDGCFGHOMEFULL/powermanagementprofilesrc" --group AC --group SuspendSession --key suspendType --type int 32
+  # kwrtcfgpm --file "$XDGCFGHOMEFULL/powermanagementprofilesrc" --group AC --group DPMSControl --key idleTime --type int 21600
+  kwrtcfgpm --file "$XDGCFGHOMEFULL/powermanagementprofilesrc" --group AC --group SuspendSession --key idleTime --type int 21600000
+  kwrtcfgpm --file "$XDGCFGHOMEFULL/powermanagementprofilesrc" --group AC --group SuspendSession --key suspendType --type int 32
   # chmod a+r "$XDGCFGHOMEFULL/powermanagementprofilesrc"
 fi
 
 if [ "$ACTIVE_USER" = "$FIRST_USER" ] ; then
   echo "Exclude welcome screen from session recovery for first user ..."
-  # kwriteconfig5 --file "$XDGCFGHOMEFULL/ksmserverrc" --group "General" --key "loginMode" "default"
-  kwriteconfig5 --file "$XDGCFGHOMEFULL/ksmserverrc" --group "General" --key "excludeApps" "welcome-screen5.exu"
+  # kwrtcfgpm --file "$XDGCFGHOMEFULL/ksmserverrc" --group "General" --key "loginMode" "default"
+  kwrtcfgpm --file "$XDGCFGHOMEFULL/ksmserverrc" --group "General" --key "excludeApps" "welcome-screen5.exu"
   # chmod a+r "$XDGCFGHOMEFULL/ksmserverrc"
 fi
 
@@ -70,9 +70,9 @@ xdg-user-dirs-update #create $XDG_CONFIG_HOME/.userdirs.dirs file ; check if nee
 # mkdir -p "$( xdg-user-dir DESKTOP )"
 # #fixing a kde/debian bug - the desktop directory is not translated correctly --end--
 # if [ ! -f "$( xdg-user-dir DESKTOP )/.directory" ] ; then
-#   kwriteconfig5 --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Encoding" "UTF-8"
-#   kwriteconfig5 --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Icon" "user-desktop"
-#   kwriteconfig5 --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Type" "Directory"
+#   kwrtcfgpm --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Encoding" "UTF-8"
+#   kwrtcfgpm --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Icon" "user-desktop"
+#   kwrtcfgpm --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Type" "Directory"
 # fi
 
 # #plasma desktop installer shortcut for live-media

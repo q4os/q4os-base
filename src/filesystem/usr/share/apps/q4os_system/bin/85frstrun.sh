@@ -38,8 +38,8 @@ deinit1 () {
 
   if [ -n "$WAYLAND_DISPLAY" ] ; then
     echo "Reverting back window decorations ..."
-    kwriteconfig6 --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnLeft" --delete
-    kwriteconfig6 --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnRight" --delete
+    kwrtcfgpm --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnLeft" --delete
+    kwrtcfgpm --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnRight" --delete
   fi
 
   echo "\n>> $SRCFNAME1 almost finished: $( date +%Y-%m-%d-%H-%M-%S ) <<"
@@ -217,8 +217,8 @@ if [ -n "$THEME1" ] ; then
 fi
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell6" ] && [ -f "/usr/bin/kwin_wayland" ] ; then
-  kwriteconfig6 --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnLeft" ""
-  kwriteconfig6 --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnRight" ""
+  kwrtcfgpm --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnLeft" ""
+  kwrtcfgpm --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnRight" ""
   echo "launching kwin.."
   kwin_wayland_wrapper --xwayland 2>/dev/null 1>/dev/null &
   CTR1="150" ; while [ "$CTR1" -gt "0" ] && ( ! qdbus6 org.kde.KWin 2>/dev/null 1>/dev/null ) ; do echo "wait for kwin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.5

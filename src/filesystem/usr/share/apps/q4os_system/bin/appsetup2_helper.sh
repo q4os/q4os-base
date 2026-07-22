@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export PATH="$PATH:/opt/trinity/bin"
+
 if [ "$1" = "1" ] ; then
   rm -f /etc/apt/sources.list.d/tmpsetup.list
   rm -f /etc/apt/preferences.d/pin98-tmpsetup

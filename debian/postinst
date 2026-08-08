@@ -349,6 +349,14 @@ case "$1" in
     unset FILEA
   fi
 
+  if is_greater_then_former "4.31.1-a1" ; then
+    if [ "$( dash /usr/share/apps/q4os_system/bin/print_package_version.sh "unattended-upgrades" )" != "0" ] ; then
+      #marking as manually installed, prep for removal from recommends
+      echo "Fixing packages installed status ..."
+      apt-mark manual unattended-upgrades 1>/dev/null 2>/dev/null
+    fi
+  fi
+
   set -e
   echo "[FX] Fixes end."
 #--------------- fixes end --------------------------------------

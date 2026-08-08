@@ -1,3 +1,9 @@
+q4os-base (4.31.1-a1) UNRELEASED; urgency=medium
+
+  * Mark unattended-upgrades as manually installed - preparation for its removal from q4os-desktop dependencies
+
+ -- Q4OS Team <devteam@q4os.org>  Sat, 08 Aug 2026 20:15:28 +0200
+
 q4os-base (4.30.1-a3) UNRELEASED; urgency=medium
 
   * Fix Plasma Wayland detection on first boot

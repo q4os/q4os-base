@@ -14,7 +14,6 @@ if [ -z "$3" ] ; then
 fi
 
 CONFIG_FILE1="$1"
-# CONFIG_FILE1="/tmp/20auto-upgrades"
 if [ ! -f "$CONFIG_FILE1" ] ; then
   echo "config file doesn't exist, creating ..."
   mkdir -p "$(dirname $CONFIG_FILE1)"

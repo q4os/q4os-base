@@ -162,27 +162,6 @@ for SCRPT1 in /usr/share/apps/q4os_system/bhooks/bhook1_*.sh ; do
 done
 echo "Finished hooks ..."
 
-echo "decide whether to enable unattended-upgrades ..."
-if [ "$SYSTEM_INSTALL" = "livemedia" ] ; then
-  echo "do not enable unattended-upgrades for live media"
-else
-  if [ -f "/usr/bin/startplasma-wayland" ] || [ -f "/usr/bin/startplasma-x11" ] ; then
-    echo "periodic updates enabled, while unattended-upgrades disabled for plasma"
-    dash /usr/share/apps/q4os_system/bin/aptwriteconfig.sh "/etc/apt/apt.conf.d/20auto-upgrades" "APT::Periodic::Update-Package-Lists" "1"
-    dash /usr/share/apps/q4os_system/bin/aptwriteconfig.sh "/etc/apt/apt.conf.d/20auto-upgrades" "APT::Periodic::Unattended-Upgrade" "0"
-  else
-    if [ "$MEMTOTAL" -lt "2000" ] ; then
-      echo "do not enable unattended-upgrades for low memory machines"
-    elif [ "$A_QAPTDISTR" = "raspbian10" ] || [ "$A_QAPTDISTR" = "raspbian12" ] ; then
-      echo "do not enable unattended-upgrades for raspberrypi"
-    else
-      echo "periodic updates enabled, while unattended-upgrades disabled"
-      dash /usr/share/apps/q4os_system/bin/aptwriteconfig.sh "/etc/apt/apt.conf.d/20auto-upgrades" "APT::Periodic::Update-Package-Lists" "1"
-      dash /usr/share/apps/q4os_system/bin/aptwriteconfig.sh "/etc/apt/apt.conf.d/20auto-upgrades" "APT::Periodic::Unattended-Upgrade" "0"
-    fi
-  fi
-fi
-
 #for testing purposes, to force running wifi connection tool on the first boot
 #may be removed as not needed
 if [ -n "$( echo "$CMDLINE1" | grep "forcetdewifiman" )" ] ; then

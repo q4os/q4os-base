@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# TDE's own kreadconfig (the last fallback below) does not nest repeated --group
+# flags the way kreadconfig5/6 do - it silently keeps only the LAST --group, dropping
+# outer ones (round-trips fine with kwrtcfgpm's matching write, but won't find a value
+# written under a properly nested [Outer][Inner] group). Only rely on nested --group
+# here if the call is guaranteed to run where kreadconfig5/6 exists.
+
 if command -v kreadconfig5 >/dev/null 2>&1; then
     exec kreadconfig5 "$@"
 elif command -v kreadconfig6 >/dev/null 2>&1; then

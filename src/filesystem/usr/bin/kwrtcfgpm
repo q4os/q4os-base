@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# TDE's own kwriteconfig (the last fallback below) has no --delete option at all
+# (fails loudly: "Unknown option") and does not nest repeated --group flags the way
+# kwriteconfig5/6 do - it silently keeps only the LAST --group, dropping outer ones.
+# Only use --delete or repeated --group here if the call is guaranteed to run where
+# kwriteconfig5/6 exists (e.g. gated on a Plasma/Wayland session).
+
 if command -v kwriteconfig5 >/dev/null 2>&1; then
     exec kwriteconfig5 "$@"
 elif command -v kwriteconfig6 >/dev/null 2>&1; then

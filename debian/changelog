@@ -1,3 +1,9 @@
+q4os-base (4.31.2-a1) UNRELEASED; urgency=medium
+
+  * Fix kwrtcfgpm/kreadcfgpm: fall back to TDE's own unsuffixed kwriteconfig/kreadconfig when neither the kwriteconfig5/6 nor kreadconfig5/6 variants are present - found via live QA on a pure-Trinity system, where neither suffixed variant exists and the wrappers (already used by other base scripts in place of direct kwriteconfig/kreadconfig calls) failed outright despite the correct tool being available
+
+ -- Q4OS Team <devteam@q4os.org>  Sun, 09 Aug 2026 22:23:00 +0200
+
 q4os-base (4.31.1-a1) UNRELEASED; urgency=medium
 
   * Mark unattended-upgrades as manually installed - preparation for its removal from q4os-desktop dependencies

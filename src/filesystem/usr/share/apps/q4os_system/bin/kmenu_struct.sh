@@ -14,8 +14,8 @@ if [ "$1" = "--q4os" ] ; then
     exit 10
   else
     # rm -f $HOME/.local/share/applications/q4os-user-controlpanel.desktop
-    cd $XDGCFG_HOME1/menus/
-    ln -s /usr/share/apps/q4os_system/share/tde-applications1.menu tde-applications.menu
+    mkdir -p "$XDGCFG_HOME1/menus/"
+    ln -sf /usr/share/apps/q4os_system/share/tde-applications1.menu "$XDGCFG_HOME1/menus/tde-applications.menu"
   fi
 fi
 

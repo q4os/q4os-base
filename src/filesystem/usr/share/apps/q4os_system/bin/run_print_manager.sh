@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# RETIRED: no longer referenced anywhere in Q4OS as of 2026-08-13 - superseded by the CUPS-installed
+# check now built directly into KMMainView::slotUpdatePossible() (see
+# q4os_tde_patches/tdelibs/014_q4os_printmgr_cups_check.diff). Kept for reference, safe to remove in
+# a future cleanup.
+
 . gettext.sh
 export TEXTDOMAIN="q4os-base"
 

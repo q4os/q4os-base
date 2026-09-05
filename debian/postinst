@@ -357,6 +357,23 @@ case "$1" in
     fi
   fi
 
+  if is_greater_then_former "4.31.4-a1" ; then
+    #Debian 11 LTS ended on 2026-08-31. The bullseye-security pool is being purged while its
+    #index still advertises every package, and its Release expires on 2026-09-07, after which
+    #apt refuses the suite outright and every "apt update" fails on it. Comment the entry out;
+    #bullseye main and bullseye-updates are unaffected and stay enabled. Debian has not moved
+    #the suite to archive.debian.org yet, so there is nothing to point it at instead.
+    if [ "$QAPDISTR_SCR" = "bullseye" ] ; then
+      for FILEA in "/etc/apt/sources.list" "/etc/apt/sources.list.d/20_debian.list" ; do
+        if [ -f "$FILEA" ] && grep -q "^[[:space:]]*deb.*bullseye-security" "$FILEA" ; then
+          echo "Disabling the discontinued bullseye-security repository in $FILEA ..."
+          sed -i 's@^\([[:space:]]*\)deb\(.*bullseye-security\)@\1##deb\2@' "$FILEA"
+        fi
+      done
+      unset FILEA
+    fi
+  fi
+
   set -e
   echo "[FX] Fixes end."
 #--------------- fixes end --------------------------------------

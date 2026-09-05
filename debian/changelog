@@ -1,3 +1,9 @@
+q4os-base (4.31.4-a1) UNRELEASED; urgency=medium
+
+  * Disable the discontinued bullseye-security repository on Gemini systems - Debian 11 LTS ended on 2026-08-31, its security pool is being purged while the index still advertises every package, and the suite Release expires on 2026-09-07, after which apt refuses it outright and every "apt update" fails; bullseye main and bullseye-updates are unaffected and stay enabled
+
+ -- Q4OS Team <devteam@q4os.org>  Sat, 05 Sep 2026 17:05:47 +0200
+
 q4os-base (4.31.3-a1) UNRELEASED; urgency=medium
 
   * Document kwrtcfgpm/kreadcfgpm's known TDE kwriteconfig/kreadconfig gaps (no --delete, repeated --group does not nest) directly in the wrapper scripts

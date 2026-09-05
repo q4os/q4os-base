@@ -13,8 +13,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - codename: bullseye
-            q4os_suite: q4os-4-0-cn
+          # bullseye/deb11 was dropped 2026-09-05: Debian 11 LTS ended 2026-08-31,
+          # the bullseye-security pool is being purged and its Release expires
+          # 2026-09-07, so the container's stock sources 404 during apt install.
+          # deb12/bookworm is now the oldest CI target; deb11 packaging targets
+          # are unaffected and still build in the local bullseye sbuild chroot.
           - codename: bookworm
             q4os_suite: q4os-5-0-cn
           - codename: trixie

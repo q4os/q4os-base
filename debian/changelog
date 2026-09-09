@@ -1,3 +1,9 @@
+q4os-base (4.31.5-a1) UNRELEASED; urgency=medium
+
+  * appsetup2_helper: new action "15", record the package set the Desktop Profiler just applied into /var/lib/q4os/swprofiler_applied.lst, so that the next profile applied can remove only this profile's leftovers instead of every package it does not recognise; an older q4os-base simply ignores the action, in which case no record is written and the profiler removes nothing rather than the wrong thing
+
+ -- Q4OS Team <devteam@q4os.org>  Wed, 09 Sep 2026 08:20:00 +0200
+
 q4os-base (4.31.4-a1) UNRELEASED; urgency=medium
 
   * Disable the discontinued bullseye-security repository on Gemini systems - Debian 11 LTS ended on 2026-08-31, its security pool is being purged while the index still advertises every package, and the suite Release expires on 2026-09-07, after which apt refuses it outright and every "apt update" fails; bullseye main and bullseye-updates are unaffected and stay enabled

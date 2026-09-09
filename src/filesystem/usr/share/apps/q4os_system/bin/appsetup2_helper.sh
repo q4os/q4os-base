@@ -84,6 +84,17 @@ if [ "$1" = "14" ] ; then
   flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 fi
 
+if [ "$1" = "15" ] ; then
+  #record what the applied desktop profile asked to install, $2 .. prepared state file
+  #read back by prf_remove_op.sh and run_fltpk_install.sh to remove only the packages
+  #left over from the previous profile, instead of everything not in the new one
+  if [ -f "$2" ] ; then
+    mkdir -p /var/lib/q4os/
+    cp -f "$2" "/var/lib/q4os/swprofiler_applied.lst"
+    chmod a+r "/var/lib/q4os/swprofiler_applied.lst"
+  fi
+fi
+
 # if [ "$1" = "n" ] ; then
 #   echo '/opt/trinity/bin/tdm' | tee /etc/X11/default-display-manager
 #   ln -sf /lib/systemd/system/tdm.service /etc/systemd/system/display-manager.service

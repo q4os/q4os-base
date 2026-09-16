@@ -30,13 +30,22 @@ if [ -x "/usr/bin/raspinfo" ] ; then
   ( LANG=C /usr/bin/raspinfo 2>&1 ) >> /tmp/reportq4/files/rep11.txt
 fi
 
-( cp /tmp/.dskprofiler* /tmp/reportq4/files/ 2>&1 ) > /dev/null
+# Desktop Profiler leftovers. The name matters: the profiler writes
+# /tmp/.swprofiler_<user>_<date>_packages.log (swprofiler mythread.cpp), never
+# ".dskprofiler*" - that glob was collected here for years and matched nothing.
+( cp /tmp/.swprofiler_* /tmp/reportq4/files/ 2>&1 ) > /dev/null
 
 if [ -d "$HOME/.local/share/q4os/log/" ] ; then
   tar -u -P -f /tmp/reportq4/qreport.tar $HOME/.local/share/q4os/log/
 fi
 if [ -d "$HOME/.appsetup2/log/" ] ; then
   tar -u -P -f /tmp/reportq4/qreport.tar $HOME/.appsetup2/log/
+fi
+# ...and the profile applied AT INSTALL TIME is applied by the installer hooks
+# as root, so its summary log is in root's copy of that dir, not the user's.
+# /root is 0755 by Debian default, but test rather than assume.
+if [ -d "/root/.appsetup2/log/" ] && [ -r "/root/.appsetup2/log/" ] ; then
+  tar -u -P -f /tmp/reportq4/qreport.tar /root/.appsetup2/log/
 fi
 if [ -f "$HOME/li.log" ] ; then
   tar -u -P -f /tmp/reportq4/qreport.tar $HOME/li.log

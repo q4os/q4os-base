@@ -1,6 +1,7 @@
 q4os-base (4.31.6-a1) UNRELEASED; urgency=medium
 
   * reportq4: collect the Desktop Profiler logs that actually exist - the report copied /tmp/.dskprofiler*, a name nothing in Q4OS has ever written, so profiler logs were missing from every report ever generated; the profiler writes /tmp/.swprofiler_<user>_<date>_packages.log, and a profile applied by the installer hooks runs as root, putting its summary in /root/.appsetup2/log/ rather than the user's copy of that directory
+  * postinst: mark tde-style-qtcurve-trinity, kde-style-qtcurve-qt5 and q4os-twinstyles manually installed where present - the Debonaire and Darkonair themes move to the Q4OS T03 widget style and window decoration and stop depending on or recommending them, but homes those themes were applied to keep using QtCurve and the IceWM/Brise decoration until the theme is applied again, so apt autoremove must not take them away
 
  -- Q4OS Team <devteam@q4os.org>  Wed, 16 Sep 2026 14:47:40 +0200
 

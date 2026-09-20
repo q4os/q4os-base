@@ -374,6 +374,20 @@ case "$1" in
     fi
   fi
 
+  if is_greater_then_former "4.31.6-a1" ; then
+    #The Debonaire and Darkonair themes moved from QtCurve and the IceWM/Brise window decoration to the Q4OS T03
+    #style and decoration, and no longer depend on or recommend them. Homes those themes were applied to keep using
+    #them until the theme is applied again, so keep them installed: marking as manually installed, prep for removal
+    #from the themes' depends/recommends.
+    for PKGA in tde-style-qtcurve-trinity kde-style-qtcurve-qt5 q4os-twinstyles ; do
+      if [ "$( dash /usr/share/apps/q4os_system/bin/print_package_version.sh "$PKGA" )" != "0" ] ; then
+        echo "Fixing packages installed status ($PKGA) ..."
+        apt-mark manual "$PKGA" 1>/dev/null 2>/dev/null
+      fi
+    done
+    unset PKGA
+  fi
+
   set -e
   echo "[FX] Fixes end."
 #--------------- fixes end --------------------------------------

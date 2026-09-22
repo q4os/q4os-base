@@ -147,6 +147,9 @@ else
   if [ -f "/home/$FUSERNAME/.local/share/q4os/vboxgutils/vboxgutils_inst.desktop" ] ; then
     sed -i "s:^Icon=~:Icon=/home/$FUSERNAME:" /home/$FUSERNAME/.local/share/q4os/vboxgutils/vboxgutils_inst.desktop
   fi
+  if [ -f "/home/$FUSERNAME/.local/share/q4os/drvinstl/drvinstl_inst.desktop" ] ; then
+    sed -i "s:^Icon=~:Icon=/home/$FUSERNAME:" /home/$FUSERNAME/.local/share/q4os/drvinstl/drvinstl_inst.desktop
+  fi
   chown -R $FUSERNAME:$FUSERNAME /home/$FUSERNAME
 fi
 

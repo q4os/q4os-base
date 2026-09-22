@@ -388,6 +388,17 @@ case "$1" in
     unset PKGA
   fi
 
+  if is_greater_then_former "4.31.7-a1" ; then
+    #q4os-devpack-base dropped its dependency on checkinstall: the devpack builds packages with
+    #debhelper now, and checkinstall's fstrans redirection no longer intercepts on current Debian,
+    #so create_q4app_setup.sh cannot work anyway. Anyone who has it installed most likely wants to
+    #keep it, so mark it manual before it becomes autoremovable.
+    if [ "$( dash /usr/share/apps/q4os_system/bin/print_package_version.sh "checkinstall" )" != "0" ] ; then
+      echo "Fixing packages installed status (checkinstall) ..."
+      apt-mark manual checkinstall 1>/dev/null 2>/dev/null
+    fi
+  fi
+
   set -e
   echo "[FX] Fixes end."
 #--------------- fixes end --------------------------------------

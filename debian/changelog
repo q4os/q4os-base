@@ -1,3 +1,9 @@
+q4os-base (4.31.7-a1) UNRELEASED; urgency=medium
+
+  * postinst: mark checkinstall as manually installed before q4os-devpack-base drops it from Depends, so an upgrade does not make it autoremovable on machines that have it
+
+ -- Q4OS Team <q4os@q4os.org>  Tue, 22 Sep 2026 11:02:34 +0200
+
 q4os-base (4.31.6-a1) UNRELEASED; urgency=medium
 
   * reportq4: collect the Desktop Profiler logs that actually exist - the report copied /tmp/.dskprofiler*, a name nothing in Q4OS has ever written, so profiler logs were missing from every report ever generated; the profiler writes /tmp/.swprofiler_<user>_<date>_packages.log, and a profile applied by the installer hooks runs as root, putting its summary in /root/.appsetup2/log/ rather than the user's copy of that directory

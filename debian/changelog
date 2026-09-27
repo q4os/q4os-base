@@ -1,6 +1,5 @@
 q4os-base (4.31.7-a1) UNRELEASED; urgency=medium
 
-  * postinst: mark checkinstall as manually installed before q4os-devpack-base drops it from Depends, so an upgrade does not make it autoremovable on machines that have it
   * first_boot.sh: expand the ~ in the drvinstl first-login entry's Icon=, as for vboxgutils (the hook itself is not activated yet)
 
  -- Q4OS Team <q4os@q4os.org>  Tue, 22 Sep 2026 11:02:34 +0200

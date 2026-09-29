@@ -16,6 +16,8 @@ cp -r $SETUPDIR/filesystem/* $OUTDIR1/
 DESTDIR1="$OUTDIR1/opt/trinity/share/apps/kthememanager/themes/"
 mkdir -p $DESTDIR1
 cp -r $SETUPDIR/themes_ktheme/* $DESTDIR1/
+#the theme's empty directories are not in git (it tracks no empty directory), create them here
+mkdir -p $DESTDIR1/Q4OS_Default/sounds $DESTDIR1/Q4OS_Default/wallpapers/desktop $DESTDIR1/Q4OS_Default/wallpapers/konqueror $DESTDIR1/Q4OS_Default/wallpapers/panel
 
 # --- create home archives for kthemes ---
 DESTDIR1="$OUTDIR1/opt/trinity/share/apps/kthememanager/themes/"
@@ -35,6 +37,8 @@ GZIP='-n' tar -c --mtime="$MTIME1" --owner="1000" --group="1000" --numeric-owner
 
 # --- pack q4os_home ---
 cd $SETUPDIR/skelet_home/q4os_home
+#empty directories of the home skeleton, not in git (it tracks no empty directory)
+mkdir -p .configtde/autostart .trinity/env
 GZIP='-n' tar -c --mtime="$MTIME1" --owner="1000" --group="1000" --numeric-owner --sort=name -f $OUTDIR1/usr/share/apps/q4os_system/share/q4os_home.tar .
 cd $SETUPDIR/skelet_home/q4os_devpack_home
 GZIP='-n' tar -u --mtime="$MTIME1" --owner="1000" --group="1000" --numeric-owner --sort=name -f $OUTDIR1/usr/share/apps/q4os_system/share/q4os_home.tar .

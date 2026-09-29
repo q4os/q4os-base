@@ -1,7 +1,12 @@
 q4os-base (4.31.7-a1) UNRELEASED; urgency=medium
 
   * first_boot.sh: expand the ~ in the drvinstl first-login entry's Icon=, as for vboxgutils (the hook itself is not activated yet)
-
+  * 85frstrun.sh: run the Desktop Profiler through desktop-profiler, the session-aware
+    launcher of q4os-sw-profiler-common (the Qt5 frontend under Plasma).
+  * Create the package's empty directories at build time (debian/q4os-base.dirs,
+    build_filesystem.sh): git tracks no empty directory, so a build from a git
+    checkout lost /etc/xdg/autostart, the crystalsvg */apps dirs, the Q4OS_Default
+    theme's sounds/wallpapers dirs and two skeleton home dirs.
  -- Q4OS Team <q4os@q4os.org>  Tue, 22 Sep 2026 11:02:34 +0200
 
 q4os-base (4.31.6-a1) UNRELEASED; urgency=medium

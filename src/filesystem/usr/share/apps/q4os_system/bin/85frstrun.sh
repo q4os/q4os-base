@@ -570,7 +570,7 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
     if dash /usr/share/apps/q4os_system/bin/tst_dwnl.sh "" "5" ; then
       echo "sw profiler execute .."
       pkill --signal SIGCONT qapt_lock.exu
-      HIDE_DECORATION1="1" TDE_DEBUG="1" swprofiler.exu
+      HIDE_DECORATION1="1" TDE_DEBUG="1" desktop-profiler #the frontend of the running session (q4os-sw-profiler-common)
       pkill kdialog
     fi
     #re-read desktop profiler result

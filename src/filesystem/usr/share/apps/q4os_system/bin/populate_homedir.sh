@@ -91,6 +91,16 @@ if false ; then
   fi
 fi
 
+echo "Setting numlock ..."
+if q4hw-info --numpad ; then
+  NUMLOCK1="0" #on
+else
+  NUMLOCK1="1" #off
+fi
+/opt/trinity/bin/kwriteconfig --file "kcminputrc" --group "Keyboard" --key "NumLock" "$NUMLOCK1"
+/opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Keyboard" --key "NumLock" "$NUMLOCK1"
+chmod a+r "$XDGCFGHOMEDIR_PLASMA/kcminputrc"
+
 #don't start device applet for tde-14.1.1
 /opt/trinity/bin/kwriteconfig --file "tdehwdevicetrayrc" --group "General" --key "Autostart" "false"
 

@@ -101,6 +101,23 @@ if q4hw-info --synaptics ; then
   # synclient TapButton1=1 TapButton2=2 VertEdgeScroll=1
 fi
 
+echo "Setting numlock for the login screen ..."
+if q4hw-info --numpad ; then
+  NUMLOCK_TDM="On"
+  NUMLOCK_SDDM="on"
+else
+  NUMLOCK_TDM="Off"
+  NUMLOCK_SDDM="off"
+fi
+if [ -f "/etc/trinity/tdm/tdmrc" ] ; then
+  /opt/trinity/bin/kwriteconfig --file "/etc/trinity/tdm/tdmrc" --group "X-*-Greeter" --key "NumLock" "$NUMLOCK_TDM"
+  chmod a+r /etc/trinity/tdm/tdmrc
+fi
+if [ -f "/usr/bin/sddm" ] ; then
+  /opt/trinity/bin/kwriteconfig --file "/etc/sddm.conf" --group "General" --key "Numlock" "$NUMLOCK_SDDM"
+  chmod a+r /etc/sddm.conf
+fi
+
 echo "Detecting Thinkpad notebook ..."
 if q4hw-info --thinkpad-r51 ; then
   echo " .. we are on thinkpad-r51, disable i915 kms .."

@@ -226,6 +226,31 @@ if [ "$1" = "--qemuguest" ] ; then
   fi
 fi
 
+#guess if the built-in keyboard has a numeric keypad
+#it can't be detected directly, the kernel reports the keypad keys for every keyboard, so:
+#a desktop has one, a laptop only with an internal panel at least 34 cm wide (15.6" and bigger)
+if [ "$1" = "--numpad" ] ; then
+  FSETFLAG="1"
+  CHASSIS1="$( cat /sys/class/dmi/id/chassis_type 2>/dev/null )"
+  case "$CHASSIS1" in
+    8|9|10|11|14|30|31|32) #portable, laptop, notebook, hand held, sub notebook, tablet, convertible, detachable
+      ;;
+    *)
+      echo "Numpad_Yes"
+      exit 0
+      ;;
+  esac
+  for EDIDFL1 in /sys/class/drm/card*-eDP-*/edid /sys/class/drm/card*-LVDS-*/edid /sys/class/drm/card*-DSI-*/edid ; do
+    PANELCM1="$( od -An -tu1 -j21 -N1 "$EDIDFL1" 2>/dev/null | tr -d ' ' )" #edid byte 21: horizontal screen size in cm
+    if [ -n "$PANELCM1" ] && [ "$PANELCM1" -ge "34" ] ; then
+      echo "Numpad_Yes"
+      exit 0
+    fi
+  done
+  echo "Numpad_No"
+  exit 1
+fi
+
 #we need to acquire DMESG_LOG file as soon as booted up to go around a possible dmesg buffer overflow
 DMESG_HELPER_FL0="/tmp/.dmsglgf_sys_0.tmp" #acquired on the first boot
 DMESG_HELPER_FL1="/tmp/.dmsglgf_user_0.tmp" #acquired by root

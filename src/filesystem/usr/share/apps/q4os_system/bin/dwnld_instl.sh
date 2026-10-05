@@ -61,22 +61,44 @@ touch "$MARK_INST"
 chmod a+rw "$MARK_INST"
 
 #----------------------------------------------------------------------------------------------
+# The Trinity session shows a progress window, kdialog --progressbar driven over dcop; PRGREF
+# is the reference kdialog prints. The other sessions get a notification and PRGREF stays
+# empty - then nothing is called.
+# Function progress_call
+#$1 ... alive | total | value | close
+#$2 ... the number for total and value
+#----------------------------------------------------------------------------------------------
+PRGREF=""
+progress_call ()
+{
+  if [ -z "$PRGREF" ] ; then
+    return 1
+  fi
+  case "$1" in
+    alive) dcop $PRGREF 1>/dev/null 2>&1 ;;
+    total) dcop $PRGREF setTotalSteps "$2" 2>/dev/null ;;
+    value) dcop $PRGREF setProgress "$2" 2>/dev/null ;;
+    close) dcop $PRGREF close 2>/dev/null ;;
+  esac
+}
+
+#----------------------------------------------------------------------------------------------
 # Function watch_progress
+#$1 ... file being downloaded
 #----------------------------------------------------------------------------------------------
 watch_progress ()
 {
-if [ "$HIDE_KDLG" = "1" ] || [ -z "$1" ] || [ -z "$2" ] ; then
+if [ "$HIDE_KDLG" = "1" ] || [ -z "$PRGREF" ] || [ -z "$1" ] ; then
  return 0
 fi
 
-while [ ! -f "$2" ] ; do
+while [ ! -f "$1" ] ; do
 # wait for file creation
  sleep 0.3
 
-# check if dbus object exists
-dcop $1 1>/dev/null 2>&1
-if [ "$?" -ne "0" ] ; then
-# dbus Object does not exist (anymore)
+# check if the progress window exists
+if ! progress_call alive ; then
+# the window does not exist (anymore)
  return 0
 fi
 done
@@ -84,35 +106,31 @@ done
 while [ true ] ; do
 sleep 0.1
 
-# check if dbus object exists
-dcop $1 1>/dev/null 2>&1
-if [ "$?" -ne "0" ] ; then
-# dbus Object does not exist (anymore)
+# check if the progress window exists
+if ! progress_call alive ; then
+# the window does not exist (anymore)
  return 0
 fi
 
 # set progress to progressbar
-dcop $1 setProgress $(stat -c%s $2)
+progress_call value $(stat -c%s $1)
 done
 }
 
 #----------------------------------------------------------------------------------------------
 # Function download_error
-#$1 ... dcop reference
-#$2 ... echo message
-#$3 ... exit code
+#$1 ... echo message
+#$2 ... exit code
 #----------------------------------------------------------------------------------------------
 download_error ()
 {
-  echo "$2"
+  echo "$1"
   if [ "$HIDE_KDLG" != "1" ] ; then
     kdialog --passivepopup "<p>$(eval_gettext "<b>Warning</b>")</p><p>$(eval_gettext "Unable to download \${APD}, check Internet connection, please.")</p>" 15 &
   fi
-  if [ -n "$1" ] ; then
-    ( sleep 0.5 ; dcop "$1" close 2>/dev/null ) &
-  fi
+  ( sleep 0.5 ; progress_call close ) &
   rm -f "$MARK_INST"
-  exit "$3"
+  exit "$2"
 }
 
 #----------------------------------------------------------------------------------------------
@@ -120,7 +138,7 @@ download_error ()
 #----------------------------------------------------------------------------------------------
 if [ "$HIDE_KDLG" != "1" ] ; then
   if [ "$QDSK_SESSION" = "trinity" ] ; then
-    dcopRef=$(kdialog --geometry "300x130+75+75" --title "$APF" --caption "$(eval_gettext "download")" --icon "$APPICON" --progressbar "$APD $(eval_gettext "downloading ...")")
+    PRGREF=$(kdialog --geometry "300x130+75+75" --title "$APF" --caption "$(eval_gettext "download")" --icon "$APPICON" --progressbar "$APD $(eval_gettext "downloading ...")")
   else
     kdialog --passivepopup "<p>$APF $(eval_gettext "downloading ...")</p>" 10 &
   fi
@@ -196,12 +214,11 @@ echo "File size: $SETUP_FSIZE"
 
 # todo: better checking: $SETUP_FSIZE > 1000 bytes"
 if [ -z "$SETUP_FNAME" ] || [ -z "$SETUP_FSIZE" ] ; then
- download_error "$dcopRef" "[E:] File inaccessible .. FAILED !" "10"
+ download_error "[E:] File inaccessible .. FAILED !" "10"
 fi
 
-dcop $dcopRef setTotalSteps $SETUP_FSIZE 2>/dev/null
-#dcop $dcopRef setLabel "$APD downloading ..." 2>/dev/null
-( watch_progress "$dcopRef" "$SETUP_FNAME" 2>&1 ) > /dev/null &
+progress_call total $SETUP_FSIZE
+( watch_progress "$SETUP_FNAME" 2>&1 ) > /dev/null &
 
 if [ "$(stat -c%s $SETUP_FNAME 2>&1)" != "$SETUP_FSIZE" ] ; then
  rm -f $SETUP_FNAME
@@ -214,11 +231,11 @@ fi
 # echo "File size check: $(stat -c%s $SETUP_FNAME)"
 if [ "$(stat -c%s $SETUP_FNAME)" != "$SETUP_FSIZE" ] ; then
  rm -f $SETUP_FNAME
- download_error "$dcopRef" "[E:] File inaccessible .. FAILED !" "20"
+ download_error "[E:] File inaccessible .. FAILED !" "20"
 fi
 
-dcop $dcopRef setProgress $SETUP_FSIZE 2>/dev/null
-( sleep 0.5 ; dcop $dcopRef close 2>/dev/null ) &
+progress_call value $SETUP_FSIZE
+( sleep 0.5 ; progress_call close ) &
 
 if [ "$EXECI" != "0" ] ; then
  appsetup2.exu "$SETUP_FNAME"

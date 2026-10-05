@@ -6,6 +6,9 @@ if [ "$1" = "--classic" ] ; then
   kwriteconfig --file "kickerrc" --group "General" --key "KMenuHeight" "0"
   kwriteconfig --file "kickerrc" --group "General" --key "KMenuWidth" "0"
   kwriteconfig --file "kickerrc" --group "menus" --key "NumVisibleEntries" "3"
+  if [ "$2" = "--conf-only" ] ; then
+    exit
+  fi
   ( tdebuildsycoca 2>&1 ) > /dev/null
   dcop kicker kicker restart
   sleep 0.5
@@ -21,6 +24,9 @@ if [ "$1" = "--bourbon" ] ; then
   kwriteconfig --file "kickerrc" --group "General" --key "KMenuHeight" ""
   kwriteconfig --file "kickerrc" --group "General" --key "KMenuWidth" ""
   kwriteconfig --file "kickerrc" --group "menus" --key "NumVisibleEntries" "7"
+  if [ "$2" = "--conf-only" ] ; then
+    exit
+  fi
   ( tdebuildsycoca 2>&1 ) > /dev/null
   dcop kicker kicker restart
   sleep 0.5
@@ -35,6 +41,9 @@ if [ "$1" = "--kickoff" ] ; then
   kwriteconfig --file "kickerrc" --group "General" --key "KMenuHeight" "480"
   kwriteconfig --file "kickerrc" --group "General" --key "KMenuWidth" "0"
   kwriteconfig --file "kickerrc" --group "menus" --key "NumVisibleEntries" "6"
+  if [ "$2" = "--conf-only" ] ; then
+    exit
+  fi
   echo " working ..."
   ( tdebuildsycoca 2>&1 ) > /dev/null
   dcop kicker kicker restart
@@ -44,7 +53,7 @@ if [ "$1" = "--kickoff" ] ; then
   exit
 fi
 
-echo "Usage1: ctrl_kmenu --classic"
-echo "Usage2: ctrl_kmenu --bourbon"
-echo "Usage3: ctrl_kmenu --kickoff"
+echo "Usage1: ctrl_kmenu --classic [--conf-only]"
+echo "Usage2: ctrl_kmenu --bourbon [--conf-only]"
+echo "Usage3: ctrl_kmenu --kickoff [--conf-only]"
 echo "Usage4: ctrl_kmenu --help"

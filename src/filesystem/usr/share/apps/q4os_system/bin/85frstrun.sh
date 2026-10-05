@@ -374,9 +374,10 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
   # fi
   echo "Internet wanted: $WANT_WINET"
 
+  #wifi connection tool: wifi-connect (q4os-wificonnect-common) starts the frontend of the running session
   RUN_WIFICON="0"
-  if [ "$WANT_WINET" = "1" ] && [ "$WIRLS_CARD" = "1" ] && [ -x "/opt/trinity/bin/tdewificonnect" ] ; then
-    echo " [w1:] wifi card present and tdewificonnect ready."
+  if [ "$WANT_WINET" = "1" ] && [ "$WIRLS_CARD" = "1" ] && [ -x "/usr/bin/wifi-connect" ] ; then
+    echo " [w1:] wifi card present and wifi-connect ready."
     if [ -z "$( nmcli --terse -f NAME,TYPE connection | grep "wireless$" )" ] ; then
       echo " [w1:] no wifi connections found in the system."
       if ! dash /usr/share/apps/q4os_system/bin/tst_dwnl.sh "" "5" ; then
@@ -404,36 +405,17 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
 
   if [ "$RUN_WIFICON" = "1" ] ; then
     kdialog --icon "message" --title "Q4OS" --caption "WiFi setup" --msgbox "<p>$(eval_gettext "Wireless network card detected, WiFi support enabled.")</p><p>$(eval_gettext "Click OK to run WiFi connection tool to create a network connection.")</p>"
-    while [ "$RUN_WIFICON" = "1" ] ; do
-      echo " [w1:] running tdewificonnect ..."
-      ( tdewificonnect --icon "network" 2>&1 ) > $HOME/.local/share/q4os/log/tdewificonnect.log
-      echo " [w1:] tdewificonnect finished, checking if a connection has been created .."
-      WIFI_CREATED="$( nmcli --terse -f UUID,NAME,TYPE connection | grep "wireless$" | awk -F':' '{ print $1 }' | tail -n1 )"
-      echo " [w1:] wifi_created: "$( nmcli --terse -f NAME,UUID,TYPE connection | grep "wireless$" )""
-      if [ -n "$WIFI_CREATED" ] ; then
-        kdialog --passivepopup "<font size=4><p>$(eval_gettext "Trying to setup wireless network ...")</p></font>" 40 &
-        echo " [w1:] connection has been created: $WIFI_CREATED , trying to setup wireless network ..."
-        sleep 1.5
-        COUNTER1="7"
-        while [ -z "$INET_OK" ] && [ "$COUNTER1" -gt "0" ] ; do
-          sleep 1 ; COUNTER1="$(( COUNTER1 - 1 ))" ; echo $COUNTER1
-          if dash /usr/share/apps/q4os_system/bin/tst_dwnl.sh "" "6" > /dev/null ; then
-            INET_OK="1" ; echo " [w1:] internet ok, connected."
-          fi
-        done
-        pkill -n kdialog
-        if [ -z "$INET_OK" ] ; then
-          echo " [w1:] couldn't connect to internet ..."
-          sudo -n nmcli connection delete uuid "$WIFI_CREATED"
-          kdialog --icon "message" --title "Q4OS" --caption "WiFi setup" --msgbox "<p>$(eval_gettext "Connection not successful, check the Wifi password please.")</p>"
-        else
-          unset RUN_WIFICON ; echo " [w1:] success connecting ..."
-          # sleep 1
-        fi
-      else
-        unset RUN_WIFICON ; echo " [w1:] no connection has been created ..."
-      fi
-    done
+    #the tool keeps the user until a connection is up or the window is closed, shows a wrong password
+    #itself and confirms a connection, so it is run once and whatever it made is kept - also a
+    #connection with no internet behind it yet (the steps below probe the internet on their own)
+    echo " [w1:] running wifi-connect ..."
+    ( /usr/bin/wifi-connect 2>&1 ) > $HOME/.local/share/q4os/log/wifi-connect.log
+    WIFICON_RC="$?"
+    if [ "$WIFICON_RC" = "0" ] ; then
+      echo " [w1:] wifi-connect finished, connected."
+    else
+      echo " [w1:] wifi-connect finished without a connection, exit code: $WIFICON_RC"
+    fi
   elif [ "$WIRLS_CARD" = "1" ] && [ "$QDSK_SESSION" = "trinity" ] ; then
     kdialog --icon "message" --title "Q4OS" --caption "WiFi setup" --msgbox "<p>$(eval_gettext "Wireless network card detected, WiFi support enabled.")</p>"
   fi

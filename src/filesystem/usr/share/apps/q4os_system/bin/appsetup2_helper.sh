@@ -95,6 +95,15 @@ if [ "$1" = "15" ] ; then
   fi
 fi
 
+if [ "$1" = "16" ] ; then
+  #apply the system wide settings of a desktop profile, $2 .. prepared settings file; only the
+  #catalogue keys in q4os-sw-profiler-common's prf_settings.sh, each value checked there, a file
+  #of anything else does nothing
+  if [ -f "$2" ] && [ -f /usr/share/apps/q4os_system/bin/prf_settings.sh ] ; then
+    dash /usr/share/apps/q4os_system/bin/prf_settings.sh --apply-system "$2"
+  fi
+fi
+
 # if [ "$1" = "n" ] ; then
 #   echo '/opt/trinity/bin/tdm' | tee /etc/X11/default-display-manager
 #   ln -sf /lib/systemd/system/tdm.service /etc/systemd/system/display-manager.service

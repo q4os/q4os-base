@@ -1,3 +1,74 @@
+q4os-base (4.31.14-a1) UNRELEASED; urgency=medium
+
+  * 85frstrun.sh: the first login WiFi step runs wifi-connect once and goes by its exit code.
+    The retry loop around it is gone - the tool shows a wrong password and confirms a
+    connection itself - and so are the internet probe after it and the deletion of the new
+    connection where the internet was not reachable ("check the Wifi password"): a connection
+    the tool reports as up is kept.
+
+ -- Q4OS Team <q4os@q4os.org>  Mon, 05 Oct 2026 10:00:00 +0200
+
+q4os-base (4.31.13-a1) UNRELEASED; urgency=medium
+
+  * 85frstrun.sh: the first login WiFi step runs /usr/bin/wifi-connect, the session-aware
+    launcher of q4os-wificonnect-common (Trinity: q4os-wificonnect-trinity, Plasma: q4os-wificonnect5),
+    in every session. tdewificonnect, the tdenetworkmanager patch, is no longer used.
+
+ -- Q4OS Team <q4os@q4os.org>  Sun, 04 Oct 2026 10:30:00 +0200
+
+q4os-base (4.31.12-a1) UNRELEASED; urgency=medium
+
+  * dwnld_instl.sh: outside Trinity the download is announced by a notification again,
+    as before 4.31.10; the Plasma progress window of 4.31.10 is dropped. The Trinity
+    progress window is unchanged, and no dcop call is made without one.
+
+ -- Q4OS Team <q4os@q4os.org>  Sun, 04 Oct 2026 10:00:00 +0200
+
+q4os-base (4.31.11-a1) UNRELEASED; urgency=medium
+
+  * Numlock is on by default where the keyboard has a numeric keypad, off elsewhere.
+    A keypad can't be detected, so q4hw-info --numpad guesses: a desktop has one, a
+    laptop only with an internal panel at least 34 cm wide (15.6" and bigger).
+    first_boot.sh sets the login screen (tdm, sddm), populate_homedir.sh the Trinity
+    and Plasma sessions of each new user. Installed systems and existing users keep
+    their setting.
+
+ -- Q4OS Team <q4os@q4os.org>  Sun, 04 Oct 2026 12:00:00 +0200
+
+q4os-base (4.31.10-a2) UNRELEASED; urgency=medium
+
+  * dwnld_instl.sh: the download progress window outside Trinity. In the Plasma session
+    it is Plasma's kdialog --progressbar now, driven over D-Bus (qdbus6, qdbus on Qt5),
+    the same window the Trinity session has over dcop; the passive notification stays as
+    the fallback where neither exists.
+  * dwnld_instl.sh: no dcop call without a progress window. Outside Trinity the script
+    called dcop with an empty reference three times; where no DCOP server answers each
+    call waited about 12 seconds, so the installer opened half a minute late.
+  * This tree now holds all three unpublished changes: 4.31.8-a1 (appsetup2_helper.sh "16",
+    ctrl-kmenu --conf-only), 4.31.9-a1 (first login WiFi tool) and the above.
+
+ -- Q4OS Team <q4os@q4os.org>  Sat, 03 Oct 2026 23:00:00 +0200
+
+q4os-base (4.31.9-a1) UNRELEASED; urgency=medium
+
+  * 85frstrun.sh: in the Plasma session the first login WiFi step runs wificonnect5.exu,
+    the plain Qt5 tool of q4os-wificonnect, where it is installed; without it, and in
+    the Trinity session, tdewificonnect as before.
+
+ -- Q4OS Team <q4os@q4os.org>  Sat, 03 Oct 2026 22:00:00 +0200
+
+q4os-base (4.31.8-a1) UNRELEASED; urgency=medium
+
+  * appsetup2_helper.sh "16": apply the system wide settings of a desktop profile
+    through q4os-sw-profiler-common's prf_settings.sh, which alone holds the
+    settings catalogue and checks every key and value. The profiler frontends
+    run it passwordless as they run "15"; nothing happens without that script.
+  * ctrl-kmenu: --conf-only writes the menu type and stops there, without
+    restarting the panel and opening the menu - for the profiler applying a
+    profile's menu setting.
+
+ -- Q4OS Team <q4os@q4os.org>  Wed, 30 Sep 2026 21:47:45 +0200
+
 q4os-base (4.31.7-a1) UNRELEASED; urgency=medium
 
   * first_boot.sh: expand the ~ in the drvinstl first-login entry's Icon=, as for vboxgutils (the hook itself is not activated yet)

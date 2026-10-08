@@ -5,8 +5,8 @@ deactivate_this () {
   sudo -n rm -f /usr/share/wayland-sessions/plasma.desktop
   sudo -n dpkg-divert --rename --remove /usr/share/wayland-sessions/plasma.desktop
   sudo -n rm -f /etc/sudoers.d/90_sudo_tmp01 #remove temporary passwordless config
-  kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "timestamp" "$( date +%Y-%m-%d-%H-%M-%S )"
-  kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "desc" "do_not_delete_this_file"
+  kwrtcfgpm --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "timestamp" "$( date +%Y-%m-%d-%H-%M-%S )"
+  kwrtcfgpm --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "desc" "do_not_delete_this_file"
 }
 
 deinit1 () {
@@ -16,7 +16,7 @@ deinit1 () {
 
   if ps -ef | grep -v 'grep' | grep -q 'twin' ; then
     echo "Stopping Twin window manager ..."
-    $TDEDIR/bin/dcopquit twin
+    [ -x "$TDEDIR/bin/dcopquit" ] && $TDEDIR/bin/dcopquit twin
     # rm -f "$TWINRCTMPCFG"
   fi
   if ps -ef | grep -v 'grep' | grep -q 'kwin' ; then
@@ -25,8 +25,10 @@ deinit1 () {
     pkill kwin
     killall -sKILL kwin_wayland
   fi
-  $TDEDIR/bin/artsshell -q terminate
-  $TDEDIR/bin/dcopserver_shutdown --wait
+  if [ -x "$TDEDIR/bin/dcopserver" ] ; then
+    $TDEDIR/bin/artsshell -q terminate
+    $TDEDIR/bin/dcopserver_shutdown --wait
+  fi
   export PATH="$ORIG_PATH"
   export XDG_CONFIG_DIRS="$ORIG_XDG_CONFIG_DIRS"
   unset ORIG_PATH
@@ -98,6 +100,10 @@ echo "\n>> Q4OS $SRCFNAME1 started: $START_DT <<"
 
 export ORIG_PATH="$PATH"
 export PATH="/opt/trinity/bin:$PATH"
+if [ ! -x "/opt/trinity/bin/kdialog" ] && [ -x "/usr/lib/kdialogwr/kdialog" ] ; then
+  #no Trinity kdialog: go through the wrapper, it adapts the options to the session's kdialog
+  export PATH="/usr/lib/kdialogwr:$PATH"
+fi
 export ORIG_XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS"
 export XDG_CONFIG_DIRS="/opt/trinity/etc/xdg:/etc/xdg:$XDG_CONFIG_DIRS"
 export XDG_SESSION_CLASS="user"
@@ -121,7 +127,7 @@ echo "First user: $FIRST_USER"
 echo "Active user: $ACTIVE_USER"
 if [ "$ACTIVE_USER" = "$FIRST_USER" ] || [ -f "/etc/sudoers.d/90_sudo_tmp01" ] ; then
   /usr/share/apps/q4os_system/bin/qapt_lock.exu --lock --sig-me &
-  export SYSTEM_INSTALL="$( kreadconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "install_type" )"
+  export SYSTEM_INSTALL="$( kreadcfgpm --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "install_type" )"
   if [ -f "$XAUTHORITY" ] ; then
     cp $XAUTHORITY /tmp/.wkrootxauth
   elif [ -f "$HOME/.Xauthority" ] ; then
@@ -150,7 +156,7 @@ if [ -f "$XDGCFGHOMEDIR_PLASMA/kmixrc" ] || [ -f "$XDGCFGHOMEDIR_PLASMA/kwinrc" 
   if [ "$SYSTEM_INSTALL" != "livemedia" ] ; then
     if [ "$QAPTDISTR1" = "trixie" ] || [ "$QAPTDISTR1" = "bookworm" ] ; then
       echo "Todo: resolve xorg x wayland clash to be able to run this script $SRCFNAME1, exiting ..."
-      kwriteconfig --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "debug1" "not_allowed_to_run"
+      kwrtcfgpm --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "debug1" "not_allowed_to_run"
       deactivate_this
       deinit1 --continue-session
       exit
@@ -184,16 +190,18 @@ if [ "$QDSK_SESSION" = "trinity" ] ; then
   . /opt/trinity/env/60_q4xftdpi.sh
 fi
 
-echo "starting dcopserver .."
-$TDEDIR/bin/dcopserver --nosid
-echo "running tdebuildsycoca .."
-$TDEDIR/bin/tdebuildsycoca
-if [ -f "$ROOTXAUTH1" ] ; then
-  echo "running tdebuildsycoca for root .."
-  sudo -n XAUTHORITY="$ROOTXAUTH1" $TDEDIR/bin/tdebuildsycoca
+if [ -x "$TDEDIR/bin/dcopserver" ] ; then
+  echo "starting dcopserver .."
+  $TDEDIR/bin/dcopserver --nosid
+  echo "running tdebuildsycoca .."
+  $TDEDIR/bin/tdebuildsycoca
+  if [ -f "$ROOTXAUTH1" ] ; then
+    echo "running tdebuildsycoca for root .."
+    sudo -n XAUTHORITY="$ROOTXAUTH1" $TDEDIR/bin/tdebuildsycoca
+  fi
 fi
 echo "checking custom theme .."
-THEME1="$( kreadconfig --file "/etc/q4os/q4base.conf" --group "General" --key "default_theme" )"
+THEME1="$( kreadcfgpm --file "/etc/q4os/q4base.conf" --group "General" --key "default_theme" )"
 echo "custom theme: $THEME1"
 if [ -n "$THEME1" ] ; then
   kdialog --passivepopup "<font size=4><p>$(eval_gettext "Configuring desktop theme ...")</p></font>" 120 &
@@ -233,6 +241,12 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f
   cp $XAUTHORITY /tmp/.wkrootxauth
   chmod a+r /tmp/.wkrootxauth
   export ROOTXAUTH1="/tmp/.wkrootxauth"
+elif [ ! -x "$TDEDIR/bin/twin" ] && [ -x "/usr/bin/kwin_x11" ] ; then
+  #X11 session where Trinity is not installed: Plasma's own window manager serves the dialogs of this script
+  echo "launching kwin_x11.."
+  kwin_x11 --replace 2>/dev/null 1>/dev/null &
+  CTR1="100" ; while [ "$CTR1" -gt "0" ] && ( ! wmctrl -m 2>/dev/null 1>/dev/null ) ; do echo "wait for kwin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.1
+  echo " ..kwin ready."
 else
   echo "configuring twin .."
   TWINRCTMPCFG="/tmp/.fsttwinrc_$ACTIVE_USER"
@@ -356,7 +370,7 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
 fi
 
 if [ -n "$SYSTEM_INSTALL" ] ; then
-  if [ "$( kreadconfig --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "needtoapply" )" != "0" ] ; then
+  if [ "$( kreadcfgpm --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "needtoapply" )" != "0" ] ; then
     WANT_PROFILER="1"
   else
     WANT_PROFILER="0"
@@ -434,6 +448,13 @@ if [ "$SYSTEM_INSTALL" = "preinstall" ] ; then
   dash /usr/share/apps/q4os_system/bin/.addlang_ai_02.sh
   LANG_PACK_FAIL="$?"
 fi
+if [ -z "$SYSTEM_INSTALL" ] && [ "$QDSK_SESSION" != "plasma" ] ; then
+  #a user added later: offer the Trinity language pack (and fonts) of his language, if this system has none yet
+  ADDTDEC="$( dash /usr/share/apps/q4os_system/bin/dowqi18.sh --print-tdecode "$LANG" 2>/dev/null | grep "^TDE_Code: " | awk -F': ' '{ print $2 }' )"
+  if [ -n "$ADDTDEC" ] && [ "$( dash /usr/share/apps/q4os_system/bin/print_package_version.sh "tde-i18n-$ADDTDEC-trinity" )" = "0" ] ; then
+    dash /usr/share/apps/q4os_system/bin/.addlang_ai_01.sh
+  fi
+fi
 if [ -n "$SYSTEM_INSTALL" ] ; then
   /usr/share/apps/q4os_system/bin/qapt_lock.exu --lock --sig-me &
 fi
@@ -471,7 +492,7 @@ sudo -n dash /usr/share/apps/q4os_system/bin/langckeyctde2.sh
 if [ "$SYSTEM_INSTALL" = "livemedia" ] || [ "$SYSTEM_INSTALL" = "preinstall" ] ; then
   echo "Setting system keyboard ..."
   DETECT_KBLAYOUT="$( dash /usr/share/apps/q4os_system/bin/dowqi18.sh "--print-tdecode" "$LANG" | grep "^Keyboard_Code: " | awk -F': ' '{ print $2 }' )"
-  DETECT_KBMODEL="$( /opt/trinity/bin/kreadconfig --file "/etc/default/keyboard" --group "" --key "XKBMODEL" | tr -d '"' )"
+  DETECT_KBMODEL="$( sed -n 's/^XKBMODEL=//p' "/etc/default/keyboard" | tail -n1 | tr -d '"' )"
   echo "Keyboard layout/model detected: $DETECT_KBLAYOUT/$DETECT_KBMODEL"
   sudo -n KB_SYS_LAYOUT="$DETECT_KBLAYOUT" KB_SYS_MODEL="$DETECT_KBMODEL" dash /usr/share/apps/q4os_system/bin/kblayout_mod.sh --write-sys
 fi
@@ -480,12 +501,12 @@ fi
 # kwriteconfig --file "$( xdg-user-dir TEMPLATES )/.directory" --group "Desktop Entry" --key "Icon" "folder-templates"
 # kwriteconfig --file "$( xdg-user-dir DOWNLOAD )/.directory" --group "Desktop Entry" --key "Icon" "folder-download"
 # kwriteconfig --file "$( xdg-user-dir VIDEOS )/.directory" --group "Desktop Entry" --key "Icon" "folder-videos"
-kwriteconfig --file "$( xdg-user-dir MUSIC )/.directory" --group "Desktop Entry" --key "Icon" "folder-sound"
-kwriteconfig --file "$( xdg-user-dir PICTURES )/.directory" --group "Desktop Entry" --key "Icon" "folder-image"
-kwriteconfig --file "$( xdg-user-dir DOCUMENTS )/.directory" --group "Desktop Entry" --key "Icon" "folder-documents"
-kwriteconfig --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Encoding" "UTF-8"
-kwriteconfig --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Icon" "user-desktop"
-kwriteconfig --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Type" "Directory"
+kwrtcfgpm --file "$( xdg-user-dir MUSIC )/.directory" --group "Desktop Entry" --key "Icon" "folder-sound"
+kwrtcfgpm --file "$( xdg-user-dir PICTURES )/.directory" --group "Desktop Entry" --key "Icon" "folder-image"
+kwrtcfgpm --file "$( xdg-user-dir DOCUMENTS )/.directory" --group "Desktop Entry" --key "Icon" "folder-documents"
+kwrtcfgpm --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Encoding" "UTF-8"
+kwrtcfgpm --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Icon" "user-desktop"
+kwrtcfgpm --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entry" --key "Type" "Directory"
 
 # #create user desktop icons
 # cp "/opt/trinity/share/apps/kdesktop/Desktop/My_Computer" "$( xdg-user-dir DESKTOP )/q4os_My_Computer.desktop"
@@ -495,7 +516,7 @@ kwriteconfig --file "$( xdg-user-dir DESKTOP )/.directory" --group "Desktop Entr
 # cp "/opt/trinity/share/apps/kdesktop/Desktop/Web_Browser" "$( xdg-user-dir DESKTOP )/q4os_Web_Browser.desktop"
 
 if [ "$QAPTDISTR1" != "bookworm" ] && [ "$QAPTDISTR1" != "bullseye" ] && [ "$QAPTDISTR1" != "noble" ] && [ "$QAPTDISTR1" != "jammy" ] && [ "$QAPTDISTR1" != "raspbian12" ] ; then
-  if [ -z "$(kreadconfig --file "$XDGCFGHOMEDIR_PLASMA/kxkbrc" --group "Layout" --key "LayoutList")" ] ; then
+  if [ -z "$(kreadcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kxkbrc" --group "Layout" --key "LayoutList")" ] ; then
     #need to write keybard layout already here as plasma session scripts don't affect session settings
     echo "Seting keyboard for Plasma user ..."
     dash /usr/share/apps/q4os_system/bin/kblayout_mod.sh --write-plasmaconfig
@@ -538,7 +559,9 @@ if [ -f "/var/lib/q4os/.swprfl-acndrq-10.tmp" ] || [ -f "/var/lib/q4os/.swprfl-a
   sudo -n chmod a+rw /tmp/.swprfl-acndrq-*
 fi
 
-sudo -n $TDEDIR/bin/dcopserver_shutdown --wait
+if [ -x "$TDEDIR/bin/dcopserver" ] ; then
+  sudo -n $TDEDIR/bin/dcopserver_shutdown --wait
+fi
 deactivate_this
 
 if [ "$SYSTEM_INSTALL" = "livemedia" ] ; then
@@ -556,7 +579,7 @@ if [ -n "$SYSTEM_INSTALL" ] ; then
       pkill kdialog
     fi
     #re-read desktop profiler result
-    if [ "$( kreadconfig --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "needtoapply" )" != "0" ] ; then
+    if [ "$( kreadcfgpm --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "needtoapply" )" != "0" ] ; then
       ENDMESSAGE="$ENDMESSAGE<p>$(eval_gettext "No desktop profile has been applied yet. It's highly recommended to run <b>Desktop Profiler</b> tool and apply one of available profiles as soon as possible.")</p>"
     fi
   fi

@@ -20,18 +20,18 @@ KB_READ_MODEL="$KB_SYS_MODEL"
 if [ -z "$KB_READ_LAYOUT" ] ; then
   SYSCFGFL3="/etc/q4os/q4base.conf"
   echo "Reading: $SYSCFGFL3"
-  KB_READ_LAYOUT="$( /opt/trinity/bin/kreadconfig --file "$SYSCFGFL3" --group "OnInstall" --key "kxkblayout" )"
-  KB_READ_VARIANT="$( /opt/trinity/bin/kreadconfig --file "$SYSCFGFL3" --group "OnInstall" --key "kxkbvariant" )"
-  KB_READ_OPTIONS="$( /opt/trinity/bin/kreadconfig --file "$SYSCFGFL3" --group "OnInstall" --key "kxkboptions" )"
-  KB_READ_MODEL="$( /opt/trinity/bin/kreadconfig --file "$SYSCFGFL3" --group "OnInstall" --key "kxkbmodel" )"
+  KB_READ_LAYOUT="$( kreadcfgpm --file "$SYSCFGFL3" --group "OnInstall" --key "kxkblayout" )"
+  KB_READ_VARIANT="$( kreadcfgpm --file "$SYSCFGFL3" --group "OnInstall" --key "kxkbvariant" )"
+  KB_READ_OPTIONS="$( kreadcfgpm --file "$SYSCFGFL3" --group "OnInstall" --key "kxkboptions" )"
+  KB_READ_MODEL="$( kreadcfgpm --file "$SYSCFGFL3" --group "OnInstall" --key "kxkbmodel" )"
 
   if [ -z "$KB_READ_LAYOUT" ] ; then
     SYSCFGFL1="/etc/default/keyboard"
     echo "Reading: $SYSCFGFL1"
-    KB_READ_LAYOUT="$( /opt/trinity/bin/kreadconfig --file "$SYSCFGFL1" --group "" --key "XKBLAYOUT" | tr -d '"' )"
-    KB_READ_VARIANT="$( /opt/trinity/bin/kreadconfig --file "$SYSCFGFL1" --group "" --key "XKBVARIANT" | tr -d '"' )"
-    KB_READ_OPTIONS="$( /opt/trinity/bin/kreadconfig --file "$SYSCFGFL1" --group "" --key "XKBOPTIONS" | tr -d '"' )"
-    KB_READ_MODEL="$( /opt/trinity/bin/kreadconfig --file "$SYSCFGFL1" --group "" --key "XKBMODEL" | tr -d '"' )"
+    KB_READ_LAYOUT="$( sed -n 's/^XKBLAYOUT=//p' "$SYSCFGFL1" | tail -n1 | tr -d '"' )"
+    KB_READ_VARIANT="$( sed -n 's/^XKBVARIANT=//p' "$SYSCFGFL1" | tail -n1 | tr -d '"' )"
+    KB_READ_OPTIONS="$( sed -n 's/^XKBOPTIONS=//p' "$SYSCFGFL1" | tail -n1 | tr -d '"' )"
+    KB_READ_MODEL="$( sed -n 's/^XKBMODEL=//p' "$SYSCFGFL1" | tail -n1 | tr -d '"' )"
 
     if [ -z "$KB_READ_LAYOUT" ] ; then
       SYSCFGFL2="/etc/X11/xorg.conf.d/00-keyboard.conf"
@@ -185,12 +185,12 @@ if [ "$1" = "--write-sys" ] ; then
     sed -i "s/^XKBMODEL=.*/XKBMODEL=\"$KB_SYS_WRITE_MODEL\"/" $SYSCFGFL4
   fi
   SYSCFGFL5="/etc/q4os/q4base.conf"
-  if [ -z "$(/opt/trinity/bin/kreadconfig --file "$SYSCFGFL5" --group "OnInstall" --key "kxkblayout")" ] || [ "$FORCE_WRITE_Q4BASE" = "1" ] ; then
+  if [ -z "$(kreadcfgpm --file "$SYSCFGFL5" --group "OnInstall" --key "kxkblayout")" ] || [ "$FORCE_WRITE_Q4BASE" = "1" ] ; then
     echo "Writing to $SYSCFGFL5 ..."
-    /opt/trinity/bin/kwriteconfig --file "$SYSCFGFL5" --group "OnInstall" --key "kxkblayout" "$KB_READ_LAYOUT"
-    /opt/trinity/bin/kwriteconfig --file "$SYSCFGFL5" --group "OnInstall" --key "kxkbvariant" "$KB_READ_VARIANT"
-    /opt/trinity/bin/kwriteconfig --file "$SYSCFGFL5" --group "OnInstall" --key "kxkboptions" "$KB_READ_OPTIONS"
-    /opt/trinity/bin/kwriteconfig --file "$SYSCFGFL5" --group "OnInstall" --key "kxkbmodel" "$KB_READ_MODEL"
+    kwrtcfgpm --file "$SYSCFGFL5" --group "OnInstall" --key "kxkblayout" "$KB_READ_LAYOUT"
+    kwrtcfgpm --file "$SYSCFGFL5" --group "OnInstall" --key "kxkbvariant" "$KB_READ_VARIANT"
+    kwrtcfgpm --file "$SYSCFGFL5" --group "OnInstall" --key "kxkboptions" "$KB_READ_OPTIONS"
+    kwrtcfgpm --file "$SYSCFGFL5" --group "OnInstall" --key "kxkbmodel" "$KB_READ_MODEL"
     chmod a+r "$SYSCFGFL5"
   fi
 
@@ -198,8 +198,8 @@ elif [ "$1" = "--write-tdelive" ] ; then
   echo "Writing user keyboard configuration for live media  [$1] .."
   FLAG_TDE_KXKBW="1"
   echo "Writing to kxkbrc ..."
-  /opt/trinity/bin/kwriteconfig --file "kxkbrc" --group "Layout" --key "LayoutList" "$KB_TDELIVE_LAYOUT"
-  /opt/trinity/bin/kwriteconfig --file "kxkbrc" --group "Layout" --key "Model" "$KB_SYS_WRITE_MODEL"
+  kwrtcfgpm --file "${TDEHOME:-$HOME/.trinity}/share/config/kxkbrc" --group "Layout" --key "LayoutList" "$KB_TDELIVE_LAYOUT"
+  kwrtcfgpm --file "${TDEHOME:-$HOME/.trinity}/share/config/kxkbrc" --group "Layout" --key "Model" "$KB_SYS_WRITE_MODEL"
   # /opt/trinity/bin/kwriteconfig --file "kxkbrc" --group "Layout" --key "Use" "true"
 
 elif [ "$1" = "--write-tdeconfig" ] ; then
@@ -209,10 +209,10 @@ elif [ "$1" = "--write-tdeconfig" ] ; then
   if [ -n "$KB_TDE_LAYOUT" ] ; then
     FLAG_TDE_KXKBW="1"
     echo "Writing to $KXKB_CFGFL_1 ..."
-    /opt/trinity/bin/kwriteconfig --file "$KXKB_CFGFL_1" --group "Layout" --key "LayoutList" "$KB_TDE_LAYOUT"
-    /opt/trinity/bin/kwriteconfig --file "$KXKB_CFGFL_1" --group "Layout" --key "Use" "true"
+    kwrtcfgpm --file "$KXKB_CFGFL_1" --group "Layout" --key "LayoutList" "$KB_TDE_LAYOUT"
+    kwrtcfgpm --file "$KXKB_CFGFL_1" --group "Layout" --key "Use" "true"
     if [ -n "$KB_SYS_WRITE_MODEL" ] ; then
-      /opt/trinity/bin/kwriteconfig --file "$KXKB_CFGFL_1" --group "Layout" --key "Model" "$KB_SYS_WRITE_MODEL"
+      kwrtcfgpm --file "$KXKB_CFGFL_1" --group "Layout" --key "Model" "$KB_SYS_WRITE_MODEL"
     fi
     chmod a+r "$KXKB_CFGFL_1"
   fi
@@ -221,11 +221,11 @@ elif [ "$1" = "--write-plasmaconfig" ] ; then
   echo "Writing plasma keyboard configuration [$1] .."
   KXKB_CFGFL_2="$(dash /usr/share/apps/q4os_system/bin/print_xdgcfghome_plasma.sh)/kxkbrc"
   echo "Writing to $KXKB_CFGFL_2 ..."
-  /opt/trinity/bin/kwriteconfig --file "$KXKB_CFGFL_2" --group "Layout" --key "LayoutList" "$KB_PLASMA_LAYOUT"
-  /opt/trinity/bin/kwriteconfig --file "$KXKB_CFGFL_2" --group "Layout" --key "VariantList" "$KB_PLASMA_VARIANT"
-  /opt/trinity/bin/kwriteconfig --file "$KXKB_CFGFL_2" --group "Layout" --key "Use" "true"
+  kwrtcfgpm --file "$KXKB_CFGFL_2" --group "Layout" --key "LayoutList" "$KB_PLASMA_LAYOUT"
+  kwrtcfgpm --file "$KXKB_CFGFL_2" --group "Layout" --key "VariantList" "$KB_PLASMA_VARIANT"
+  kwrtcfgpm --file "$KXKB_CFGFL_2" --group "Layout" --key "Use" "true"
   if [ -n "$KB_SYS_WRITE_MODEL" ] ; then
-    /opt/trinity/bin/kwriteconfig --file "$KXKB_CFGFL_2" --group "Layout" --key "Model" "$KB_SYS_WRITE_MODEL"
+    kwrtcfgpm --file "$KXKB_CFGFL_2" --group "Layout" --key "Model" "$KB_SYS_WRITE_MODEL"
   fi
   chmod a+r "$KXKB_CFGFL_2"
   echo "Running setxkbmap: layout-$KB_PLASMA_LAYOUT, variant-$KB_PLASMA_VARIANT, model-$KB_SYS_WRITE_MODEL ..."

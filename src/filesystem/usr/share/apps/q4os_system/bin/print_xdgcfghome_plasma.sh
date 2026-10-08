@@ -17,7 +17,7 @@ if [ ! -d "$HOMEDIR1" ] ; then
   exit 10
 fi
 
-XDGCFGHOME1="$( /opt/trinity/bin/kreadconfig --file "/etc/q4os/q4base.conf" --group "General" --key "xdgcfghome_plasma" )"
+XDGCFGHOME1="$( kreadcfgpm --file "/etc/q4os/q4base.conf" --group "General" --key "xdgcfghome_plasma" )"
 if [ -z "$XDGCFGHOME1" ] ; then
   XDGCFGHOME1=".config"
 fi

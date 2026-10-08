@@ -9,13 +9,13 @@ fi
 echo "\n>> Q4OS first boot script started: $( date +%Y-%m-%d-%H-%M-%S ) <<"
 
 TDEHOME="/root/.trinity" #for kreadconfig not to write to user's homedir
-SYSTEM_INSTALL="$( /opt/trinity/bin/kreadconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "install_type" )"
+SYSTEM_INSTALL="$( kreadcfgpm --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "install_type" )"
 if [ "$SYSTEM_INSTALL" = "livemedia" ] ; then
   if [ -z "$( findmnt -n -M / | grep "filesystem.squashfs" )" ] && [ -z "$( findmnt -n -M /live/linux | grep " squashfs " )" ] ; then
     echo "Warning: no live system detected"
     SYSTEM_INSTALL="unknown"
     rm -f /etc/q4oslivemedia
-    /opt/trinity/bin/kwriteconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "install_type" "unknown"
+    kwrtcfgpm --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "install_type" "unknown"
   fi
 fi
 echo "System install: $SYSTEM_INSTALL"
@@ -69,7 +69,7 @@ echo "First user: $FUSERNAME"
 
 MEMTOTAL=$( q4hw-info --memtotal )
 echo "Total memory: $MEMTOTAL"
-/opt/trinity/bin/kwriteconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "memory" "$MEMTOTAL"
+kwrtcfgpm --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "memory" "$MEMTOTAL"
 
 if [ ! -f "/etc/apt/sources.list" ] ; then
   touch /etc/apt/sources.list #missing after noble install, so create
@@ -86,7 +86,7 @@ VBOXENV="$( q4hw-info --vboxguest )"
 if [ "$VBOXENV" = "VBoxGuest_Yes" ] ; then
   echo "Q4OS Info: Running inside Virtualbox"
   # touch /tmp/.frst_q4_boot_vbox.stp
-  /opt/trinity/bin/kwriteconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "in_virtualbox" "1"
+  kwrtcfgpm --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "in_virtualbox" "1"
   echo "  Blacklisting piix4_smbus kernel module ..."
   echo "blacklist i2c_piix4" > /etc/modprobe.d/blacklist-vbox_piix4_smbus.conf #fix piix4_smbus error message on startup
 else
@@ -114,7 +114,7 @@ if [ -f "/etc/trinity/tdm/tdmrc" ] ; then
   chmod a+r /etc/trinity/tdm/tdmrc
 fi
 if [ -f "/usr/bin/sddm" ] ; then
-  /opt/trinity/bin/kwriteconfig --file "/etc/sddm.conf" --group "General" --key "Numlock" "$NUMLOCK_SDDM"
+  kwrtcfgpm --file "/etc/sddm.conf" --group "General" --key "Numlock" "$NUMLOCK_SDDM"
   chmod a+r /etc/sddm.conf
 fi
 

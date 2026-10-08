@@ -1,0 +1,382 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the q4os-base package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: q4os-base\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-05 17:31+0200\n"
+"PO-Revision-Date: 2024-05-10 22:18+0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#, sh-format
+msgid "<b>Press Yes</b> button to run auto-install wizard, which will guide you through installation process of the latest stable version with automatic updates. Otherwise click No and use Konqueror as a default option. It is possible to get ${APF1} installer from Q4OS Software Centre anytime."
+msgstr "<b>Нажмите кнопку Да</b>, чтобы запустить мастер автоматической установки, который проведёт вас через процесс установки последней стабильной версии с автоматическими обновлениями. В противном случае нажмите кнопку Нет и используйте Konqueror в качестве выбора по умолчанию. Получить инсталлятор ${APF1} из Центра программного обеспечения Q4OS можно в любое время."
+
+#, sh-format
+msgid "<b>Q4OS optimized</b> ${APD} is preferred to original Oracle's CD, to achieve the best performance. This setup will download and auto-install all the needed just now."
+msgstr "<b>Оптимизированный Q4OS</b> ${APD} предпочтительнее оригинального компакт-диска Oracle в плане производительности. Эта установка загрузит и автоматически установит всё необходимое."
+
+#, sh-format
+msgid "<b>Warning</b>"
+msgstr "<b>Предупреждение</b>"
+
+#, sh-format
+msgid "Asus Eee PC laptop detected, extra configuration will be performed."
+msgstr "Обнаружен ноутбук Asus Eee PC, будет выполнена дополнительная настройка."
+
+#, sh-format
+msgid "Broadcom WiFi driver"
+msgstr "Драйвер WiFi Broadcom"
+
+#, sh-format
+msgid "Check Internet connection, please."
+msgstr "Пожалуйста, проверьте подключение к Интернету."
+
+#, sh-format
+msgid "Click \"Ok\" button to show the MenuEditor window."
+msgstr "Щёлкните кнопку «Хорошо», чтобы открыть окно РедактораМеню."
+
+#, sh-format
+msgid "Click OK to get login screen now."
+msgstr "Щёлкните «Хорошо», чтобы попасть на экран входа в систему."
+
+#, sh-format
+msgid "Click OK to run WiFi connection tool to create a network connection."
+msgstr "Щёлкните «Хорошо», чтобы запустить инструмент подключения Wi-Fi для создания сетевого соединения."
+
+#, sh-format
+msgid "Click Ok to reboot your computer now."
+msgstr "Щёлкните «Хорошо» для немедленной перезагрузки вашего компьютера."
+
+#, sh-format
+msgid "Configuring desktop theme ..."
+msgstr "Настраивается тема рабочего стола…"
+
+#, sh-format
+msgid "Configuring the profile ..."
+msgstr "Настраивается профиль…"
+
+#, sh-format
+msgid "Configuring the system ..."
+msgstr "Настраивается система…"
+
+#, sh-format
+msgid "Congratulations, setup has finished."
+msgstr "Поздравляем, установка завершена."
+
+#, sh-format
+msgid "Current system language: <b>English</b>"
+msgstr "Текущий язык системы: <b>English</b>"
+
+#, sh-format
+msgid "Default language: <b>${LANC}</b>"
+msgstr "Язык по умолчанию: <b>${LANC}</b>"
+
+#, sh-format
+msgid "Display setup"
+msgstr "Настройка дисплея"
+
+#, sh-format
+msgid "Do you want to continue ?"
+msgstr "Хотите продолжить?"
+
+#, sh-format
+msgid "Do you want to install <b>${APF1}</b> just now ?"
+msgstr "Хотите установить <b>${APF1}</b> сейчас?"
+
+#, sh-format
+msgid "Do you want to keep English as default system language ?"
+msgstr "Хотите сохранить английский язык в качестве языка системы по умолчанию?"
+
+#, sh-format
+msgid "Do you want to open it now ?"
+msgstr "Хотите открыть его сейчас?"
+
+#, sh-format
+msgid "Download failed !"
+msgstr "Загрузка не удалась!"
+
+#, sh-format
+msgid "Downloading language pack, please wait ..."
+msgstr "Загружается языковой пакет, пожалуйста, подождите…"
+
+#, sh-format
+msgid "Drivers"
+msgstr "Драйверы"
+
+#, sh-format
+msgid "For more detailed info read Q4OS documentation at https://www.q4os.org"
+msgstr "Подробности можно найти в документации Q4OS по адресу https://www.q4os.org"
+
+#, sh-format
+msgid "Generating system wide locales, please wait ..."
+msgstr "Создание системных локалей, пожалуйста, подождите…"
+
+#, sh-format
+msgid "IBM Thinkpad R51 laptop detected, extra configuration will be performed."
+msgstr "Обнаружен ноутбук IBM Thinkpad R51, будет выполнена дополнительная настройка."
+
+#, sh-format
+msgid "If you want to get the best experience and latest Internet technologies, we recommend you to install <b>${APF1}</b> within Q4OS system."
+msgstr "Если вы хотите получить лучшие впечатления и новейшие сетевые технологии, мы рекомендуем вам установить <b>${APF1}</b> в системе Q4OS."
+
+#, sh-format
+msgid "Install wizard"
+msgstr "Помощник установки"
+
+#, sh-format
+msgid "Installation has not completed, package system is busy. Try it few minutes later please."
+msgstr "Установка не завершена, система пакетов занята. Пожалуйста, повторите попытку через несколько минут."
+
+#, sh-format
+msgid "Installation has not completed, package system is busy. You can easily install language pack later, using a desktop icon."
+msgstr "Установка не завершена, система пакетов занята. Вы сможете установить языковой пакет позже, используя значок на рабочем столе."
+
+#, sh-format
+msgid "Installer needs to download packages from Q4OS Internet resources, but no info could be retrieved. You will be asked for ${APD} installation at the next login, or you can install anytime from Software centre."
+msgstr "Установщик должен загрузить пакеты с сетевых ресурсов Q4OS, но информацию получить не удалось. Вам будет предложено установить ${APD} при следующем входе в систему, или вы можете установить его в любое время из Центра приложений."
+
+#, sh-format
+msgid "Installer needs to download packages from Q4OS Internet resources, but no info could be retrieved. You will be prompted for ${APF1} installation at next Konqueror run, or you can install anytime from Q4OS Software Centre."
+msgstr "Установщик должен загрузить пакеты с сетевых ресурсов Q4OS, но информацию получить не удалось. Вам будет предложено установить ${APF1} при следующем запуске Konqueror, или вы можете установить его в любое время из Центра приложений Q4OS."
+
+#, sh-format
+msgid "Language"
+msgstr "Язык"
+
+#, sh-format
+msgid "Language <b>${LANC}</b> has been added to system."
+msgstr "Язык <b>${LANC}</b> был добавлен в систему."
+
+#, sh-format
+msgid "Language pack"
+msgstr "Языковой пакет"
+
+#, sh-format
+msgid "Live media detected. Printers management may be limited within the live media environment. It will be fully available after Q4OS installation."
+msgstr "Обнаружен носитель в режиме «Live». Управление принтерами может быть ограничено в данной среде. Оно будет полностью доступно после установки Q4OS."
+
+#, sh-format
+msgid "NVIDIA graphics driver"
+msgstr "Графический драйвер NVIDIA"
+
+#, sh-format
+msgid "Newly created items will appear in the start menu <b>after closing</b> the MenuEditor window."
+msgstr "Созданные пункты появятся в стартовом меню <b>после закрытия</b> окна РедактораМеню."
+
+#, sh-format
+msgid "No desktop profile has been applied yet. It's highly recommended to run <b>Desktop Profiler</b> tool and apply one of available profiles as soon as possible."
+msgstr "Профиль рабочего стола ещё не применён. Настоятельно рекомендуется запустить инструмент <b>Профайлер рабочего стола</b> и как можно скорее применить один из доступных профилей."
+
+#, sh-format
+msgid "Package system is busy now, setup cannot continue. You will be asked for ${APD} installation at the next login, or you can install anytime from Software centre."
+msgstr "Система пакетов сейчас занята, установку нельзя продолжить. Вам будет предложено установить ${APD} при следующем входе в систему, или вы можете установить его в любое время из Центра приложений."
+
+#, sh-format
+msgid "Package system is busy now, setup cannot continue. You will be asked for ${APF1} installation later again, or you can install anytime from Q4OS Software Centre."
+msgstr "Система пакетов сейчас занята, установку нельзя продолжить. Вам будет предложено установить ${APF1} позже, или вы можете установить в любое время из Центра приложений Q4OS."
+
+#, sh-format
+msgid "Package system is busy now, some other setup is running ! You will be asked for ${APF1} installation later again, or you can install anytime from Q4OS Software Centre."
+msgstr "Система пакетов сейчас занята, запущена какая-то другая установка! Вам будет предложено установить ${APF1} позже, или вы можете установить в любое время из Центра приложений Q4OS."
+
+#, sh-format
+msgid "Please login again to take changes effect."
+msgstr "Пожалуйста, войдите в систему ещё раз, чтобы изменения вступили в силу."
+
+#, sh-format
+msgid "Printing subsystem is now deactivated, you need to install <b>CUPS layer and printer driver</b> first. If you want to activate printing subsystem and full set of drivers, install following packages:"
+msgstr "Подсистема печати сейчас отключена, вам необходимо сначала установить <b>прослойку CUPS и драйвер принтера</b>. Если вы хотите включить подсистему печати и полный набор драйверов, установите следующие пакеты:"
+
+#, sh-format
+msgid "Q4OS autodetected <b>drivers</b> available <b>!</b>"
+msgstr "Q4OS автоматически обнаружила доступные <b>драйверы</b><b>!</b>"
+
+#, sh-format
+msgid "Select your language:"
+msgstr "Выберите ваш язык:"
+
+#, sh-format
+msgid "Setup cannot continue ..."
+msgstr "Невозможно продолжить установку…"
+
+#, sh-format
+msgid "Setup cannot continue."
+msgstr "Невозможно продолжить установку."
+
+#, sh-format
+msgid "Sound card not detected, system sound was disabled."
+msgstr "Звуковая карта не обнаружена, системный звук отключён."
+
+#, sh-format
+msgid "Start menu structure consists of two logical parts mixed, the <b>system global and user part</b>. You can edit, delete and add custom menu entries for the user part only, global menu entries are not visible in the MenuEditor."
+msgstr "Структура главного меню состоит из двух логически смешанных частей: <b>глобальной части системы и пользовательской части</b>. Вы можете изменять, удалять и добавлять пользовательские пункты меню только для пользовательской части, пункты глобального меню не видны в РедактореМеню."
+
+#, sh-format
+msgid "System is ready to download and install ${LANC} language pack, you need an active Internet link."
+msgstr "Система готова к загрузке и установке языкового пакета ${LANC}, вам нужен активный доступ в Интернет."
+
+#, sh-format
+msgid "Thank you for using Konqueror web browser. Konqueror is a minimalist and very fast browser for users who need lightweight Internet access."
+msgstr "Благодарим вас за использование веб-браузера Konqueror. Konqueror — это минималистичный и очень быстрый браузер для пользователей, которым требуется лёгкий доступ в Интернет."
+
+#, sh-format
+msgid "Trinity session not detected. Please run this tool within Trinity desktop."
+msgstr "Сеанс Trinity не обнаружен. Пожалуйста, запустите этот инструмент внутри рабочего стола Trinity."
+
+#, sh-format
+msgid "Unable to download ${APD}, check Internet connection, please."
+msgstr "Не удаётся загрузить ${APD}, проверьте подключение к Интернету, пожалуйста."
+
+#, sh-format
+msgid "Unable to download, check Internet connection please. You can easily install language pack later, using a desktop icon."
+msgstr "Не удаётся загрузить, проверьте, пожалуйста, подключение к Интернету. Вы можете легко установить языковой пакет позже, используя значок на рабочем столе."
+
+#, sh-format
+msgid "Unable to update, check Internet connection please."
+msgstr "Не удаётся обновить, пожалуйста, проверьте подключение к Интернету."
+
+#, sh-format
+msgid "Wireless network card detected, WiFi support enabled."
+msgstr "Беспроводная сетевая карта обнаружена, поддержка Wi-Fi включена."
+
+#, sh-format
+msgid "Would you like to be <b>notified at the next login</b> ? If you say \"No\", this dialog never appears again. You can install ${APD} anytime from <b>Software centre</b>."
+msgstr "Хотите получать <b>уведомление при следующем входе в систему</b>? Если вы скажете «Нет», это диалоговое окно больше никогда не появится. Вы можете установить ${APD} в любое время из <b>Центра приложений</b>."
+
+#, sh-format
+msgid "Would you like to be <b>notified at the next login</b> ? If you say \"No\", this dialog never appears again. You can review the drivers anytime in the <b>Hardware info</b> tool."
+msgstr "Хотите получать <b>уведомление при следующем входе в систему</b>? Если вы скажете «Нет», это диалоговое окно больше никогда не появится. Вы можете просмотреть драйверы в любое время в инструменте <b>Сведения об оборудовании</b>."
+
+#, sh-format
+msgid "Would you like to be notified later ?"
+msgstr "Хотите получить уведомление позже?"
+
+#, sh-format
+msgid "Would you like to install the language right now ?"
+msgstr "Хотите установить язык прямо сейчас?"
+
+#, sh-format
+msgid "Wow, Q4OS autodetected, that it is running inside <b>${APF}</b> host <b>!</b>"
+msgstr "Ого, Q4OS автоматически определила, что она запущен внутри хоста <b>${APF}</b><b>!</b>"
+
+#, sh-format
+msgid "Yes, this is the right way to test Q4OS operating system. It is <b>highly recommended</b> to install <b>${APD}</b> within this virtual machine. It will be possible to display in fullscreen mode, use ${APF} networking, mouse drivers and other functionality."
+msgstr "Да, это правильный способ попробовать операционную систему Q4OS. Настоятельно рекомендуется установить ${APD} на эту виртуальную машину. Это позволит работать в полном экране, использовать сеть ${APF}, драйверы мыши и другие функциональные возможности."
+
+#, sh-format
+msgid "You are going to edit Start Menu."
+msgstr "Вы собираетесь изменить Главное меню."
+
+#, sh-format
+msgid "You can review and install them in the <b>Hardware info</b> tool, on its <b>Drivers</b> tab."
+msgstr "Вы можете просмотреть и установить их в инструменте <b>Сведения об оборудовании</b>, на вкладке <b>Драйверы</b>."
+
+#, sh-format
+msgid "You may want to enlarge text and widgets size to improve readability. Click OK to run a configuration tool for screen setup and scaling."
+msgstr "Возможно, вам нужно увеличить размер текста и виджетов, чтобы улучшить читаемость. Щёлкните «ОК», чтобы запустить инструмент настройки экрана и масштабирования."
+
+#, sh-format
+msgid "You will be able to create new custom submenus/folders structure and fill it with desired menu entries. You can create new shortcuts using right mouse click, or drag&drop icons from start menu or desktop into the MenuEditor window."
+msgstr "Вы сможете создавать новые пользовательские подменю/папки и заполнять их нужными пунктами меню. Вы можете создавать новые ярлыки, используя правую кнопку мыши, или перетаскивать значки из главного меню или рабочего стола в окно РедактораМеню."
+
+#, sh-format
+msgid "download"
+msgstr "скачать"
+
+#, sh-format
+msgid "downloading ..."
+msgstr "скачивание…"
+
+#, sh-format
+msgid "message"
+msgstr "сообщение"
+
+#, sh-format
+#~ msgid "Connection not successful, check the Wifi password please."
+#~ msgstr "Подключение не удалось, проверьте, пожалуйста, пароль Wi-Fi."
+
+#, sh-format
+#~ msgid "Do you want to download and install <b>Look Switcher</b> just now ?"
+#~ msgstr "Хотите скачать и установить <b>Переключатель вида</b> сейчас?"
+
+#, sh-format
+#~ msgid "Installer needs to download packages from Q4OS Internet resources, but no info could be retrieved."
+#~ msgstr "Установщик должен загрузить пакеты с сетевых ресурсов Q4OS, но информацию получить не удалось."
+
+#, sh-format
+#~ msgid "Look Switcher installer and icons will be removed from control panel now, you can download it anytime from Q4OS software centre."
+#~ msgstr "Установщик и значки Переключателя вида будут удалены из панели управления, вы можете загрузить их в любое время из Центра приложений Q4OS."
+
+#, sh-format
+#~ msgid "Package system is busy now, setup cannot continue. You can install anytime from Q4OS software centre."
+#~ msgstr "Система пакетов сейчас занята, установку нельзя продолжить. Вы можете установить программу в любое время из центра приложений Q4OS."
+
+#, sh-format
+#~ msgid "Package system is busy now, some other setup is running ! You will be asked for ${APD} installation later again, or you can install anytime from Q4OS software centre."
+#~ msgstr "Система пакетов сейчас занята, запущена какая-то другая установка! Вам будет предложено установить ${APD} позже, или вы можете установить в любое время из центра приложений Q4OS."
+
+#, sh-format
+#~ msgid "Q4OS autodetected <b>${APF}</b> available <b>!</b>"
+#~ msgstr "Q4OS автоматически обнаружила доступность <b>${APF}</b><b>!</b>"
+
+#, sh-format
+#~ msgid "Thank you for using Q4OS operating system. After setup of <b>Look Switcher</b>, you will be able to switch between different visual themes."
+#~ msgstr "Благодарим вас за использование операционной системы Q4OS. После настройки <b>Переключателя вида</b> вы сможете менять различные визуальные темы."
+
+#, sh-format
+#~ msgid "Trying to setup wireless network ..."
+#~ msgstr "Попытка настроить беспроводную сеть…"
+
+#, sh-format
+#~ msgid "Yes, you can install proprietary NVIDIA video drivers right now. This setup will download and auto-install all the needed."
+#~ msgstr "Да, вы можете установить проприетарные видеодрайверы NVIDIA прямо сейчас. Эта установка загрузит и автоматически установит всё необходимое."
+
+#, sh-format
+#~ msgid "Click \"Ok\" button to run the tool."
+#~ msgstr "Щёлкните кнопку «Хорошо», чтобы запустить инструмент."
+
+#, sh-format
+#~ msgid "External repositories"
+#~ msgstr "Сторонние репозитории"
+
+#, sh-format
+#~ msgid "External repositories to add"
+#~ msgstr "Сторонние репозитории для добавления"
+
+#, sh-format
+#~ msgid "Keep in mind, adding external third party repositories is low level system action, and it could deeply influence package database integrity and dependencies. Fortunately, APT package management system contains strong tools for administrators to fix broken dependencies, so you should be always able to revert into a clean state."
+#~ msgstr "Помните, что добавление внешних сторонних репозиториев — это низкоуровневое системное действие, и оно может сильно повлиять на целостность базы данных пакетов и их зависимостей. К счастью, система управления пакетами APT содержит мощные инструменты для администраторов по исправлению нарушенных зависимостей, поэтому вы всегда сможете вернуться в чистое состояние."
+
+#, sh-format
+#~ msgid "Moving filesystem to RAM, it will take a while. Please wait ..."
+#~ msgstr "Файловая система переносится в оперативную память, это займёт некоторое время. Пожалуйста, подождите…"
+
+#, sh-format
+#~ msgid "Please use this tool only if you exactly understand what you are doing."
+#~ msgstr "Пожалуйста, используйте этот инструмент только в том случае, если вы точно понимаете, что делаете."
+
+#, sh-format
+#~ msgid "Select a repository:"
+#~ msgstr "Выберите репозиторий:"
+
+#, sh-format
+#~ msgid "Virtualbox Guest Additions setup"
+#~ msgstr "Установка гостевых дополнений VirtualBox"
+
+#, sh-format
+#~ msgid "Warning: This system is low in memory, it will be most likely unusable with the Plasma desktop. Please use Trinity desktop installation media instead."
+#~ msgstr "Предупреждение: В этой системе мало памяти, и она, скорее всего, не сможет работать с рабочим столом Plasma. Пожалуйста, используйте установочный носитель рабочего стола Trinity."
+
+#, sh-format
+#~ msgid "You are going to add an external repository. This is intended specifically for power users familiar to Debian package management system."
+#~ msgstr "Вы собираетесь добавить внешний репозиторий. Это предназначено специально для опытных пользователей, знакомых с системой управления пакетами Debian."

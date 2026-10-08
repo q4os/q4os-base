@@ -12,6 +12,9 @@ elif command -v kwriteconfig6 >/dev/null 2>&1; then
     exec kwriteconfig6 "$@"
 elif command -v kwriteconfig >/dev/null 2>&1; then
     exec kwriteconfig "$@"
+elif [ -x /opt/trinity/bin/kwriteconfig ]; then
+    # /opt/trinity/bin is not in PATH for root and boot time scripts
+    exec /opt/trinity/bin/kwriteconfig "$@"
 else
     echo "kwriteconfig not found" >&2
     exit 1

@@ -6,6 +6,16 @@ X-TDE-Priority=TopLevel
 # X-TDE-MediaNotifierHide=true
 
 [Desktop Action configMyComp]
+Name[de]=Systemsteuerung
+Name[es]=Panel de Control
+Name[es_AR]=Panel de control
+Name[hu]=Vezérlőpult
+Name[it]=Pannello di Controllo
+Name[nl]=Configuratiescherm
+Name[pl]=Panel Zarządzania
+Name[pt]=Painel de Controlo
+Name[pt_BR]=Painel de Controlo
+Name[ru]=Панель управления
 Name=Control Panel
 Icon=kcontrol
 Exec=kcontrol

@@ -5,6 +5,16 @@ X-TDE-Priority=TopLevel
 X-TDE-MediaNotifierHide=true
 
 [Desktop Action konsolerun]
+Name[de]=Terminal öffnen
+Name[es]=Abrir Terminal
+Name[es_AR]=Abrir terminal
+Name[hu]=Terminál megnyitása
+Name[it]=Apri il terminale
+Name[nl]=Terminalvenster openen
+Name[pl]=Otwórz Terminal
+Name[pt]=Abrir Terminal
+Name[pt_BR]=Abrir Terminal
+Name[ru]=Открыть терминал
 Name=Open Terminal
 Icon=konsole
 Exec=konsole

@@ -1,4 +1,10 @@
 [Desktop Entry]
+Comment[es_AR]=Instalación de paquetes de idioma
+Comment[hu]=Nyelvi csomag telepítése
+Comment[nl]=Taalpakketten installeren
+Comment[pl]=Instalacja Pakietów Językowych
+Comment[pt]=Instalação do pacote de idioma
+Comment[pt_BR]=Instalação do pacote de idioma
 Comment=Language Pack installation
 Comment[cs]=Jazykový balíček instalace
 Comment[de]=Sprachpaket installation
@@ -9,6 +15,12 @@ Exec[$e]=dash $HOME/.addlang_ai_01.sh
 #GenericName=
 Icon=locale
 #MimeType=
+Name[es_AR]=Instalación de paquetes de idioma
+Name[hu]=Nyelvi csomag telepítése
+Name[nl]=Taalpakketten installeren
+Name[pl]=Instalacja Pakietów Językowych
+Name[pt]=Instalação do pacote de idioma
+Name[pt_BR]=Instalação do pacote de idioma
 Name=Language Pack installation
 Name[cs]=Jazykový balíček instalace
 Name[de]=Sprachpaket installation

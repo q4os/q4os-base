@@ -28,18 +28,18 @@ echo "Kdeglobals_Language_Code: $KGLC"
 echo "Kdeglobals_Country_Code: $KGCC"
 
 if [ -n "$KGLC" ] ; then
-  /opt/trinity/bin/kwriteconfig --file "$TDEHOM_TRINTY/share/config/kdeglobals" --group "Locale" --key "Language" "$KGLC"
-  /opt/trinity/bin/kwriteconfig --file "$TDEHOM_PLASMA/share/config/kdeglobals" --group "Locale" --key "Language" "$KGLC"
+  kwrtcfgpm --file "$TDEHOM_TRINTY/share/config/kdeglobals" --group "Locale" --key "Language" "$KGLC"
+  kwrtcfgpm --file "$TDEHOM_PLASMA/share/config/kdeglobals" --group "Locale" --key "Language" "$KGLC"
 else
-  /opt/trinity/bin/kwriteconfig --file "$TDEHOM_TRINTY/share/config/kdeglobals" --group "Locale" --key "Language" "en_US"
-  /opt/trinity/bin/kwriteconfig --file "$TDEHOM_PLASMA/share/config/kdeglobals" --group "Locale" --key "Language" "en_US"
+  kwrtcfgpm --file "$TDEHOM_TRINTY/share/config/kdeglobals" --group "Locale" --key "Language" "en_US"
+  kwrtcfgpm --file "$TDEHOM_PLASMA/share/config/kdeglobals" --group "Locale" --key "Language" "en_US"
 fi
 if [ -n "$KGCC" ] ; then
-  /opt/trinity/bin/kwriteconfig --file "$TDEHOM_TRINTY/share/config/kdeglobals" --group "Locale" --key "Country" "$KGCC"
-  /opt/trinity/bin/kwriteconfig --file "$TDEHOM_PLASMA/share/config/kdeglobals" --group "Locale" --key "Country" "$KGCC"
+  kwrtcfgpm --file "$TDEHOM_TRINTY/share/config/kdeglobals" --group "Locale" --key "Country" "$KGCC"
+  kwrtcfgpm --file "$TDEHOM_PLASMA/share/config/kdeglobals" --group "Locale" --key "Country" "$KGCC"
 else
-  /opt/trinity/bin/kwriteconfig --file "$TDEHOM_TRINTY/share/config/kdeglobals" --group "Locale" --key "Country" "us"
-  /opt/trinity/bin/kwriteconfig --file "$TDEHOM_PLASMA/share/config/kdeglobals" --group "Locale" --key "Country" "us"
+  kwrtcfgpm --file "$TDEHOM_TRINTY/share/config/kdeglobals" --group "Locale" --key "Country" "us"
+  kwrtcfgpm --file "$TDEHOM_PLASMA/share/config/kdeglobals" --group "Locale" --key "Country" "us"
 fi
 
-/opt/trinity/bin/kwriteconfig --file "$HOME/.local/share/q4os/.langckeyc.stp" --group "install" --key "timestamp" "$( date +%Y-%m-%d-%H-%M-%S )"
+kwrtcfgpm --file "$HOME/.local/share/q4os/.langckeyc.stp" --group "install" --key "timestamp" "$( date +%Y-%m-%d-%H-%M-%S )"

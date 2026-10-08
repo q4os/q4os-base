@@ -2,7 +2,7 @@ Source: q4os-base
 Section: none
 Priority: optional
 Maintainer: Q4OS Team <devteam@q4os.org>
-Build-Depends: debhelper-compat (= 13), debhelper (>= 9~), rsync
+Build-Depends: debhelper-compat (= 13), debhelper (>= 9~), rsync, gettext
 Standards-Version: 3.8.4
 
 Package: q4os-base
@@ -12,6 +12,6 @@ Depends:
 Recommends:
 Conflicts:
 Provides: q4os-base
-Replaces:
-Breaks:
+Replaces: q4os-i18n (<< 3.17.6-a1)
+Breaks: q4os-i18n (<< 3.17.6-a1)
 Description: Q4OS base tools and files

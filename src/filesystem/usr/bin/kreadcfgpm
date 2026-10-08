@@ -12,6 +12,9 @@ elif command -v kreadconfig6 >/dev/null 2>&1; then
     exec kreadconfig6 "$@"
 elif command -v kreadconfig >/dev/null 2>&1; then
     exec kreadconfig "$@"
+elif [ -x /opt/trinity/bin/kreadconfig ]; then
+    # /opt/trinity/bin is not in PATH for root and boot time scripts
+    exec /opt/trinity/bin/kreadconfig "$@"
 else
     echo "kreadconfig not found" >&2
     exit 1

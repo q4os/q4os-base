@@ -67,6 +67,15 @@ else
 fi
 msgcat -u --no-location -s --no-wrap -o $OUTDIR2/q4os-base.pot $OUTDIR2/.q4os-base1.pot $OUTDIR2/.q4os-base2.pot
 
+# --- compile the q4os-base catalog ---
+#the translated sources are in po/, mirrored in q4os-i18n for the volunteers; update po/q4os-base.pot
+#from the template generated above when the strings change
+for LDIR in $SETUPDIR/po/*/ ; do
+  LANG_CODE="$(basename $LDIR)"
+  mkdir -p $OUTDIR1/usr/share/locale/$LANG_CODE/LC_MESSAGES/
+  msgfmt $LDIR/q4os-base.po -o $OUTDIR1/usr/share/locale/$LANG_CODE/LC_MESSAGES/q4os-base.mo
+done
+
 # --- remove unneeded files ---
 rm $OUTDIR1/usr/share/applications/todo.txt
 rm $OUTDIR1/usr/share/apps/q4os_system/bin/.ctrl_wintiling_tde.sh.prepared

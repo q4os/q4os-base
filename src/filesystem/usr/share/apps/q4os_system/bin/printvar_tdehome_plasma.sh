@@ -17,7 +17,7 @@ if [ ! -d "$HOMEDIR1" ] ; then
   exit 10
 fi
 
-TDEHOME1="$( /opt/trinity/bin/kreadconfig --file "/etc/q4os/q4base.conf" --group "General" --key "tdehome_plasma" )"
+TDEHOME1="$( kreadcfgpm --file "/etc/q4os/q4base.conf" --group "General" --key "tdehome_plasma" )"
 if [ -z "$TDEHOME1" ] ; then
   TDEHOME1=".trinitykde"
 fi

@@ -45,12 +45,12 @@ if [ "$1" = "6" ] ; then
 fi
 
 if [ "$1" = "7" ] ; then
-  kwriteconfig --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "needtoapply" "0"
+  kwrtcfgpm --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "needtoapply" "0"
   if [ -n "$3" ] ; then
-    kwriteconfig --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "appliedprofile" "$3"
+    kwrtcfgpm --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "appliedprofile" "$3"
   fi
-  if [ -z "$( kreadconfig --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "defaultdesktopenv" )" ] && [ -n "$2" ] ; then
-    kwriteconfig --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "defaultdesktopenv" "$2"
+  if [ -z "$( kreadcfgpm --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "defaultdesktopenv" )" ] && [ -n "$2" ] ; then
+    kwrtcfgpm --file "/etc/q4os/q4base.conf" --group "DesktopProfiler" --key "defaultdesktopenv" "$2"
   fi
   chmod a+r /etc/q4os/q4base.conf
 fi

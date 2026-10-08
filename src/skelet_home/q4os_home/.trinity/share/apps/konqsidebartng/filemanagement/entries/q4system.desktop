@@ -1,5 +1,15 @@
 [Desktop Entry]
 Icon=computer
+Name[de]=System
+Name[es]=Sistema
+Name[es_AR]=Sistema
+Name[hu]=Rendszer
+Name[it]=Sistema
+Name[nl]=Systeem
+Name[pl]=System
+Name[pt]=Sistema
+Name[pt_BR]=Sistema
+Name[ru]=Система
 Name=System
 Open=false
 Type=Link

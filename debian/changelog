@@ -1,3 +1,43 @@
+q4os-base (4.31.15-a1) UNRELEASED; urgency=medium
+
+  * Scripts no longer need Trinity's kreadconfig/kwriteconfig for files that are not Trinity's own
+    (/etc/q4os/q4base.conf, the .stp stamps, sddm and Plasma configuration, .directory, hplip.conf):
+    66 calls go through kreadcfgpm/kwrtcfgpm, which use kreadconfig5/6 and kwriteconfig5/6 where
+    present.
+  * Trinity's own settings in the user's home and the unowned files under /etc/trinity (language,
+    cursor theme, NumLock, default browser, DPI, keyboard layout) are written through the same
+    wrappers, by absolute path, so they are still written where Trinity is not installed (yet).
+    Only the files of the tdm package (tdmrc) and Trinity session code keep the Trinity tool.
+  * kreadcfgpm/kwrtcfgpm: fall back to /opt/trinity/bin explicitly, it is not in PATH for root and
+    boot time scripts.
+  * /etc/default/keyboard is read with sed (kblayout_mod.sh, 85frstrun.sh): kreadconfig5/6 refuse
+    the empty group name the Trinity tool accepted.
+  * 85frstrun.sh: the Trinity services (dcopserver, tdebuildsycoca, artsshell) are started and
+    stopped only where they are installed; without Trinity's kdialog the dialogs go through the
+    kdialog wrapper of q4os-api.
+  * 85frstrun.sh, X11 first login: where Trinity's twin is not installed, Plasma's kwin_x11 is the
+    window manager for the script's dialogs (found in the VM test: the script waited 10 s for twin).
+  * postinst, on upgrade: where the Trinity desktop is not installed, the Trinity packages q4os-desktop
+    used to depend on are marked as manually installed, so neither "apt autoremove" nor
+    unattended-upgrades takes them away once q4os-desktop stops depending on them.
+  * The package compiles and installs its own gettext catalog, q4os-base.mo, from src/po - the
+    same move the Q4OS tools made; q4os-i18n no longer ships it (Breaks/Replaces q4os-i18n
+    << 3.17.6-a1) and only mirrors the .po sources for the volunteers. 18 languages: the 16 that
+    were complete (id, tr, uk and zh_CN were translated but never shipped) plus Czech and Hebrew,
+    new and machine written. The seven strings of the drivers notice are translated in all of them;
+    the strings no script uses any more are dropped from the template. The de_DE, de_AT, de_CH and
+    pt_PT copies are not shipped: gettext falls back to de and pt by itself.
+  * Menu and desktop entries (user management module, the two Konqueror service menus, the
+    language pack installer, the entries of the home skeleton) carry the translations of the
+    q4os-shortcuts catalog of q4os-i18n in ten languages, written into the files by its
+    a_q4os/apply_shortcuts.sh; translations already in a file are kept. New homes only for the
+    skeleton entries.
+  * First login of a user added later to a Trinity system: offer the Trinity language pack
+    (with fonts-noto-cjk and the input method for CJK languages) when the system has none
+    for the user's language yet; until now only the first user after the install got it.
+
+ -- Q4OS Team <q4os@q4os.org>  Mon, 05 Oct 2026 15:00:00 +0200
+
 q4os-base (4.31.14-a1) UNRELEASED; urgency=medium
 
   * 85frstrun.sh: the first login WiFi step runs wifi-connect once and goes by its exit code.

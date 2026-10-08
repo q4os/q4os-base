@@ -122,8 +122,8 @@ if [ "$ASROOT" != "1" ] ; then
       XDG_CONFIG_HOME="$XDGCFGHOME_3" xdg-settings set default-url-scheme-handler https "kfmclient_html.desktop"
     fi
   fi
-  XDG_CONFIG_HOME="$XDGCFGHOME_2" /opt/trinity/bin/kwriteconfig --file "$HOME/.trinity/share/config/kdeglobals" --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
-  XDG_CONFIG_HOME="$XDGCFGHOME_3" /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOME_3/kdeglobals" --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
+  XDG_CONFIG_HOME="$XDGCFGHOME_2" kwrtcfgpm --file "$HOME/.trinity/share/config/kdeglobals" --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
+  XDG_CONFIG_HOME="$XDGCFGHOME_3" kwrtcfgpm --file "$XDGCFGHOME_3/kdeglobals" --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
   exit
 fi
 
@@ -137,8 +137,8 @@ echo "Setting [$BRW_NAME] as a global web browser ..."
 if [ "$BRW_EXECUT" != "/bin/true" ] ; then
   update-alternatives --set x-www-browser "$BRW_EXECUT"
 fi
-/opt/trinity/bin/kwriteconfig --file '/etc/trinity/kdeglobals' --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
-/opt/trinity/bin/kwriteconfig --file '/etc/xdm/kdeglobals' --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
+kwrtcfgpm --file '/etc/trinity/kdeglobals' --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
+kwrtcfgpm --file '/etc/xdm/kdeglobals' --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
 chmod a+r /etc/trinity/kdeglobals
 chmod a+r /etc/xdm/kdeglobals
 
@@ -164,8 +164,8 @@ if [ -n "$FIRST_USER" ] ; then
       sudo -n -u "$FIRST_USER" XDG_CONFIG_HOME="$XDGCFGHOME_FU_3" xdg-settings set default-url-scheme-handler https "kfmclient_html.desktop"
     fi
   fi
-  sudo -n -u "$FIRST_USER" XDG_CONFIG_HOME="$XDGCFGHOME_FU_2" /opt/trinity/bin/kwriteconfig --file "/home/$FIRST_USER/.trinity/share/config/kdeglobals" --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
-  sudo -n -u "$FIRST_USER" XDG_CONFIG_HOME="$XDGCFGHOME_FU_3" /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOME_FU_3/kdeglobals" --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
+  sudo -n -u "$FIRST_USER" XDG_CONFIG_HOME="$XDGCFGHOME_FU_2" kwrtcfgpm --file "/home/$FIRST_USER/.trinity/share/config/kdeglobals" --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
+  sudo -n -u "$FIRST_USER" XDG_CONFIG_HOME="$XDGCFGHOME_FU_3" kwrtcfgpm --file "$XDGCFGHOME_FU_3/kdeglobals" --group 'General' --key 'BrowserApplication' "$BRW_SHRTCT"
   # chown "$FIRST_USER:$FIRST_USER" "/home/$FIRST_USER/.trinity/share/config/kdeglobals"
   # chown "$FIRST_USER:$FIRST_USER" "$XDGCFGHOME_FU_3/kdeglobals"
 fi

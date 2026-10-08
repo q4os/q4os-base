@@ -62,19 +62,19 @@ if [ "$QAPTDISTR1" = "bullseye" ] || [ "$QAPTDISTR1" = "jammy" ] ; then
 fi
 
 echo "Writing Plasma settings ..."
-/opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/kwalletrc" --group "Wallet" --key "Enabled" "false" #don't ask for password manager for chrome/chromium
+kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kwalletrc" --group "Wallet" --key "Enabled" "false" #don't ask for password manager for chrome/chromium
 chmod a+r "$XDGCFGHOMEDIR_PLASMA/kwalletrc"
 if [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "bullseye" ] || [ "$QAPTDISTR1" = "noble" ] || [ "$QAPTDISTR1" = "jammy" ] || [ "$QAPTDISTR1" = "raspbian12" ] ; then
-  /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorSize" "0"
-  /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorTheme" "breeze_cursors"
+  kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorSize" "0"
+  kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorTheme" "breeze_cursors"
   # /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorTheme" "Breeze_Light"
   chmod a+r "$XDGCFGHOMEDIR_PLASMA/kcminputrc"
-  /opt/trinity/bin/kwriteconfig --file "$HOME/.trinitykde/share/config/kcminputrc" --group "Mouse" --key "cursorTheme" "breeze_cursors"
+  kwrtcfgpm --file "$HOME/.trinitykde/share/config/kcminputrc" --group "Mouse" --key "cursorTheme" "breeze_cursors"
   chmod a+r "$HOME/.trinitykde/share/config/kcminputrc"
-  /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/ksmserverrc" --group "General" --key "loginMode" "default"
+  kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/ksmserverrc" --group "General" --key "loginMode" "default"
   chmod a+r "$XDGCFGHOMEDIR_PLASMA/ksmserverrc"
 else
-  /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorTheme" "Breeze_Light"
+  kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorTheme" "Breeze_Light"
   chmod a+r "$XDGCFGHOMEDIR_PLASMA/kcminputrc"
   # /opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/ksmserverrc" --group "General" --key "loginMode" "emptySession"
   # chmod a+r "$XDGCFGHOMEDIR_PLASMA/ksmserverrc"
@@ -82,7 +82,7 @@ fi
 
 if false ; then
   #dpi setting below doesn't work for some reason, investigate
-  DPICFG1="$( kreadconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "screen_ffdpi_plasma" )"
+  DPICFG1="$( kreadcfgpm --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "screen_ffdpi_plasma" )"
   echo "Get DPI from preconfig: $DPICFG1"
   if [ -n "$DPICFG1" ] && [ -x "/usr/bin/kwrtcfgpm" ] ; then
     echo "Writing screen DPI setting: $DPICFG1"
@@ -97,12 +97,12 @@ if q4hw-info --numpad ; then
 else
   NUMLOCK1="1" #off
 fi
-/opt/trinity/bin/kwriteconfig --file "kcminputrc" --group "Keyboard" --key "NumLock" "$NUMLOCK1"
-/opt/trinity/bin/kwriteconfig --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Keyboard" --key "NumLock" "$NUMLOCK1"
+kwrtcfgpm --file "${TDEHOME:-$HOME/.trinity}/share/config/kcminputrc" --group "Keyboard" --key "NumLock" "$NUMLOCK1"
+kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Keyboard" --key "NumLock" "$NUMLOCK1"
 chmod a+r "$XDGCFGHOMEDIR_PLASMA/kcminputrc"
 
 #don't start device applet for tde-14.1.1
-/opt/trinity/bin/kwriteconfig --file "tdehwdevicetrayrc" --group "General" --key "Autostart" "false"
+kwrtcfgpm --file "${TDEHOME:-$HOME/.trinity}/share/config/tdehwdevicetrayrc" --group "General" --key "Autostart" "false"
 
 # if [ "$QAPTDISTR1" != "bullseye" ] && [ "$QAPTDISTR1" != "jammy" ] ; then
 #   #workaround a nasty bug for tde-14.1.1, see https://sourceforge.net/p/q4os/tickets/202/ - TDEPowersave loads CPU at 99%
@@ -116,14 +116,14 @@ echo "Setting the default web browser ..."
 dash /usr/share/apps/q4os_system/bin/set_default_browser.sh &
 
 if [ "$ACTIVE_USER" = "$FIRST_USER" ] || [ -f "/etc/sudoers.d/90_sudo_tmp01" ] ; then
-  SYSTEM_INSTALL="$( kreadconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "install_type" )"
+  SYSTEM_INSTALL="$( kreadcfgpm --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "install_type" )"
 fi
 echo "System install: $SYSTEM_INSTALL"
 
 if [ -n "$SYSTEM_INSTALL" ] ; then
   if ! q4hw-info --soundcard ; then
     echo "sound card not detected, writing configuration .."
-    sudo -n kwriteconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "soundcard" "0"
+    sudo -n kwrtcfgpm --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "soundcard" "0"
     sudo -n chmod a+r /etc/q4os/q4base.conf
   fi
 fi
@@ -137,8 +137,8 @@ for SCRPT1 in /usr/share/apps/q4os_system/bhooks/bhook4_*.sh ; do
 done
 echo "Finished hooks ..."
 
-/opt/trinity/bin/kwriteconfig --file "$HOME/.local/share/q4os/.extrdq4.stp" --group "install" --key "timestamp_completed" "$( date +%Y-%m-%d-%H-%M-%S )"
-/opt/trinity/bin/kwriteconfig --file "$HOME/.local/share/q4os/.extrdq4.stp" --group "install" --key "desc" "do_not_delete_this_file"
+kwrtcfgpm --file "$HOME/.local/share/q4os/.extrdq4.stp" --group "install" --key "timestamp_completed" "$( date +%Y-%m-%d-%H-%M-%S )"
+kwrtcfgpm --file "$HOME/.local/share/q4os/.extrdq4.stp" --group "install" --key "desc" "do_not_delete_this_file"
 # systemctl --user disable populate_homedir.service #doesn't work for some reason
 echo "\n>> Populate homedir finished: $( date +%Y-%m-%d-%H-%M-%S ) <<"
 

@@ -27,15 +27,15 @@ else
 fi
 
 if [ "$ASROOT" = "1" ] ; then
-  /opt/trinity/bin/kwriteconfig --file "/etc/trinity/kcmfonts" --group "General" --key "forceFontDPIEnable" "$FFDPI"
-  /opt/trinity/bin/kwriteconfig --file "/etc/trinity/kcmfonts" --group "General" --key "forceFontDPI" "$DPI_VALUE"
+  kwrtcfgpm --file "/etc/trinity/kcmfonts" --group "General" --key "forceFontDPIEnable" "$FFDPI"
+  kwrtcfgpm --file "/etc/trinity/kcmfonts" --group "General" --key "forceFontDPI" "$DPI_VALUE"
   chmod a+r /etc/trinity/kcmfonts
-  /opt/trinity/bin/kwriteconfig --file "/etc/trinity/q4osrc" --group "Screen" --key "force_screen_dpi" "$DPI_VALUE"
+  kwrtcfgpm --file "/etc/trinity/q4osrc" --group "Screen" --key "force_screen_dpi" "$DPI_VALUE"
   chmod a+r /etc/trinity/q4osrc
 else
-  /opt/trinity/bin/kwriteconfig --file "kcmfonts" --group "General" --key "forceFontDPIEnable" "$FFDPI"
-  /opt/trinity/bin/kwriteconfig --file "kcmfonts" --group "General" --key "forceFontDPI" "$DPI_VALUE"
-  /opt/trinity/bin/kwriteconfig --file "q4osrc" --group "Screen" --key "force_screen_dpi" "$DPI_VALUE"
+  kwrtcfgpm --file "${TDEHOME:-$HOME/.trinity}/share/config/kcmfonts" --group "General" --key "forceFontDPIEnable" "$FFDPI"
+  kwrtcfgpm --file "${TDEHOME:-$HOME/.trinity}/share/config/kcmfonts" --group "General" --key "forceFontDPI" "$DPI_VALUE"
+  kwrtcfgpm --file "${TDEHOME:-$HOME/.trinity}/share/config/q4osrc" --group "Screen" --key "force_screen_dpi" "$DPI_VALUE"
   if [ -z "$DPI_VALUE" ] ; then
     #remove entries from user's config to enable kreadconfig to read the global one
     sed -i '/^forceFontDPIEnable=/d' "$HOME/.trinity/share/config/kcmfonts"

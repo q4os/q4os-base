@@ -44,7 +44,7 @@ case "$1" in
         fi
 
         QBVER_FORMER="$2"
-        QBVER_FIRST="$( /opt/trinity/bin/kreadconfig --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "q4osbase_version" )" && true
+        QBVER_FIRST="$( kreadcfgpm --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "q4osbase_version" )" && true
         if [ -z "$QBVER_FIRST" ] ; then
          QBVER_FIRST="0"
         fi
@@ -85,7 +85,7 @@ case "$1" in
 
   if is_greater_then_former "4.2.2-a1" ; then
     echo "Fixing hplip configuration ..."
-    /opt/trinity/bin/kwriteconfig --file "/home/$FUSRNAME/.hplip/hplip.conf" --group "authentication" --key "su_sudo" "sudo"
+    kwrtcfgpm --file "/home/$FUSRNAME/.hplip/hplip.conf" --group "authentication" --key "su_sudo" "sudo"
     chmod a+r /home/$FUSRNAME/.hplip/hplip.conf
     chown -R $FUSRNAME:$FUSRNAME /home/$FUSRNAME/.hplip/
   fi
@@ -245,9 +245,9 @@ case "$1" in
   fi
 
   if is_greater_then_former "4.12.1-a1" ; then
-    /opt/trinity/bin/kwriteconfig --file "/etc/q4os/q4base.conf" --group "General" --key "xdgcfghome_plasma" ".configkde"
-    /opt/trinity/bin/kwriteconfig --file "/etc/q4os/q4base.conf" --group "General" --key "xdgcfghome_trinity" ".configtde"
-    /opt/trinity/bin/kwriteconfig --file "/etc/q4os/q4base.conf" --group "General" --key "tdehome_plasma" ".configkde/trinity"
+    kwrtcfgpm --file "/etc/q4os/q4base.conf" --group "General" --key "xdgcfghome_plasma" ".configkde"
+    kwrtcfgpm --file "/etc/q4os/q4base.conf" --group "General" --key "xdgcfghome_trinity" ".configtde"
+    kwrtcfgpm --file "/etc/q4os/q4base.conf" --group "General" --key "tdehome_plasma" ".configkde/trinity"
   fi
 
   if is_greater_then_former "4.13.1-a1" ; then
@@ -299,12 +299,12 @@ case "$1" in
     if [ "$QAPDISTR_SCR" = "noble" ] ; then
       echo "Amending Ubuntu defaults ..."
       KDESDDMCG1="/etc/sddm.conf.d/kde_settings.conf"
-      if [ -z "$( /opt/trinity/bin/kreadconfig --file "$KDESDDMCG1" --group "Theme" --key "Current" )" ] ; then
+      if [ -z "$( kreadcfgpm --file "$KDESDDMCG1" --group "Theme" --key "Current" )" ] ; then
         mkdir -p /etc/sddm.conf.d/
-        /opt/trinity/bin/kwriteconfig --file "$KDESDDMCG1" --group "Theme" --key "Current" "breeze"
+        kwrtcfgpm --file "$KDESDDMCG1" --group "Theme" --key "Current" "breeze"
         chmod a+r $KDESDDMCG1
       fi
-      /opt/trinity/bin/kwriteconfig --file "/etc/xdg/plasma-welcomerc" --group "General" --key "ShouldShow" "false" #don't run plasma-welcome wizzard
+      kwrtcfgpm --file "/etc/xdg/plasma-welcomerc" --group "General" --key "ShouldShow" "false" #don't run plasma-welcome wizzard
       chmod a+r /etc/xdg/plasma-welcomerc
     fi
   fi
@@ -386,6 +386,21 @@ case "$1" in
       fi
     done
     unset PKGA
+  fi
+
+  if is_greater_then_former "4.31.15-a1" ; then
+    #q4os-desktop does not depend on the Trinity programs any more. Where the Trinity desktop is not installed they
+    #would turn into automatically removable packages, and unattended-upgrades removes newly unused ones by itself.
+    #Keep them on systems that have them: mark them as manually installed, removing them is then the user's decision.
+    #"install ..." = selected for installation, also while it is only unpacked in the same apt run (an upgrade of
+    #the Trinity desktop together with this package), not just once it is configured
+    if ! dpkg-query -W -f='${Status}\n' q4os-desktop-trinity 2>/dev/null | grep -q "^install " ; then
+      for TPK1 in tdelibs14-trinity tdebase-trinity-bin tdesudo-trinity tde-style-q4oststyle02-trinity twin-trinity network-manager-tde ; do
+        if dpkg-query -W -f='${Status}\n' "$TPK1" 2>/dev/null | grep -q "^install " ; then
+          apt-mark manual "$TPK1"
+        fi
+      done
+    fi
   fi
 
   set -e

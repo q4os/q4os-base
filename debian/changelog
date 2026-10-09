@@ -1,3 +1,22 @@
+q4os-base (4.31.16-a1) UNRELEASED; urgency=medium
+
+  * Plasma: the start menu was empty after the first login on PCs that show the WiFi step (WiFi card,
+    no connection): the first-login script runs KDE 6 tools before startplasma, without
+    XDG_MENU_PREFIX, and they built the application database (ksycoca6) from a menu that does not
+    exist. 85x11-sessionq4 exports XDG_MENU_PREFIX=plasma- for Plasma, and 85frstrun.sh removes the
+    database built during the first login, so the session builds it again.
+  * Plasma: no XDG_CACHE_HOME redirect (~/.cachekde) any more, Plasma's default ~/.cache is used.
+  * Language selection on live media without Trinity: dowqi18.sh called /opt/trinity/bin/kdialog
+    directly, so the dialog never showed and the language fell back to American English. Without
+    Trinity it calls the KDE kdialog directly (the kdialog wrapper runs its arguments through a shell,
+    which fails on list entries like "Chinese_(Simplified)"), with the first entry - the language
+    geoip detected - preselected, as the Trinity dialog does.
+    .addlang_ai_02.sh: the "Generating system wide locales" progress dialog used Trinity's
+    kdialog and dcop only; without Trinity it uses a busy KDE 6 kdialog progress dialog (closed over
+    D-Bus) instead of failing silently.
+
+ -- Q4OS Team <q4os@q4os.org>  Fri, 09 Oct 2026 12:00:00 +0200
+
 q4os-base (4.31.15-a1) UNRELEASED; urgency=medium
 
   * Scripts no longer need Trinity's kreadconfig/kwriteconfig for files that are not Trinity's own

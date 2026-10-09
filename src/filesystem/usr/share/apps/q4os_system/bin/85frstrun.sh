@@ -44,6 +44,13 @@ deinit1 () {
     kwrtcfgpm --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnRight" --delete
   fi
 
+  if [ "$QDSK_SESSION" = "plasma" ] ; then
+    #the KDE application database built by the tools above, outside the Plasma session environment, may be
+    #wrong (an empty start menu); remove it, the Plasma session builds it again
+    echo "Removing the application database built during the first login ..."
+    rm -f "${XDG_CACHE_HOME:-$HOME/.cache}"/ksycoca6_*
+  fi
+
   echo "\n>> $SRCFNAME1 almost finished: $( date +%Y-%m-%d-%H-%M-%S ) <<"
 
   local ACTION1="$1"

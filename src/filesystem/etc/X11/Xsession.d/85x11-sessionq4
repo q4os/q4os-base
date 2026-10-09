@@ -10,7 +10,9 @@ if [ "$QDSK_SESSION" = "trinity" ] ; then
 fi
 if [ "$QDSK_SESSION" = "plasma" ] ; then
   export XDG_CONFIG_HOME="$(dash /usr/share/apps/q4os_system/bin/print_xdgcfghome_plasma.sh)"
-  export XDG_CACHE_HOME="$HOME/.cachekde"
+  #the first-login script below runs KDE 6 tools before startplasma, which sets this only later; without it
+  #they build the application database (ksycoca6) from a menu that does not exist - an empty start menu
+  export XDG_MENU_PREFIX="plasma-"
 fi
 
 if [ -f "$HOME/.local/share/q4os/.frstlogq4.stp" ] ; then

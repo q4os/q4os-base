@@ -11,6 +11,12 @@ export TEXTDOMAIN="q4os-base"
 dcop_close ()
 {
   local DCOPREF="$1"
+  [ -n "$DCOPREF" ] || return 0
+  if [ -z "${DCOPREF##org.kde.kdialog*}" ] ; then
+    #KDE 6 kdialog progress dialog (no Trinity): driven over D-Bus, there is no dcop
+    qdbus6 $DCOPREF close > /dev/null 2>&1
+    return 0
+  fi
   dcop $DCOPREF setProgress 100
   dcop $DCOPREF setLabel "$2"
   sleep 0.6
@@ -38,7 +44,13 @@ if [ "$?" != "0" ] ; then
   fi
   unset WKVAR01
 fi
-DCOPREF=$( /opt/trinity/bin/kdialog --icon "message" --title "Language" --caption "setup" --progressbar "$(eval_gettext "Generating system wide locales, please wait ...")" )
+DCOPREF=""
+if [ -x "/opt/trinity/bin/kdialog" ] ; then
+  DCOPREF=$( /opt/trinity/bin/kdialog --icon "message" --title "Language" --caption "setup" --progressbar "$(eval_gettext "Generating system wide locales, please wait ...")" )
+elif [ -x "/usr/bin/kdialog" ] && command -v qdbus6 > /dev/null 2>&1 ; then
+  #no Trinity: a busy progress dialog of the KDE 6 kdialog, closed by dcop_close over D-Bus
+  DCOPREF=$( /usr/bin/kdialog --title "Language" --progressbar "$(eval_gettext "Generating system wide locales, please wait ...")" 0 )
+fi
 echo "Selected language: $WKVAR01"
 LOCC="$( echo $WKVAR01 | awk -F';' '{ print $2 }' )"
 TDEC="$( echo $WKVAR01 | awk -F';' '{ print $3 }' )"
@@ -47,7 +59,9 @@ if [ -z "$LOCC" ] ; then
   TDEC=""
 fi
 echo "Locale selected: \"$LOCC\""
-( dcop $DCOPREF setProgress 1 ; sleep 0.6 ; dcop $DCOPREF setProgress 10 ) &
+if [ -x "/opt/trinity/bin/kdialog" ] ; then
+  ( dcop $DCOPREF setProgress 1 ; sleep 0.6 ; dcop $DCOPREF setProgress 10 ) &
+fi
 sudo -n dash /usr/share/apps/q4os_system/bin/generate_locale.sh "$LOCC" "--set"
 export LANG="$LOCC"
 echo "export LANG=$LANG" >> $HOME/.addlangenv.sh #to set $LANG at the first login

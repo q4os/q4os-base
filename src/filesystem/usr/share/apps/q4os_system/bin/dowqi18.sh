@@ -201,7 +201,14 @@ select_language_gui ()
     sed -i "/$PRESELECT1/d" $WRKFL1
     sed -i "1s/^/$PRESELECT1\n/" $WRKFL1
   fi
-  RDVAL="$( /opt/trinity/bin/kdialog --icon "message" --title "Language" --caption "select" --combobox "$(eval_gettext "Select your language:")" $( cat $WRKFL1 | awk -F';' '{ print $1 }' ) )"
+  #Trinity kdialog where installed, else the session's KDE kdialog called directly: the kdialog wrapper passes
+  #the list through a shell, which breaks on names like "Chinese_(Simplified)"
+  if [ -x "/opt/trinity/bin/kdialog" ] ; then
+    RDVAL="$( /opt/trinity/bin/kdialog --icon "message" --title "Language" --caption "select" --combobox "$(eval_gettext "Select your language:")" $( cat $WRKFL1 | awk -F';' '{ print $1 }' ) )"
+  else
+    #the KDE 6 kdialog preselects nothing by itself: preselect the first entry, as the Trinity one does
+    RDVAL="$( /usr/bin/kdialog --icon "message" --title "Language" --default "$( head -n1 $WRKFL1 | awk -F';' '{ print $1 }' )" --combobox "$(eval_gettext "Select your language:")" $( cat $WRKFL1 | awk -F';' '{ print $1 }' ) )"
+  fi
   if [ "$?" != "0" ] ; then
     #canceled
     rm -f $WRKFL1

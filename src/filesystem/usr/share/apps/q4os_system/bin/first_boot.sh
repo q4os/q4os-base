@@ -18,6 +18,10 @@ if [ "$SYSTEM_INSTALL" = "livemedia" ] ; then
     kwrtcfgpm --file "/etc/q4os/q4base.conf" --group "OnInstall" --key "install_type" "unknown"
   fi
 fi
+if [ "$SYSTEM_INSTALL" != "livemedia" ] && [ -f "/etc/q4oslivemedia" ] ; then
+  echo "Removing the live media flag left over by an unfinished installation ..."
+  rm -f /etc/q4oslivemedia
+fi
 echo "System install: $SYSTEM_INSTALL"
 
 CMDLINE1="$( cat /proc/cmdline )"

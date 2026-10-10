@@ -1,3 +1,12 @@
+q4os-base (4.31.18-a1) UNRELEASED; urgency=medium
+
+  * First boot: an installed system no longer keeps the live media flag
+    (/etc/q4oslivemedia) when the live installer did not finish its last step;
+    with it the Desktop Profiler refused to apply profiles as on live media
+    (forum pid 35699). The first boot removes it on any non-live system.
+
+ -- Q4OS Team <q4os@q4os.org>  Sat, 10 Oct 2026 18:03:57 +0200
+
 q4os-base (4.31.17-a1) UNRELEASED; urgency=medium
 
   * First login on Plasma (X11 and Wayland): the dialogs of the first-login steps

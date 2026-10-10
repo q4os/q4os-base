@@ -2,11 +2,29 @@
 
 deactivate_this () {
   echo "Disabling this script to run for good ..."
-  sudo -n rm -f /usr/share/wayland-sessions/plasma.desktop
-  sudo -n dpkg-divert --rename --remove /usr/share/wayland-sessions/plasma.desktop
+  #only while the Q4OS first-login entry still diverts the Wayland session: this runs again at every later login,
+  #and with passwordless sudo (live media) it would delete the restored stock session file
+  if [ -n "$( dpkg-divert --list /usr/share/wayland-sessions/plasma.desktop 2>/dev/null )" ] ; then
+    sudo -n rm -f /usr/share/wayland-sessions/plasma.desktop
+    sudo -n dpkg-divert --rename --remove /usr/share/wayland-sessions/plasma.desktop
+  fi
   sudo -n rm -f /etc/sudoers.d/90_sudo_tmp01 #remove temporary passwordless config
   kwrtcfgpm --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "timestamp" "$( date +%Y-%m-%d-%H-%M-%S )"
   kwrtcfgpm --file "$HOME/.local/share/q4os/.frstlogq4.stp" --group "install" --key "desc" "do_not_delete_this_file"
+}
+
+#window buttons and title bar actions of KWin while the dialogs of this script run: no minimize - with no panel
+#yet, a minimized dialog cannot be brought back and the first login is lost; "--delete" restores the defaults
+kwin_frstcfg () {
+  for XKEY1 in "org.kde.kdecoration2:ButtonsOnLeft:" "org.kde.kdecoration2:ButtonsOnRight:AX" \
+               "MouseBindings:CommandActiveTitlebar3:Nothing" "MouseBindings:CommandInactiveTitlebar3:Nothing" ; do
+    XGRP1="${XKEY1%%:*}" ; XKEY2="${XKEY1#*:}" ; XVAL1="${XKEY2#*:}" ; XKEY2="${XKEY2%%:*}"
+    if [ "$1" = "--delete" ] ; then
+      kwrtcfgpm --file "kwinrc" --group "$XGRP1" --key "$XKEY2" --delete
+    else
+      kwrtcfgpm --file "kwinrc" --group "$XGRP1" --key "$XKEY2" "$XVAL1"
+    fi
+  done
 }
 
 deinit1 () {
@@ -38,10 +56,9 @@ deinit1 () {
   unset TEXTDOMAIN
   # unset XDG_CONFIG_HOME
 
-  if [ -n "$WAYLAND_DISPLAY" ] ; then
+  if [ "$KWIN_FRSTCFG" = "1" ] ; then
     echo "Reverting back window decorations ..."
-    kwrtcfgpm --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnLeft" --delete
-    kwrtcfgpm --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnRight" --delete
+    kwin_frstcfg --delete
   fi
 
   if [ "$QDSK_SESSION" = "plasma" ] ; then
@@ -232,8 +249,7 @@ if [ -n "$THEME1" ] ; then
 fi
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f "/usr/bin/kcmshell6" ] && [ -f "/usr/bin/kwin_wayland" ] ; then
-  kwrtcfgpm --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnLeft" ""
-  kwrtcfgpm --file "kwinrc" --group "org.kde.kdecoration2" --key "ButtonsOnRight" ""
+  kwin_frstcfg ; KWIN_FRSTCFG="1"
   echo "launching kwin.."
   kwin_wayland_wrapper --xwayland 2>/dev/null 1>/dev/null &
   CTR1="150" ; while [ "$CTR1" -gt "0" ] && ( ! qdbus6 org.kde.KWin 2>/dev/null 1>/dev/null ) ; do echo "wait for kwin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.5
@@ -250,6 +266,7 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ] && [ "$QDSK_SESSION" = "plasma" ] && [ -f
   export ROOTXAUTH1="/tmp/.wkrootxauth"
 elif [ ! -x "$TDEDIR/bin/twin" ] && [ -x "/usr/bin/kwin_x11" ] ; then
   #X11 session where Trinity is not installed: Plasma's own window manager serves the dialogs of this script
+  kwin_frstcfg ; KWIN_FRSTCFG="1"
   echo "launching kwin_x11.."
   kwin_x11 --replace 2>/dev/null 1>/dev/null &
   CTR1="100" ; while [ "$CTR1" -gt "0" ] && ( ! wmctrl -m 2>/dev/null 1>/dev/null ) ; do echo "wait for kwin ..$CTR1.." ; sleep 0.1 ; CTR1="$((CTR1 - 1))" ; done ; sleep 0.1

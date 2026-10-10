@@ -1,3 +1,16 @@
+q4os-base (4.31.17-a1) UNRELEASED; urgency=medium
+
+  * First login on Plasma (X11 and Wayland): the dialogs of the first-login steps
+    (WiFi, language, Desktop Profiler, ...) have no minimize button and no
+    title bar menu any more - with no panel yet, a minimized dialog could not be
+    brought back and the first login was lost. The KWin defaults are restored
+    when the steps end.
+  * First login: a later login no longer deletes the restored Plasma Wayland
+    session file where the user has passwordless sudo (live media) - the Q4OS
+    first-login entry is only removed while it still diverts the session.
+
+ -- Q4OS Team <q4os@q4os.org>  Fri, 09 Oct 2026 19:36:23 +0200
+
 q4os-base (4.31.16-a1) UNRELEASED; urgency=medium
 
   * Plasma: the start menu was empty after the first login on PCs that show the WiFi step (WiFi card,

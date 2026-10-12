@@ -6,12 +6,39 @@ if [ "$( id -u )" != "0" ] ; then
  exit 100
 fi
 
+#pam_kwallet can't open the kwallet at an autologin, keep it disabled for the autologin user, see populate_homedir.sh
+#$1 = user, $2 = on|off (autologin of the user)
+kwallet_autologin()
+{
+  KWHOME="$( getent passwd "$1" | cut -d: -f6 )"
+  if [ -z "$1" ] || [ ! -f "$KWHOME/.local/share/q4os/.extrdq4.stp" ] ; then
+    return #homedir not populated yet, populate_homedir.sh decides
+  fi
+  KWSTP="$KWHOME/.local/share/q4os/.kwallet_autologin.stp"
+  KWRC="$( dash /usr/share/apps/q4os_system/bin/print_xdgcfghome_plasma.sh "$1" )/kwalletrc"
+  if [ "$2" = "on" ] ; then
+    #a wallet with data stays, apps keep their stored keys and ask for the wallet password only
+    #kwl header: magic(12) version(2) cipher(1) hash(1) folder count(4), an empty wallet made at a password login has 0 folders
+    KWFOLDERS="$( od -An -tx1 -j16 -N4 "$KWHOME/.local/share/kwalletd/kdewallet.kwl" 2>/dev/null | tr -d ' \n' )"
+    if { [ -z "$KWFOLDERS" ] || [ "$KWFOLDERS" = "00000000" ] ; } && [ "$( kreadcfgpm --file "$KWRC" --group "Wallet" --key "Enabled" )" != "false" ] ; then
+      /usr/sbin/runuser -u "$1" -- kwrtcfgpm --file "$KWRC" --group "Wallet" --key "Enabled" "false"
+      /usr/sbin/runuser -u "$1" -- touch "$KWSTP"
+      echo "KWallet disabled for $1"
+    fi
+  elif [ -f "$KWSTP" ] && grep -qs "sddm" /etc/X11/default-display-manager ; then
+    /usr/sbin/runuser -u "$1" -- kwrtcfgpm --file "$KWRC" --group "Wallet" --key "Enabled" --delete
+    rm -f "$KWSTP"
+    echo "KWallet enabled again for $1"
+  fi
+}
+
 if [ "$1" = "--disable" ] ; then
   if [ -f "/etc/trinity/tdm/tdmrc" ] ; then
     /opt/trinity/bin/kwriteconfig --file "/etc/trinity/tdm/tdmrc" --group "X-:0-Core" --key "AutoLoginEnable" "false"
     chmod a+r /etc/trinity/tdm/tdmrc
   fi
   if [ -f "/usr/bin/sddm" ] ; then
+    kwallet_autologin "$( kreadcfgpm --file "/etc/sddm.conf" --group "Autologin" --key "User" )" off
     kwrtcfgpm --file "/etc/sddm.conf" --group "Autologin" --key "User" ""
     kwrtcfgpm --file "/etc/sddm.conf" --group "Autologin" --key "Session" ""
     chmod a+r /etc/sddm.conf
@@ -43,6 +70,11 @@ if [ "$1" = "--enable" ] ; then
     chmod a+r /etc/trinity/tdm/tdmrc
   fi
   if [ -f "/usr/bin/sddm" ] ; then
+    OLDUSER="$( kreadcfgpm --file "/etc/sddm.conf" --group "Autologin" --key "User" )"
+    if [ "$OLDUSER" != "$LGUSER" ] ; then
+      kwallet_autologin "$OLDUSER" off
+    fi
+    kwallet_autologin "$LGUSER" on
     kwrtcfgpm --file "/etc/sddm.conf" --group "Autologin" --key "User" "$LGUSER"
     kwrtcfgpm --file "/etc/sddm.conf" --group "Autologin" --key "Session" "$LGDSKTP"
     chmod a+r /etc/sddm.conf

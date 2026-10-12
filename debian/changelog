@@ -1,3 +1,16 @@
+q4os-base (4.31.19-a1) UNRELEASED; urgency=medium
+
+  * Plasma 6 editions (Q4OS 6, Q4OS 7, Quark 26.04): KWallet is enabled for new
+    users who log in with a password through SDDM - pam_kwallet opens the wallet
+    at login, so Chromium, KMail etc. store their secrets without any dialog
+    (SF #217). It stays disabled where the wallet can't be opened at login: an
+    autologin user or another display manager, as the new wallet dialog
+    (Blowfish/GPG choice) is confusing. ctrl-autologin disables an empty wallet
+    when autologin is turned on and enables it again when turned off; a wallet
+    holding data is kept. Plasma 5 editions and existing users are unchanged.
+
+ -- Q4OS Team <q4os@q4os.org>  Mon, 12 Oct 2026 11:26:32 +0200
+
 q4os-base (4.31.18-a1) UNRELEASED; urgency=medium
 
   * First boot: an installed system no longer keeps the live media flag

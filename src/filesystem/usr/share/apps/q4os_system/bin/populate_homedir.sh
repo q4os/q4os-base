@@ -62,8 +62,16 @@ if [ "$QAPTDISTR1" = "bullseye" ] || [ "$QAPTDISTR1" = "jammy" ] ; then
 fi
 
 echo "Writing Plasma settings ..."
-kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kwalletrc" --group "Wallet" --key "Enabled" "false" #don't ask for password manager for chrome/chromium
-chmod a+r "$XDGCFGHOMEDIR_PLASMA/kwalletrc"
+if [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "bullseye" ] || [ "$QAPTDISTR1" = "noble" ] || [ "$QAPTDISTR1" = "jammy" ] || [ "$QAPTDISTR1" = "raspbian12" ] ; then
+  kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kwalletrc" --group "Wallet" --key "Enabled" "false" #don't ask for password manager for chrome/chromium
+  chmod a+r "$XDGCFGHOMEDIR_PLASMA/kwalletrc"
+elif ! grep -qs "sddm" /etc/X11/default-display-manager || grep -qsx "User=$ACTIVE_USER" /etc/sddm.conf /etc/sddm.conf.d/*.conf ; then
+  #kwallet stays enabled only where pam_kwallet opens it at login (sddm with a password), otherwise apps pop up the confusing new wallet dialog
+  echo "Disabling kwallet, not opened at login ..."
+  kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kwalletrc" --group "Wallet" --key "Enabled" "false"
+  chmod a+r "$XDGCFGHOMEDIR_PLASMA/kwalletrc"
+  touch "$HOME/.local/share/q4os/.kwallet_autologin.stp" #disabled by us, ctrl-autologin may enable it again
+fi
 if [ "$QAPTDISTR1" = "bookworm" ] || [ "$QAPTDISTR1" = "bullseye" ] || [ "$QAPTDISTR1" = "noble" ] || [ "$QAPTDISTR1" = "jammy" ] || [ "$QAPTDISTR1" = "raspbian12" ] ; then
   kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorSize" "0"
   kwrtcfgpm --file "$XDGCFGHOMEDIR_PLASMA/kcminputrc" --group "Mouse" --key "cursorTheme" "breeze_cursors"

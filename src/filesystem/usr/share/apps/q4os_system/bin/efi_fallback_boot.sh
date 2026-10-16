@@ -9,6 +9,10 @@
 #mmx64.efi), add the grub.cfg stub that option leaves out, and set grub2/force_efi_extra_removable so grub and shim
 #upgrades keep the fallback current (a stale signed grub there could later be revoked through SBAT).
 #Takes over only a fallback that already holds a grub, never a grub.cfg written by another system. Idempotent.
+#  sh efi_fallback_boot.sh [--installer]
+#--installer (the live installer's hook3 only): the installer has just put its own grub into EFI/BOOT, so a grub.cfg
+#left there by an earlier system on the same ESP (e.g. a previous install, now formatted) is stale and is replaced.
+#Without it (upgrade) a differing grub.cfg may belong to another installed system and is left alone.
 
 ESP1="/boot/efi/EFI"
 FB1="$ESP1/BOOT" #FAT: matches EFI/boot as well
@@ -27,7 +31,7 @@ for DIR1 in "$ESP1"/* ; do
 done
 [ -n "$VDIR1" ] || exit 0 #no stub: an unsigned grub, which carries its own prefix and boots from the fallback as is
 
-if [ -f "$FB1/grub.cfg" ] && ! cmp -s "$FB1/grub.cfg" "$VDIR1/grub.cfg" ; then
+if [ "$1" != "--installer" ] && [ -f "$FB1/grub.cfg" ] && ! cmp -s "$FB1/grub.cfg" "$VDIR1/grub.cfg" ; then
   echo "EFI fallback: $FB1/grub.cfg belongs to another system, left as is."
   exit 0
 fi

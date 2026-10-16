@@ -1,3 +1,17 @@
+q4os-base (4.31.20-a1) UNRELEASED; urgency=medium
+
+  * UEFI: a computer that loses its firmware boot entries (flat CMOS battery,
+    BIOS reset, firmware update) boots again. The firmware then starts the
+    fallback EFI/BOOT/BOOTX64.EFI, where the live installer left a lone copy of
+    the signed grub: it stopped at a grub prompt (no grub.cfg beside it) and
+    under Secure Boot was refused. New efi_fallback_boot.sh lays the fallback
+    out as shim + grub + mmx64 + the grub.cfg stub and sets
+    grub2/force_efi_extra_removable, so grub upgrades keep it current. Run on
+    upgrade; the live installer calls it too. Only a fallback holding a grub
+    is taken over, never another system's grub.cfg.
+
+ -- Q4OS Team <q4os@q4os.org>  Fri, 16 Oct 2026 08:53:20 +0200
+
 q4os-base (4.31.19-a1) UNRELEASED; urgency=medium
 
   * Plasma 6 editions (Q4OS 6, Q4OS 7, Quark 26.04): KWallet is enabled for new

@@ -403,6 +403,12 @@ case "$1" in
     fi
   fi
 
+  if is_greater_then_former "4.31.20-a1" ; then
+    #UEFI: a firmware that forgets its boot entries (flat CMOS battery, BIOS reset) starts \EFI\BOOT\BOOTX64.EFI, where
+    #the live installer left a lone signed grub: it stops at a grub prompt, or is refused under Secure Boot. See the script.
+    sh /usr/share/apps/q4os_system/bin/efi_fallback_boot.sh
+  fi
+
   set -e
   echo "[FX] Fixes end."
 #--------------- fixes end --------------------------------------
